@@ -4,7 +4,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DatabaseModule } from '../database/database.module';
 import { UsersModule } from '../users/users.module';
 import { AuthService } from './auth.service';
-import { jwtConstants } from './constants';
+import { jwtConstants } from './auth.constants';
 
 describe('AuthService', () => {
     let service: AuthService;

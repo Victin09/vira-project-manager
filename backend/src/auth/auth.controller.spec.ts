@@ -5,7 +5,7 @@ import { DatabaseModule } from '../database/database.module';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersModule } from '../users/users.module';
-import { jwtConstants } from './constants';
+import { jwtConstants } from './auth.constants';
 
 describe('AuthController', () => {
     let controller: AuthController;
