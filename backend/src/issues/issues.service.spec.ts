@@ -2,19 +2,19 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { DatabaseModule } from '../database/database.module';
-import { User, UserSchema } from './entities/user.entity';
-import { UsersService } from './users.service';
+import { Issue, IssueSchema } from './entities/issue.entity';
+import { IssuesService } from './issues.service';
 
-describe('UsersService', () => {
-    let service: UsersService;
+describe('IssuesService', () => {
+    let service: IssuesService;
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            imports: [DatabaseModule, MongooseModule.forFeature([{ name: User.name, schema: UserSchema }])],
-            providers: [UsersService],
+            imports: [DatabaseModule, MongooseModule.forFeature([{ name: Issue.name, schema: IssueSchema }])],
+            providers: [IssuesService],
         }).compile();
 
-        service = module.get<UsersService>(UsersService);
+        service = module.get<IssuesService>(IssuesService);
     });
 
     it('should be defined', () => {

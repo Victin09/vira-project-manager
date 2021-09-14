@@ -1,4 +1,4 @@
-import { User } from 'src/users/entities/user.schema';
+import { User } from '../../users/entities/user.entity';
 
 export class CreateProjectDto {
     readonly name: string;

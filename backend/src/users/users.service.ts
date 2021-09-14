@@ -4,7 +4,7 @@ import { Model } from 'mongoose';
 
 import { QueryParams } from './dto/query-params.dto';
 import { UserDto } from './dto/user.dto';
-import { User, UserDocument } from './entities/user.schema';
+import { User, UserDocument } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -21,6 +21,10 @@ export class UsersService {
 
     async findOne(id: string): Promise<User> {
         return await this.userModel.findById(id).exec();
+    }
+
+    async findByEmail(email: string): Promise<User> {
+        return await this.userModel.findOne({ email: email });
     }
 
     async create(data: UserDto): Promise<User> {

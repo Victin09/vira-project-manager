@@ -5,7 +5,7 @@ import * as mongoose from 'mongoose';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project, ProjectDocument } from './entities/project.entity';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class ProjectsService {
@@ -25,10 +25,7 @@ export class ProjectsService {
 
     async findByUser(userId: string) {
         const user = await this.userService.findOne(userId);
-        return await this.projectModel
-            .find({ users: user })
-            .populate('users')
-            .exec();
+        return await this.projectModel.find({ users: user }).populate('users').exec();
     }
 
     async create(data: CreateProjectDto) {

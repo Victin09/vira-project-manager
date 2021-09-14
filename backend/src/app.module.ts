@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { ProjectsModule } from './projects/projects.module';
+import { AuthModule } from './auth/auth.module';
+import { IssuesModule } from './issues/issues.module';
+import { ListsModule } from './lists/lists.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
-    imports: [
-        MongooseModule.forRoot('mongodb://localhost/vira-project-manager'),
-        UsersModule,
-        ProjectsModule,
-    ],
+    imports: [DatabaseModule, UsersModule, ProjectsModule, AuthModule, IssuesModule, ListsModule, DatabaseModule],
     controllers: [AppController],
     providers: [AppService],
 })
