@@ -1,4 +1,5 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { QueryParams } from './dto/query-params.dto';
@@ -8,41 +9,74 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
+@ApiTags('users')
+@ApiBearerAuth('access-token')
 export class UsersController {
     constructor(private userService: UsersService) {}
 
     @Get()
-    @UseGuards(JwtAuthGuard)
-    findAll(@Query() params: QueryParams): Promise<Array<User>> {
+    @ApiOperation({ summary: 'Get all users' })
+    @ApiResponse({
+        status: 200,
+        description: 'User list',
+        type: User,
+    })
+    findAll(@Query() params: QueryParams): Promise<User[]> {
         return this.userService.findAll(params);
     }
 
     @Get('find/:id')
-    @UseGuards(JwtAuthGuard)
+    @ApiOperation({ summary: 'Find user by id' })
+    @ApiResponse({
+        status: 200,
+        description: 'User',
+        type: User,
+    })
     findOne(@Param('id') id: string): Promise<User> {
         return this.userService.findOne(id);
     }
 
     @Get('find-mail/:email')
-    @UseGuards(JwtAuthGuard)
+    @ApiOperation({ summary: 'Find user by email' })
+    @ApiResponse({
+        status: 200,
+        description: 'User',
+        type: User,
+    })
     findByEmail(@Param('email') email: string): Promise<User> {
         return this.userService.findByEmail(email);
     }
 
     @Post()
-    @UseGuards(JwtAuthGuard)
+    @ApiOperation({ summary: 'Create new user' })
+    @ApiResponse({
+        status: 200,
+        description: 'User',
+        type: User,
+    })
     create(@Body() data: CreateUserDto): Promise<User> {
         return this.userService.create(data);
     }
 
     @Patch(':id')
-    @UseGuards(JwtAuthGuard)
+    @ApiOperation({ summary: 'Update user' })
+    @ApiResponse({
+        status: 200,
+        description: 'User',
+        type: User,
+    })
     update(@Param('id') id: string, @Body() data: UpdateUserDto): Promise<User> {
         return this.userService.update(id, data);
     }
 
     @Delete(':id')
-    @UseGuards(JwtAuthGuard)
+    @ApiOperation({ summary: 'Remove user' })
+    @ApiResponse({
+        status: 200,
+        description: 'User',
+        type: User,
+    })
     remove(@Param('id') id: string): Promise<void> {
         return this.userService.remove(id);
     }

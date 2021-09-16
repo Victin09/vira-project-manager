@@ -11,7 +11,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
     constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-    async findAll(params: QueryParams): Promise<Array<User>> {
+    async findAll(params: QueryParams): Promise<User[]> {
         const nameFilter = params.name ? { name: { $regex: '.*' + params.name + '.*' } } : {};
         return await this.userModel.find(nameFilter).exec();
     }

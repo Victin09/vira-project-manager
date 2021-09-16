@@ -15,7 +15,7 @@ export class ProjectsService {
         private userService: UsersService,
     ) {}
 
-    async findAll(): Promise<Array<Project>> {
+    async findAll(): Promise<Project[]> {
         return await this.projectModel.find().exec();
     }
 
@@ -23,17 +23,17 @@ export class ProjectsService {
         return await this.projectModel.findById(id);
     }
 
-    async findByUser(userId: string) {
+    async findByUser(userId: string): Promise<Project[]> {
         const user = await this.userService.findOne(userId);
         return await this.projectModel.find({ users: user }).populate('users').exec();
     }
 
-    async create(data: CreateProjectDto) {
+    async create(data: CreateProjectDto): Promise<Project> {
         const project = new this.projectModel(data);
         return await project.save();
     }
 
-    async addUser(id: string, user: string) {
+    async addUser(id: string, user: string): Promise<Project> {
         return await this.projectModel.findByIdAndUpdate(
             id,
             {
@@ -43,7 +43,7 @@ export class ProjectsService {
         );
     }
 
-    async removeUser(id: string, user: string) {
+    async removeUser(id: string, user: string): Promise<Project> {
         return await this.projectModel.findByIdAndUpdate(
             id,
             {
@@ -53,11 +53,11 @@ export class ProjectsService {
         );
     }
 
-    async update(id: string, data: UpdateProjectDto) {
+    async update(id: string, data: UpdateProjectDto): Promise<Project> {
         return await this.projectModel.findByIdAndUpdate(id, data).exec();
     }
 
-    async remove(id: string) {
+    async remove(id: string): Promise<void> {
         return await this.projectModel.remove({ id: id }).exec();
     }
 }

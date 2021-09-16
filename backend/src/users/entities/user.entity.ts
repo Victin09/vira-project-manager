@@ -1,24 +1,30 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, HookNextFunction } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { ApiProperty } from '@nestjs/swagger';
 
 export type UserDocument = User & Document;
 
 @Schema()
 export class User {
     @Prop({ required: true, unique: true })
+    @ApiProperty({ example: 'johncena2134' })
     username: string;
 
     @Prop({ required: true })
+    @ApiProperty({ example: '**********' })
     password: string;
 
     @Prop({ required: true })
+    @ApiProperty({ example: 'John Cena' })
     name: string;
 
     @Prop({ required: true, unique: true })
+    @ApiProperty({ example: 'johncena@best.es' })
     email: string;
 
     @Prop()
+    @ApiProperty({ example: 'base64;iconInBase64' })
     icon: string;
 
     // eslint-disable-next-line @typescript-eslint/ban-types
