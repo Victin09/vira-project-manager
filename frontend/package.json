@@ -31,12 +31,6 @@
         "url": "https://github.com/Victin09/vira-cli/issues"
     },
     "homepage": "https://github.com/Victin09/vira-cli/src/templates/react#readme",
-    "husky": {
-        "hooks": {
-            "pre-commit": "npm run lint",
-            "pre-push": "npm run test"
-        }
-    },
     "lint-staged": {
         "*.{js,ts,tsx}": [
             "eslint --fix"
