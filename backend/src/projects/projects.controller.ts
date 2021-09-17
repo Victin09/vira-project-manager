@@ -36,26 +36,26 @@ export class ProjectsController {
         return this.projectsService.findOne(id);
     }
 
-    @Get('find-user/:userId')
+    @Get('find-user/:userMail')
     @ApiOperation({ summary: 'Get all projects associated to user' })
     @ApiResponse({
         status: 200,
         description: 'Project list',
         type: Project,
     })
-    findByUser(@Param('userId') id: string): Promise<Project[]> {
+    findByUser(@Param('userMail') id: string): Promise<Project[]> {
         return this.projectsService.findByUser(id);
     }
 
-    @Post()
+    @Post('/:userMail')
     @ApiOperation({ summary: 'Create new projects' })
     @ApiResponse({
         status: 200,
         description: 'Project',
         type: Project,
     })
-    create(@Body() data: CreateProjectDto): Promise<Project> {
-        return this.projectsService.create(data);
+    create(@Param('userMail') mail: string, @Body() data: CreateProjectDto): Promise<Project> {
+        return this.projectsService.create(mail, data);
     }
 
     @Patch('add-user/:id/:user')

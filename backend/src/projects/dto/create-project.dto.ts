@@ -17,8 +17,8 @@ export class CreateProjectDto {
     @ApiProperty({ example: 'base64;base64Image' })
     readonly image: string;
 
-    @IsArray()
+    @IsArray({ always: false })
     @Type(() => User)
     @ApiProperty({ example: '[User1, User2, User3]' })
-    readonly users: Array<User>;
+    readonly users?: Array<User>;
 }

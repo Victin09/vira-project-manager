@@ -17,9 +17,13 @@ export class AuthService {
         return null;
     }
 
-    async login(data: LoginDto): Promise<{ access_token: string }> {
+    async login(data: LoginDto): Promise<{ email: string; name: string; icon: string; access_token: string }> {
+        const { email, name, icon } = await this.userService.findByEmail(data.email);
         const payload = { email: data.email };
         return {
+            email,
+            name,
+            icon,
             access_token: this.jwtService.sign(payload, { expiresIn: 1800000 }),
         };
     }

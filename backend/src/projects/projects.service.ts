@@ -23,31 +23,35 @@ export class ProjectsService {
         return await this.projectModel.findById(id);
     }
 
-    async findByUser(userId: string): Promise<Project[]> {
-        const user = await this.userService.findOne(userId);
+    async findByUser(userMail: string): Promise<Project[]> {
+        const user = await this.userService.findByEmail(userMail);
         return await this.projectModel.find({ users: user }).populate('users').exec();
     }
 
-    async create(data: CreateProjectDto): Promise<Project> {
+    async create(mail: string, data: CreateProjectDto): Promise<Project> {
+        const user = (await this.userService.findByEmail(mail))['_id'];
+        data.users.push(user);
         const project = new this.projectModel(data);
         return await project.save();
     }
 
     async addUser(id: string, user: string): Promise<Project> {
+        const userId = (await this.userService.findByEmail(user))['_id'];
         return await this.projectModel.findByIdAndUpdate(
             id,
             {
-                $push: { users: user },
+                $push: { users: userId },
             },
             { useFindAndModify: false },
         );
     }
 
     async removeUser(id: string, user: string): Promise<Project> {
+        const userId = (await this.userService.findByEmail(user))['_id'];
         return await this.projectModel.findByIdAndUpdate(
             id,
             {
-                $pull: { users: user },
+                $pull: { users: userId },
             },
             { useFindAndModify: false },
         );
