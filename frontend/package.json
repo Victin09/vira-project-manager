@@ -79,6 +79,7 @@
         "install": "^0.13.0",
         "npm": "^7.24.0",
         "react": "^16.14.0",
+        "react-cookie": "^4.1.1",
         "react-dom": "^16.14.0",
         "react-router-dom": "^5.2.0"
     }

@@ -1,6 +1,7 @@
 import React from 'react';
 import {
     BrowserRouter as Router,
+    Redirect,
     Route
 } from 'react-router-dom';
 
@@ -17,6 +18,9 @@ export const App = (): JSX.Element => (
             <Navbar />
 
             <div className="flex-grow">
+                <Route path="/" exact>
+                    <Redirect to="/project" />
+                </Route>
                 {routes.map(
                     (route: IRoute, index) => {
                         if (route.private)

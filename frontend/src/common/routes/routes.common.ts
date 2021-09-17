@@ -13,7 +13,7 @@ export const routes: IRoute[] = [
     {
         component: Home,
         exact: true,
-        path: '/',
+        path: '/project',
         private: true
     },
     {

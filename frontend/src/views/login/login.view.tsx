@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router';
+import { useCookies } from 'react-cookie';
 
 import { useUser } from '@common/context/user-context.common';
 
 const Login = (): JSX.Element => {
     const { setEmail, setName, setIcon } =
         useUser();
+    const [cookies, setCookie] = useCookies([
+        'vpm-um'
+    ]);
     const history = useHistory();
 
     const [mail, setMail] = useState('');
@@ -37,6 +41,7 @@ const Login = (): JSX.Element => {
             setName(result.name);
             setEmail(result.email);
             setIcon(result.icon);
+            setCookie('vpm-um', result);
             history.push('/');
         }
     };
