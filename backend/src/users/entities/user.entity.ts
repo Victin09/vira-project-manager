@@ -23,7 +23,7 @@ export class User {
     @ApiProperty({ example: 'johncena@best.es' })
     email: string;
 
-    @Prop()
+    @Prop({ required: false })
     @ApiProperty({ example: 'base64;iconInBase64' })
     icon: string;
 

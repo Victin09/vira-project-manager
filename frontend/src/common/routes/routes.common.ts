@@ -1,6 +1,7 @@
 import Home from '@views/home/home';
 import About from '@views/about/about';
 import Login from '@views/login/login.view';
+import Register from '@views/register/register.view';
 
 export interface IRoute {
     component: React.FC;
@@ -26,6 +27,12 @@ export const routes: IRoute[] = [
         component: Login,
         exact: true,
         path: '/login',
+        private: false
+    },
+    {
+        component: Register,
+        exact: true,
+        path: '/register',
         private: false
     }
 ];

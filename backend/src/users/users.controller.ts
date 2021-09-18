@@ -9,7 +9,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
 @Controller('users')
-@UseGuards(JwtAuthGuard)
 @ApiTags('users')
 @ApiBearerAuth('access-token')
 export class UsersController {
@@ -22,6 +21,7 @@ export class UsersController {
         description: 'User list',
         type: User,
     })
+    @UseGuards(JwtAuthGuard)
     findAll(@Query() params: QueryParams): Promise<User[]> {
         return this.userService.findAll(params);
     }
@@ -33,6 +33,7 @@ export class UsersController {
         description: 'User',
         type: User,
     })
+    @UseGuards(JwtAuthGuard)
     findOne(@Param('id') id: string): Promise<User> {
         return this.userService.findOne(id);
     }
@@ -44,6 +45,7 @@ export class UsersController {
         description: 'User',
         type: User,
     })
+    @UseGuards(JwtAuthGuard)
     findByEmail(@Param('email') email: string): Promise<User> {
         return this.userService.findByEmail(email);
     }
@@ -66,6 +68,7 @@ export class UsersController {
         description: 'User',
         type: User,
     })
+    @UseGuards(JwtAuthGuard)
     update(@Param('id') id: string, @Body() data: UpdateUserDto): Promise<User> {
         return this.userService.update(id, data);
     }
@@ -77,6 +80,7 @@ export class UsersController {
         description: 'User',
         type: User,
     })
+    @UseGuards(JwtAuthGuard)
     remove(@Param('id') id: string): Promise<void> {
         return this.userService.remove(id);
     }

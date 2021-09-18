@@ -18,7 +18,7 @@ export class CreateUserDto {
     @ApiProperty({ example: 'johncena@best.es' })
     readonly email: string;
 
-    @IsString()
+    @IsString({ always: false })
     @ApiProperty({ example: 'base64;iconInBase64' })
     readonly icon: string;
 }
