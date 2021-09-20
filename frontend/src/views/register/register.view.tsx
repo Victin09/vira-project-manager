@@ -8,7 +8,7 @@ import { isAuthenticated } from '@common/auth/auth.common';
 
 const Register = (): JSX.Element => {
     const { setEmail, setName, setIcon } = useUser();
-    const [cookies, setCookie] = useCookies(['vpm-um']);
+    const [_cookies, setCookie] = useCookies(['vpm-um']);
     const history = useHistory();
 
     const [fullname, setFullname] = useState('');
@@ -22,10 +22,9 @@ const Register = (): JSX.Element => {
 
     const login = async () => {
         const result = await (
-            await fetch('http://localhost:3000/users', {
+            await fetch(`${process.env.API_URL}/users`, {
                 method: 'POST',
                 headers: {
-                    // Authorization: `Bearer ${getToken()}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
@@ -39,10 +38,9 @@ const Register = (): JSX.Element => {
         ).json();
         if (result.username === username) {
             const result = await (
-                await fetch('http://localhost:3000/auth/login', {
+                await fetch(`${process.env.API_URL}/auth/login`, {
                     method: 'POST',
                     headers: {
-                        // Authorization: `Bearer ${getToken()}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({

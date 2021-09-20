@@ -30,7 +30,6 @@ export const UserProvider = ({ children }: { children: JSX.Element }): any => {
     const [icon, setIcon] = useState<string>(initialState.icon);
 
     useEffect(() => {
-        console.error('cookiesContext', cookies['vpm-um'].email);
         if (cookies['vpm-um']) {
             setEmail(cookies['vpm-um']['email']);
             setName(cookies['vpm-um']['name']);

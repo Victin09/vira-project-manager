@@ -1,7 +1,7 @@
 import Home from '@views/home/home';
-import About from '@views/about/about';
 import Login from '@views/login/login.view';
 import Register from '@views/register/register.view';
+import Project from '@views/project/project.view';
 
 export interface IRoute {
     component: React.FC;
@@ -18,9 +18,9 @@ export const routes: IRoute[] = [
         private: true
     },
     {
-        component: About,
-        exact: false,
-        path: '/about',
+        component: Project,
+        exact: true,
+        path: '/project/:projectCode',
         private: true
     },
     {

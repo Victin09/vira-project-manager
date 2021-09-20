@@ -19,10 +19,9 @@ const Login = (): JSX.Element => {
 
     const login = async () => {
         const result = await (
-            await fetch('http://localhost:3000/auth/login', {
+            await fetch(`${process.env.API_URL}/auth/login`, {
                 method: 'POST',
                 headers: {
-                    // Authorization: `Bearer ${getToken()}`,
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({

@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 import { useUser } from '@common/context/user-context.common';
 import { getToken } from '@common/auth/auth.common';
 import { nameToInitials } from '@common/util/initials.common';
-import { Tooltip } from '@components/tooltip/tooltip.component';
 
 interface IProject {
-    image: string;
     name: string;
+    code: string;
     description: string;
+    image: string;
     users: IUser[];
+    responsible: IUser;
 }
 
 interface IUser {
@@ -25,9 +26,10 @@ const Home = (): JSX.Element => {
     const [projects, setProjects] = useState<IProject[]>([]);
 
     useEffect(() => {
+        console.log('test', process.env.API_URL);
         const fetchData = async () => {
             const result = await (
-                await fetch(`http://localhost:3000/projects/find-user/${email}`, {
+                await fetch(`${process.env.API_URL}/projects/find-user/${email}`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${getToken()}`,
@@ -36,7 +38,7 @@ const Home = (): JSX.Element => {
                 })
             ).json();
             console.log('result', result);
-            if (result) setProjects(result);
+            if (result.length > 0) setProjects(result);
         };
 
         fetchData();
@@ -44,7 +46,7 @@ const Home = (): JSX.Element => {
 
     return (
         <>
-            {projects && email ? (
+            {!projects.length && !email ? (
                 <div className="container mx-auto px-4 sm:px-8">
                     <span>
                         No tienes ningún proyecto asociado{' '}
@@ -68,13 +70,13 @@ const Home = (): JSX.Element => {
                                                 Nombre
                                             </th>
                                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                                Código
+                                                Tipo
                                             </th>
                                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
                                                 Descripcion
                                             </th>
                                             <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                                Usuarios
+                                                Responsable
                                             </th>
                                         </tr>
                                     </thead>
@@ -90,8 +92,8 @@ const Home = (): JSX.Element => {
                                                             {project.image ? project.image : nameToInitials(project.name)}
                                                         </div>
                                                         <Link
-                                                            to={`/project/${project.name}`}
-                                                            className="ml-1 font-bold text-gray-700 whitespace-no-wrap cursor-pointer hover:underline hover:text-indigo-700"
+                                                            to={`/project/${project.code}`}
+                                                            className="ml-1 font-bold text-gray-700 whitespace-no-wrap cursor-pointer hover:underline hover:text-indigo-700 hover:italic"
                                                         >
                                                             {project.name}
                                                         </Link>
@@ -103,17 +105,18 @@ const Home = (): JSX.Element => {
                                                 <td className="px-5 py-5 bg-white text-sm">
                                                     <p className="text-gray-600 whitespace-no-wrap">{project.description}</p>
                                                 </td>
-                                                <td className="px-5 py-5 bg-white text-sm flex">
-                                                    {project.users.map((user, index) => (
-                                                        <Tooltip message={user.name} position="top" key={index}>
-                                                            <div
-                                                                className="m-1 w-10 h-10 relative flex justify-center items-center rounded-full bg-indigo-700 text-xl text-white uppercase"
-                                                                key={index}
-                                                            >
-                                                                {user.icon ? user.icon : nameToInitials(user.name)}
-                                                            </div>
-                                                        </Tooltip>
-                                                    ))}
+                                                <td className="px-5 py-5 bg-white text-sm flex items-center">
+                                                    <div
+                                                        className="m-1 w-8 h-8 relative flex justify-center items-center rounded-full bg-indigo-700 text-xl text-white uppercase"
+                                                        key={index}
+                                                    >
+                                                        {project.responsible.icon
+                                                            ? project.responsible.icon
+                                                            : nameToInitials(project.responsible.name)}
+                                                    </div>
+                                                    <span className="ml-1 text-gray-700 whitespace-no-wrap cursor-pointer hover:underline hover:text-indigo-700">
+                                                        {project.responsible.name}
+                                                    </span>
                                                 </td>
                                             </tr>
                                         ))}

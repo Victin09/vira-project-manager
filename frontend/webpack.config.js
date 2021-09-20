@@ -1,33 +1,35 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isDevelopment = process.env.NODE_ENV === 'development';
+// const env = dotenv.config().parsed;
 
 module.exports = {
     entry: {
-        main: './src/index.tsx',
+        main: './src/index.tsx'
     },
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.scss'],
         alias: {
             '@common': path.resolve(__dirname, 'src/common'),
             '@components': path.resolve(__dirname, 'src/components'),
-            '@views': path.resolve(__dirname, 'src/views'),
-        },
+            '@views': path.resolve(__dirname, 'src/views')
+        }
     },
     output: {
         path: path.join(__dirname, './dist'),
-        filename: 'app.min.js',
+        filename: 'app.min.js'
     },
     module: {
         rules: [
             {
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
-                loader: 'ts-loader',
+                loader: 'ts-loader'
             },
             {
                 test: /\.css$/i,
@@ -43,36 +45,37 @@ module.exports = {
                                         'postcss-preset-env',
                                         {
                                             // Options
-                                        },
-                                    ],
-                                ],
-                            },
-                        },
-                    },
-                ],
+                                        }
+                                    ]
+                                ]
+                            }
+                        }
+                    }
+                ]
             },
             {
                 test: /\.(png|jpg|gif|svg)$/,
                 use: [
                     {
                         loader: 'file-loader',
-                        options: {},
-                    },
-                ],
-            },
-        ],
+                        options: {}
+                    }
+                ]
+            }
+        ]
     },
     devServer: {
-        historyApiFallback: true,
+        historyApiFallback: true
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({
-            template: './public/index.html',
+            template: './public/index.html'
         }),
         new MiniCssExtractPlugin({
             filename: isDevelopment ? '[name].css' : '[name].[hash].css',
-            chunkFilename: isDevelopment ? '[id].css' : '[id].[hash].css',
+            chunkFilename: isDevelopment ? '[id].css' : '[id].[hash].css'
         }),
-    ],
+        new Dotenv()
+    ]
 };

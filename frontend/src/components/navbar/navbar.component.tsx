@@ -13,12 +13,13 @@ interface IMenuItem {
 const Navbar = (): JSX.Element => {
     const { icon, name } = useUser();
     const localtion = useLocation();
+
     const [isOpen, setOpen] = useState(false);
     const [autenticated, setAutenticated] = useState(false);
 
     useEffect(() => {
         if (isAuthenticated()) setAutenticated(true);
-    }, []);
+    }, [localtion.pathname]);
 
     const menuItems: IMenuItem[] = [
         {

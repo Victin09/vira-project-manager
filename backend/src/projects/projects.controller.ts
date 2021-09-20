@@ -25,15 +25,15 @@ export class ProjectsController {
         return this.projectsService.findAll();
     }
 
-    @Get('find/:id')
-    @ApiOperation({ summary: 'Find project by id' })
+    @Get('find/:projectCode')
+    @ApiOperation({ summary: 'Find project by name' })
     @ApiResponse({
         status: 200,
         description: 'Find project',
         type: Project,
     })
-    findOne(@Param('id') id: string): Promise<Project> {
-        return this.projectsService.findOne(id);
+    findOne(@Param('projectCode') projectCode: string): Promise<Project> {
+        return this.projectsService.findOne(projectCode);
     }
 
     @Get('find-user/:userMail')

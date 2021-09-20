@@ -19,19 +19,22 @@ export class ProjectsService {
         return await this.projectModel.find().exec();
     }
 
-    async findOne(id: string) {
-        return await this.projectModel.findById(id);
+    async findOne(projectCode: string) {
+        return await this.projectModel.findOne({ code: projectCode });
     }
 
     async findByUser(userMail: string): Promise<Project[]> {
         const user = await this.userService.findByEmail(userMail);
-        return await this.projectModel.find({ users: user }).populate('users').exec();
+        return await this.projectModel.find({ users: user }).populate('users').populate('responsible').exec();
     }
 
     async create(mail: string, data: CreateProjectDto): Promise<Project> {
         const user = (await this.userService.findByEmail(mail))['_id'];
         data.users.push(user);
+        const code = Buffer.from(data.name).toString('base64');
         const project = new this.projectModel(data);
+        project.code = code;
+        project.responsible = user;
         return await project.save();
     }
 
