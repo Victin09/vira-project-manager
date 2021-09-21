@@ -39,6 +39,7 @@
     "devDependencies": {
         "@types/jest": "^25.2.3",
         "@types/react": "^16.14.2",
+        "@types/react-beautiful-dnd": "^13.1.2",
         "@types/react-dom": "^16.9.10",
         "@types/react-router-dom": "^5.1.6",
         "@types/react-test-renderer": "^16.9.4",
@@ -77,12 +78,15 @@
         "webpack-dev-server": "^3.11.2"
     },
     "dependencies": {
+        "@react-icons/all-files": "^4.1.0",
         "dotenv-webpack": "^7.0.3",
         "install": "^0.13.0",
         "npm": "^7.24.0",
         "react": "^16.14.0",
+        "react-beautiful-dnd": "^13.1.0",
         "react-cookie": "^4.1.1",
         "react-dom": "^16.14.0",
+        "react-icons": "^4.2.0",
         "react-router-dom": "^5.2.0"
     }
 }

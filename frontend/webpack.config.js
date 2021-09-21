@@ -6,7 +6,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isDevelopment = process.env.NODE_ENV === 'development';
-// const env = dotenv.config().parsed;
 
 module.exports = {
     entry: {
@@ -65,7 +64,9 @@ module.exports = {
         ]
     },
     devServer: {
-        historyApiFallback: true
+        historyApiFallback: true,
+        contentBase: './',
+        hot: true
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),

@@ -31,8 +31,8 @@ export class IssuesService {
         return await this.issueModel.find({ list: list }).exec();
     }
 
-    async findByProject(id: string): Promise<Issue[]> {
-        const project = await this.projectService.findOne(id);
+    async findByProject(projectCode: string): Promise<Issue[]> {
+        const project = await this.projectService.findOne(projectCode);
         return await this.issueModel.find({ project: project }).exec();
     }
 

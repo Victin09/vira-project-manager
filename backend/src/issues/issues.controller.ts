@@ -47,15 +47,15 @@ export class IssuesController {
         return this.issueService.findByList(id);
     }
 
-    @Get('project/:id')
-    @ApiOperation({ summary: 'Find issues by project id' })
+    @Get('project/:projectCode')
+    @ApiOperation({ summary: 'Find issues by project code' })
     @ApiResponse({
         status: 200,
         description: 'Issue list',
         type: Issue,
     })
-    findByProject(@Param('id') id: string): Promise<Issue[]> {
-        return this.issueService.findByProject(id);
+    findByProject(@Param('projectCode') projectCode: string): Promise<Issue[]> {
+        return this.issueService.findByProject(projectCode);
     }
 
     @Get('user/:id')
