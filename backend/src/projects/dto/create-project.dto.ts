@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsArray, IsString } from 'class-validator';
 
+import { ProjectType } from '../../project-types/entities/project-type.entity';
 import { User } from '../../users/entities/user.entity';
 
 export class CreateProjectDto {
@@ -16,6 +17,11 @@ export class CreateProjectDto {
     @IsString()
     @ApiProperty({ example: 'base64;base64Image' })
     readonly image: string;
+
+    @IsString()
+    @Type(() => ProjectType)
+    @ApiProperty({ example: 'Type' })
+    readonly type: ProjectType;
 
     @IsArray({ always: false })
     @Type(() => User)

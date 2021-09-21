@@ -26,9 +26,13 @@ const Sidebar = ({ projectData, options, selected, selectedOption }: ISidebar): 
         >
             <div className="flex flex-col space-y-6 h-full">
                 <div className="flex items-center space-x-2 px-4">
-                    <div className="m-1 w-10 h-10 relative flex justify-center items-center rounded bg-indigo-700 text-white text-xl uppercase">
-                        {projectData.image ? projectData.image : nameToInitials(projectData.name)}
-                    </div>
+                    {projectData.image ? (
+                        <img className="m-1 w-10 h-10 relative flex justify-center items-center rounded" src={projectData.image} />
+                    ) : (
+                        <div className="m-1 w-10 h-10 relative flex justify-center items-center rounded bg-indigo-700 text-white text-xl uppercase">
+                            {nameToInitials(projectData.name)}
+                        </div>
+                    )}
                     <span className="text-2xl font-extrabold whitespace-nowrap truncate">{projectData.name}</span>
                 </div>
                 <hr />

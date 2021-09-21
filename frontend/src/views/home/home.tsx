@@ -85,14 +85,21 @@ const Home = (): JSX.Element => {
                                             <tr key={index} className="border-b border-gray-200">
                                                 <td className="px-5 py-5 bg-white text-sm">
                                                     <div className="flex items-center">
-                                                        <div
-                                                            className="m-1 w-10 h-10 relative flex justify-center items-center rounded bg-indigo-700 text-xl text-white uppercase"
-                                                            key={index}
-                                                        >
-                                                            {project.image ? project.image : nameToInitials(project.name)}
-                                                        </div>
+                                                        {project.image ? (
+                                                            <img
+                                                                className="m-1 w-10 h-10 relative flex justify-center items-center rounded"
+                                                                src={project.image}
+                                                            />
+                                                        ) : (
+                                                            <div
+                                                                className="m-1 w-10 h-10 relative flex justify-center items-center rounded bg-indigo-700 text-xl text-white uppercase"
+                                                                key={index}
+                                                            >
+                                                                {nameToInitials(project.name)}
+                                                            </div>
+                                                        )}
                                                         <Link
-                                                            to={`/project/${project.code}`}
+                                                            to={`/project/view/${project.code}`}
                                                             className="ml-1 font-bold text-gray-700 whitespace-no-wrap cursor-pointer hover:underline hover:text-indigo-700 hover:italic"
                                                         >
                                                             {project.name}

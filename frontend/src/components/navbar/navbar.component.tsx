@@ -46,16 +46,13 @@ const Navbar = (): JSX.Element => {
                             className={`block relative${localtion.pathname.includes('/project') ? ' border-b-2 border-indigo-700' : ''}`}
                             onClick={() => setProjects(!projects)}
                         >
-                            <a
-                                href="#"
-                                className="flex items-center h-10 leading-10 px-4 rounded cursor-pointer no-underline hover:no-underline transition-colors duration-100 mx-1 hover:bg-gray-100"
-                            >
+                            <div className="flex items-center h-10 leading-10 px-4 rounded cursor-pointer no-underline hover:no-underline transition-colors duration-100 mx-1 hover:bg-gray-100">
                                 <span className="mr-3 text-xl">
                                     <RiFileListLine />
                                 </span>
                                 <span>Proyectos</span>
                                 <span className="ml-2"> {projects ? <BiChevronDown /> : <BiChevronRight />}</span>
-                            </a>
+                            </div>
                             <div
                                 className="bg-white shadow-md rounded border border-gray-300 text-sm absolute top-auto left-0 min-w-full w-56 z-30 mt-1"
                                 style={{ display: projects ? 'block' : 'none' }}
@@ -64,8 +61,8 @@ const Navbar = (): JSX.Element => {
                                 <div className="bg-white rounded w-full relative z-10 py-1">
                                     <ul className="list-reset">
                                         <li className="relative">
-                                            <a
-                                                href="#"
+                                            <Link
+                                                to="/project/new"
                                                 className="px-4 py-2 flex w-full items-start hover:bg-gray-100 no-underline hover:no-underline transition-colors duration-100 cursor-pointer"
                                             >
                                                 <span className="flex-1">Crear</span>
@@ -73,7 +70,7 @@ const Navbar = (): JSX.Element => {
                                                     {' '}
                                                     <i className="mdi mdi-chevron-right"></i>{' '}
                                                 </span>
-                                            </a>
+                                            </Link>
                                             {/* <div
                                                 className="bg-white shadow-md rounded border border-gray-300 text-sm absolute inset-l-full top-0 min-w-full w-56 z-30 mt-1"
                                                 x-show="showChildren"
