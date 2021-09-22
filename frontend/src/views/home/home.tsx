@@ -10,8 +10,14 @@ interface IProject {
     code: string;
     description: string;
     image: string;
+    type: IType;
     users: IUser[];
     responsible: IUser;
+}
+
+interface IType {
+    name: string;
+    description: string;
 }
 
 interface IUser {
@@ -59,7 +65,7 @@ const Home = (): JSX.Element => {
                 <div className="container mx-auto px-4 sm:px-8">
                     <div className="py-8">
                         <div>
-                            <h2 className="text-2xl font-semibold leading-tight">Projectos</h2>
+                            <h2 className="text-2xl font-semibold leading-tight">Proyectos</h2>
                         </div>
                         <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
                             <div className="inline-block min-w-full shadow-md rounded-lg overflow-hidden">
@@ -100,14 +106,14 @@ const Home = (): JSX.Element => {
                                                         )}
                                                         <Link
                                                             to={`/project/view/${project.code}`}
-                                                            className="ml-1 font-bold text-gray-700 whitespace-no-wrap cursor-pointer hover:underline hover:text-indigo-700 hover:italic"
+                                                            className="ml-1 font-bold text-indigo-700 whitespace-no-wrap cursor-pointer hover:underline hover:text-indigo-700 hover:italic"
                                                         >
                                                             {project.name}
                                                         </Link>
                                                     </div>
                                                 </td>
                                                 <td className="px-5 py-5 bg-white text-sm">
-                                                    <p className="text-gray-600 whitespace-no-wrap">USD</p>
+                                                    <p className="text-gray-600 whitespace-no-wrap">{project.type.name}</p>
                                                 </td>
                                                 <td className="px-5 py-5 bg-white text-sm">
                                                     <p className="text-gray-600 whitespace-no-wrap">{project.description}</p>
@@ -121,7 +127,7 @@ const Home = (): JSX.Element => {
                                                             ? project.responsible.icon
                                                             : nameToInitials(project.responsible.name)}
                                                     </div>
-                                                    <span className="ml-1 text-gray-700 whitespace-no-wrap cursor-pointer hover:underline hover:text-indigo-700">
+                                                    <span className="ml-1 text-indigo-700 whitespace-no-wrap cursor-pointer hover:underline hover:text-indigo-700">
                                                         {project.responsible.name}
                                                     </span>
                                                 </td>

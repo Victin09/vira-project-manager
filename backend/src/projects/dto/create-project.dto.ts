@@ -26,7 +26,7 @@ export class CreateProjectDto {
     @IsArray({ always: false })
     @Type(() => User)
     @ApiProperty({ example: '[User1, User2, User3]' })
-    readonly users?: Array<User>;
+    readonly users: User[];
 
     @IsString()
     @Type(() => User)

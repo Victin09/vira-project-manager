@@ -57,7 +57,7 @@ const Navbar = (): JSX.Element => {
                                 className="bg-white shadow-md rounded border border-gray-300 text-sm absolute top-auto left-0 min-w-full w-56 z-30 mt-1"
                                 style={{ display: projects ? 'block' : 'none' }}
                             >
-                                <span className="absolute top-0 left-0 w-3 h-3 bg-white border transform rotate-45 -mt-1 ml-6"></span>
+                                {/* <span className="absolute top-0 left-0 w-3 h-3 bg-white border transform rotate-45 -mt-1 ml-6"></span> */}
                                 <div className="bg-white rounded w-full relative z-10 py-1">
                                     <ul className="list-reset">
                                         <li className="relative">
@@ -163,12 +163,12 @@ const Navbar = (): JSX.Element => {
                             </div>
                             <div
                                 className="bg-white shadow-md rounded border border-gray-300 text-sm absolute top-auto left-0 min-w-full w-56 z-30 mt-1"
-                                style={{ display: profile ? 'block' : 'none', left: '-200%' }}
+                                style={{ display: profile ? 'block' : 'none', left: '-185%' }}
                             >
-                                <span
+                                {/* <span
                                     className="absolute top-0 w-3 h-3 bg-white border transform rotate-45 -mt-1 ml-6"
                                     style={{ left: '12em' }}
-                                ></span>
+                                ></span> */}
                                 <div className="bg-white rounded w-full relative z-10 py-1">
                                     <ul className="list-reset">
                                         <li className="relative">

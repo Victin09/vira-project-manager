@@ -35,6 +35,10 @@ export class ProjectsService {
         const project = new this.projectModel(data);
         project.code = code;
         project.responsible = user;
+        data.users.forEach(async (u) => {
+            const uData = await this.userService.findByEmail(u.email)['_id'];
+            data.users.push(uData);
+        });
         return await project.save();
     }
 

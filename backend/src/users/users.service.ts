@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
-import { QueryParams } from './dto/query-params.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User, UserDocument } from './entities/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -11,9 +10,8 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
     constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-    async findAll(params: QueryParams): Promise<User[]> {
-        const nameFilter = params.name ? { name: { $regex: '.*' + params.name + '.*' } } : {};
-        return await this.userModel.find(nameFilter).exec();
+    async findAll(): Promise<User[]> {
+        return await this.userModel.find().exec();
     }
 
     async findOne(id: string): Promise<User> {

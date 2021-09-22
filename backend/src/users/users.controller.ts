@@ -22,8 +22,8 @@ export class UsersController {
         type: User,
     })
     @UseGuards(JwtAuthGuard)
-    findAll(@Query() params: QueryParams): Promise<User[]> {
-        return this.userService.findAll(params);
+    findAll(): Promise<User[]> {
+        return this.userService.findAll();
     }
 
     @Get('find/:id')
