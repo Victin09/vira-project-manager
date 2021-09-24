@@ -15,6 +15,10 @@ export class Issue {
     title: string;
 
     @Prop()
+    @ApiProperty({ example: 'Iss1' })
+    code: string;
+
+    @Prop()
     @ApiProperty({ example: 'First issue!' })
     description: string;
 

@@ -1,10 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsNumber, IsString } from 'class-validator';
-
-import { List } from '../../lists/entities/list.entity';
-import { Project } from '../../projects/entities/project.entity';
-import { User } from '../../users/entities/user.entity';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateIssueDto {
     @IsString()
@@ -12,23 +8,27 @@ export class CreateIssueDto {
     readonly title: string;
 
     @IsString()
+    @IsOptional()
     @ApiProperty({ example: 'First issue!' })
     readonly description: string;
 
     @IsNumber()
+    @IsOptional()
     @ApiProperty({ example: 1 })
     readonly order: number;
 
-    @Type(() => List)
+    @Type(() => String)
+    @IsOptional()
     @ApiProperty({ example: 'List _id' })
-    readonly list: List;
+    readonly list: string;
 
     @IsArray()
-    @Type(() => User)
+    @IsOptional()
+    @Type(() => String)
     @ApiProperty({ example: ['User 1 _id', 'User 2 _id'] })
-    readonly users: Array<User>;
+    readonly users: string[];
 
-    @Type(() => Project)
+    @Type(() => String)
     @ApiProperty({ example: 'Project _id' })
-    readonly project: Project;
+    readonly project: string;
 }

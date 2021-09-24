@@ -31,6 +31,7 @@ const CreateProject = (): JSX.Element => {
             return;
         }
 
+        console.log('users', users);
         const result = await (
             await fetch(`${process.env.API_URL}/projects/${email}`, {
                 method: 'POST',
@@ -120,7 +121,7 @@ const CreateProject = (): JSX.Element => {
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
                         Usuarios
                     </label>
-                    <UserSearch fnc={usersSelected} />
+                    <UserSearch isMultiple fnc={usersSelected} />
                 </div>
                 <div className="flex items-center justify-between">
                     <button

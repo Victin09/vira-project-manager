@@ -80,7 +80,7 @@ export class IssuesController {
         return this.issueService.create(data);
     }
 
-    @Patch(':id')
+    @Patch('update/:id')
     @ApiOperation({ summary: 'Update issue' })
     @ApiResponse({
         status: 200,
@@ -89,6 +89,39 @@ export class IssuesController {
     })
     update(@Param('id') id: string, @Body() data: UpdateIssueDto): Promise<Issue> {
         return this.issueService.update(id, data);
+    }
+
+    @Patch('order')
+    @ApiOperation({ summary: 'Update issues order' })
+    @ApiResponse({
+        status: 200,
+        description: 'Issue',
+        type: Issue,
+    })
+    updateOrder(@Body() data: UpdateIssueDto[]): Promise<boolean> {
+        return this.issueService.updateOrder(data);
+    }
+
+    @Patch('add-user/:code/:user')
+    @ApiOperation({ summary: 'Add user to project' })
+    @ApiResponse({
+        status: 200,
+        description: 'Project',
+        type: Issue,
+    })
+    addUser(@Param('code') id: string, @Param('user') user: string): Promise<Issue> {
+        return this.issueService.addUser(id, user);
+    }
+
+    @Patch('remove-user/:code/:user')
+    @ApiOperation({ summary: 'Remove user from project' })
+    @ApiResponse({
+        status: 200,
+        description: 'Project',
+        type: Issue,
+    })
+    removeUser(@Param('code') id: string, @Param('user') user: string): Promise<Issue> {
+        return this.issueService.removeUser(id, user);
     }
 
     @Delete(':id')

@@ -80,8 +80,10 @@
     },
     "dependencies": {
         "@react-icons/all-files": "^4.1.0",
+        "alpine": "^0.2.1",
         "dotenv-webpack": "^7.0.3",
         "install": "^0.13.0",
+        "js": "^0.1.0",
         "npm": "^7.24.0",
         "react": "^16.14.0",
         "react-beautiful-dnd": "^13.1.0",

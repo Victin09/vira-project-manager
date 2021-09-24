@@ -6,6 +6,7 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project, ProjectDocument } from './entities/project.entity';
 import { UsersService } from '../users/users.service';
+import { ProjectTypesService } from '../project-types/project-types.service';
 
 @Injectable()
 export class ProjectsService {
@@ -13,6 +14,7 @@ export class ProjectsService {
         @InjectModel(Project.name)
         private projectModel: mongoose.Model<ProjectDocument>,
         private userService: UsersService,
+        private projectType: ProjectTypesService,
     ) {}
 
     async findAll(): Promise<Project[]> {
@@ -30,14 +32,23 @@ export class ProjectsService {
 
     async create(mail: string, data: CreateProjectDto): Promise<Project> {
         const user = (await this.userService.findByEmail(mail))['_id'];
-        data.users.push(user);
         const code = Buffer.from(data.name).toString('base64');
-        const project = new this.projectModel(data);
-        project.code = code;
-        project.responsible = user;
+        const type = (await this.projectType.findByName(data.type))['_id'];
+        const users: mongoose.Schema.Types.ObjectId[] = [];
+        users.push(user);
         data.users.forEach(async (u) => {
-            const uData = await this.userService.findByEmail(u.email)['_id'];
-            data.users.push(uData);
+            const uData = (await this.userService.findByEmail(u))['_id'];
+            users.push(uData);
+        });
+
+        const project = new this.projectModel({
+            name: data.name,
+            code: code,
+            description: data.description,
+            image: data.image,
+            type: type,
+            users: users,
+            responsible: user,
         });
         return await project.save();
     }
@@ -65,7 +76,7 @@ export class ProjectsService {
     }
 
     async update(id: string, data: UpdateProjectDto): Promise<Project> {
-        return await this.projectModel.findByIdAndUpdate(id, data).exec();
+        return await this.projectModel.findByIdAndUpdate(id, null).exec();
     }
 
     async remove(id: string): Promise<void> {

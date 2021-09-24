@@ -48,7 +48,7 @@ export class ProjectsController {
     }
 
     @Post('/:userMail')
-    @ApiOperation({ summary: 'Create new projects' })
+    @ApiOperation({ summary: 'Create new project' })
     @ApiResponse({
         status: 200,
         description: 'Project',

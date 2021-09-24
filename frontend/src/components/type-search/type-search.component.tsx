@@ -76,7 +76,6 @@ const ProjectTypeSearch = ({ fnc }: IProjectTypeSearch): JSX.Element => {
                     })
                 })
             ).json();
-            console.log('result', result);
             if (result.name) {
                 const type: ISearch = {
                     value: result.name,
@@ -90,7 +89,7 @@ const ProjectTypeSearch = ({ fnc }: IProjectTypeSearch): JSX.Element => {
                 setProjectTypes((oldArray) => [...oldArray, type]);
             }
         }
-        fnc(newValue);
+        fnc(newValue.value);
     };
 
     return <CreatableSelect isClearable styles={customStyles} onChange={handleChange} placeholder="Seleciona..." options={projectTypes} />;

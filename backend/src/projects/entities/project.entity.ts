@@ -9,7 +9,7 @@ export type ProjectDocument = Project & Document;
 
 @Schema()
 export class Project {
-    @Prop()
+    @Prop({ unique: true })
     @ApiProperty({ example: 'Project one' })
     name: string;
 
@@ -25,7 +25,7 @@ export class Project {
     @ApiProperty({ example: 'base64;base64Image' })
     image: string;
 
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Type' })
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'ProjectType' })
     @ApiProperty({ example: 'Type _id' })
     type: ProjectType;
 

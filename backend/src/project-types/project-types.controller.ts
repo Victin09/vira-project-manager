@@ -36,6 +36,17 @@ export class ProjectTypesController {
         return this.projectTypesService.findOne(id);
     }
 
+    @Get('find-name/:name')
+    @ApiOperation({ summary: 'Find project type by name' })
+    @ApiResponse({
+        status: 200,
+        description: 'Project type',
+        type: ProjectType,
+    })
+    findByName(@Param('name') name: string) {
+        return this.projectTypesService.findByName(name);
+    }
+
     @Post()
     @ApiOperation({ summary: 'Create new project type' })
     @ApiResponse({

@@ -9,10 +9,12 @@ interface ISearch {
 }
 
 interface IUserSearch {
-    fnc: (data: string[]) => void;
+    fnc?: (data: string[]) => void;
+    fncSingle?: (data: string) => void;
+    isMultiple: boolean;
 }
 
-const UserSearch = ({ fnc }: IUserSearch): JSX.Element => {
+const UserSearch = ({ fnc, fncSingle, isMultiple }: IUserSearch): JSX.Element => {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
@@ -31,7 +33,7 @@ const UserSearch = ({ fnc }: IUserSearch): JSX.Element => {
                 const data: ISearch[] = [];
                 result.forEach((element: any) => {
                     const user: ISearch = {
-                        value: element.username,
+                        value: element.email,
                         label: (
                             <div className="flex items-center">
                                 {element.icon ? (
@@ -65,6 +67,10 @@ const UserSearch = ({ fnc }: IUserSearch): JSX.Element => {
         fnc(data);
     };
 
+    const onChangeSingle = (e: ISearch) => {
+        fncSingle(e.value);
+    };
+
     const customStyles = {
         option: (styles: any, state: any) => ({
             ...styles,
@@ -77,16 +83,22 @@ const UserSearch = ({ fnc }: IUserSearch): JSX.Element => {
     };
 
     return (
-        <Select
-            isMulti
-            styles={customStyles}
-            name="users"
-            options={users}
-            className="basic-multi-select"
-            classNamePrefix="select"
-            placeholder="Selecciona..."
-            onChange={(e) => onChange(e)}
-        />
+        <>
+            {isMultiple ? (
+                <Select
+                    isMulti
+                    styles={customStyles}
+                    name="users"
+                    options={users}
+                    className="basic-multi-select"
+                    classNamePrefix="select"
+                    placeholder="Selecciona..."
+                    onChange={(e) => onChange(e)}
+                />
+            ) : (
+                <Select className="basic-single" classNamePrefix="select" name="color" options={users} onChange={(e) => onChangeSingle(e)} />
+            )}
+        </>
     );
 };
 

@@ -18,6 +18,10 @@ export class ProjectTypesService {
         return await this.projectTypeModel.findById(id).exec();
     }
 
+    async findByName(name: string): Promise<ProjectType> {
+        return await this.projectTypeModel.findOne({ name: name }).exec();
+    }
+
     async create(data: CreateProjectTypeDto): Promise<ProjectType> {
         const pt = new this.projectTypeModel(data);
         return await pt.save();

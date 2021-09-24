@@ -1,9 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsString } from 'class-validator';
-
-import { ProjectType } from '../../project-types/entities/project-type.entity';
-import { User } from '../../users/entities/user.entity';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 
 export class CreateProjectDto {
     @IsString()
@@ -15,21 +12,23 @@ export class CreateProjectDto {
     readonly description: string;
 
     @IsString()
+    @IsOptional()
     @ApiProperty({ example: 'base64;base64Image' })
     readonly image: string;
 
     @IsString()
-    @Type(() => ProjectType)
+    @Type(() => String)
     @ApiProperty({ example: 'Type' })
-    readonly type: ProjectType;
+    readonly type: string;
 
-    @IsArray({ always: false })
-    @Type(() => User)
+    @IsArray()
+    @IsOptional()
+    @Type(() => String)
     @ApiProperty({ example: '[User1, User2, User3]' })
-    readonly users: User[];
+    readonly users: string[];
 
     @IsString()
-    @Type(() => User)
+    @Type(() => String)
     @ApiProperty({ example: 'User' })
-    readonly responsible: User;
+    readonly responsible: string;
 }
