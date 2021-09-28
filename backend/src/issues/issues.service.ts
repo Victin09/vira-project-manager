@@ -47,12 +47,21 @@ export class IssuesService {
         let code: string;
         const order = (await this.findByProject(data.project)).length + 1;
         const namesArray = project.name.trim().split(' ');
-        if (namesArray.length === 1) code = `${namesArray[0].charAt(0)}-${order}`;
-        else code = `${namesArray[0].charAt(0)}${namesArray[namesArray.length - 1].charAt(0)}-${order}`;
+        if (namesArray.length === 1) code = `${namesArray[0].charAt(0)}-`;
+        else code = `${namesArray[0].charAt(0)}${namesArray[namesArray.length - 1].charAt(0)}-`;
+
+        const lastCode = await (
+            await this.findByProject(data.project)
+        )
+            .sort((a, b) => {
+                return b.code.toUpperCase().localeCompare(a.code.toUpperCase(), undefined, { numeric: true, sensitivity: 'base' });
+            })[0]
+            .code.split('-');
+        const codeNumber = parseInt(lastCode[lastCode.length - 1]) + 1;
 
         const issue = new this.issueModel({
             title: data.title,
-            code: code,
+            code: (code + codeNumber).toUpperCase(),
             order: order,
             project: project['_id'],
         });

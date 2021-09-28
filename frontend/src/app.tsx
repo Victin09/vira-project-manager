@@ -11,7 +11,7 @@ const App = (): JSX.Element => {
     return (
         <CookiesProvider>
             <UserProvider>
-                <div className="flex flex-col h-screen bg-gray-100">
+                <div className="flex flex-col h-screen">
                     <Router>
                         <Navbar />
 

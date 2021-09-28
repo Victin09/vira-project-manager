@@ -4,7 +4,7 @@
     "description": "Boilerplate for React app with Typescript and Jest",
     "main": "index.js",
     "scripts": {
-        "start": "npm run build:css && webpack serve --mode development --open --hot --config ./webpack.config.js",
+        "start": "npm run build:css && webpack-dev-server --mode development --config ./webpack.config.js",
         "build:css": "npx postcss src/styles/tailwind.css -o src/styles/index.css",
         "build": "webpack --mode production --config ./webpack.config.js",
         "lint": "npm run lint:code && npm run lint:style",
@@ -76,15 +76,10 @@
         "typescript": "^3.9.7",
         "webpack": "^5.47.1",
         "webpack-cli": "^4.7.2",
-        "webpack-dev-server": "^3.11.2"
+        "webpack-dev-server": "^4.3.0"
     },
     "dependencies": {
-        "@react-icons/all-files": "^4.1.0",
-        "alpine": "^0.2.1",
         "dotenv-webpack": "^7.0.3",
-        "install": "^0.13.0",
-        "js": "^0.1.0",
-        "npm": "^7.24.0",
         "react": "^16.14.0",
         "react-beautiful-dnd": "^13.1.0",
         "react-cookie": "^4.1.1",

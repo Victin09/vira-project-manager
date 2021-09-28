@@ -22,7 +22,7 @@ interface ISidebar {
 const Sidebar = ({ projectData, options, selected, selectedOption }: ISidebar): JSX.Element => {
     return (
         <div
-            className="h-full border-r-2 text-gray-600 md:w-64 w-3/4 space-y-6 pt-6 px-0 absolute inset-y-0 left-0 transform md:relative md:translate-x-0 transition duration-200 ease-in-out  md:flex md:flex-col md:justify-between overflow-y-auto"
+            className="h-full border-r-2 bg-gray-50 text-gray-600 md:w-64 w-3/4 space-y-6 pt-6 px-0 absolute inset-y-0 left-0 transform md:relative md:translate-x-0 transition duration-200 ease-in-out  md:flex md:flex-col md:justify-between overflow-y-auto"
             data-dev-hint="sidebar; px-0 for frameless; px-2 for visually inset the navigation"
         >
             <div className="flex flex-col space-y-6 h-full min-w-full">

@@ -34,7 +34,7 @@ const Navbar = (): JSX.Element => {
 
     return (
         <div className="w-full flex items-center justify-between flex-wrap text-gray-600">
-            <div className="w-full py-3 px-5 bg-white rounded shadow-sm">
+            <div className="w-full py-3 px-5 bg-white rounded shadow" style={{ zIndex: 2 }}>
                 <div className="-mx-1">
                     <ul className="flex w-full flex-wrap items-center h-10">
                         <li className="block relative">

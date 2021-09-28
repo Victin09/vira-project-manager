@@ -67,7 +67,7 @@ const Project = (): JSX.Element => {
                 render = <Backlog projectCode={projectCode} />;
                 break;
             case 'Tablero':
-                render = <Board />;
+                render = <Board projectCode={projectCode} />;
                 break;
             default:
                 break;
