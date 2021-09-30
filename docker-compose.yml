@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+
+  mongo:
+    image: docker.io/library/mongo:5.0.3
+    restart: always
+    container_name: dev-vira-ddbb
+    ports:
+      - 27017:27017
+  
+  nodejs:
+    image: docker.io/library/node:16-alpine3.11
+    container_name: dev-vira-backend
+    working_dir: /home/node/app
+    environment:
+      - CORS_WL=localhost
+      - NODE_ENV=development
+    volumes:
+      - ./backend:/home/node/app
+    ports:
+      - 3000:3000
+    command: "npm run start:dev"
+  
+  react:
+    image: docker.io/library/node:16-alpine3.11
+    container_name: dev-vira-frontend
+    working_dir: /home/node/app
+    environment:
+      - API_URL=http://localhost:3000
+      - NODE_ENV=development
+    volumes:
+      - ./frontend:/home/node/app
+    ports:
+      - 8080:8080
+    command: "npm start"
