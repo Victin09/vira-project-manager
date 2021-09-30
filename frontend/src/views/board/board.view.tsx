@@ -1,15 +1,19 @@
-import { getToken } from '@common/auth/auth.common';
 import React, { useEffect, useState } from 'react';
-import { DragDropContext, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, DraggableLocation, DropResult } from 'react-beautiful-dnd';
 
-import Column from '../../components/board/column.component';
+import { getToken } from '@common/auth/auth.common';
+import Column from '@components/board/column.component';
+
+interface IIssue {
+    code: string;
+    order: number;
+    title: string;
+}
 
 interface IDocument {
-    [key: string]: {
-        id: string;
-        title: string;
-        list: any[];
-    };
+    code: string;
+    name: string;
+    issues: IIssue[];
 }
 
 interface IBoard {
@@ -17,29 +21,12 @@ interface IBoard {
 }
 
 const Board = ({ projectCode }: IBoard): JSX.Element => {
-    const [columns, setColumns] = useState<IDocument>();
+    const [columns, setColumns] = useState<IDocument[]>();
 
     useEffect(() => {
-        const initialColumns: IDocument = {
-            open: {
-                id: 'open',
-                title: 'Abierto',
-                list: []
-            },
-            doing: {
-                id: 'doing',
-                title: 'En proceso',
-                list: []
-            },
-            done: {
-                id: 'done',
-                title: 'Terminado',
-                list: []
-            }
-        };
         const fetchData = async () => {
-            const result = await (
-                await fetch(`${process.env.API_URL}/issues/project/${projectCode}`, {
+            const result: IDocument[] = await (
+                await fetch(`${process.env.API_URL}/lists/project/${projectCode}`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${getToken()}`,
@@ -48,80 +35,97 @@ const Board = ({ projectCode }: IBoard): JSX.Element => {
                 })
             ).json();
             if (result.length) {
-                result.map((item: any, index: number) => {
-                    if (!item.list) {
-                        initialColumns.open.list.push(item);
-                    }
-                });
-                setColumns(initialColumns);
+                setColumns(result);
             }
         };
 
         fetchData();
     }, []);
 
-    const onDragEnd = ({ source, destination }: DropResult): any => {
-        // Make sure we have a valid destination
-        if (destination === undefined || destination === null) return null;
+    const reOrder = (list: any[], startIndex: number, endIndex?: number, listCode?: string) => {
+        const result = list;
+        const [removed] = result.splice(startIndex, 1);
+        if (result.length && endIndex !== undefined) {
+            result.splice(endIndex, 0, removed);
 
-        // Make sure we're actually moving the item
+            result.forEach((item, index) => {
+                item.order = index + 1;
+                item.list = listCode;
+            });
+        } else if (result.length) {
+            result.forEach((item, index) => {
+                item.order = index + 1;
+                item.list = listCode;
+            });
+        }
+
+        return result;
+    };
+
+    const onDragEnd = async ({ source, destination }: DropResult): Promise<void> => {
+        if (destination === undefined || destination === null) return null;
         if (source.droppableId === destination.droppableId && destination.index === source.index) return null;
 
-        // Set start and end variables
-        const start = columns[source.droppableId];
-        const end = columns[destination.droppableId];
-
-        // If start is the same as end, we're in the same column
+        const start = columns.find((obj) => obj.code === source.droppableId);
+        const end = columns.find((obj) => obj.code === destination.droppableId);
         if (start === end) {
-            // Move the item within the list
-            // Start by making a new list without the dragged item
-            const newList = start.list.filter((_: any, idx: number) => idx !== source.index);
-
-            // Then insert the item at the right location
-            newList.splice(destination.index, 0, start.list[source.index]);
-
-            // Then create a new copy of the column object
-            const newCol = {
-                id: start.id,
-                title: start.title,
-                list: newList
-            };
-
-            // Update the state
-            setColumns((state) => ({ ...state, [newCol.id]: newCol }));
-            return null;
+            const files = reOrder(start.issues, source.index, destination.index, start.code);
+            const updated = await (
+                await fetch(`${process.env.API_URL}/issues/order`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${getToken()}`
+                    },
+                    body: JSON.stringify(files)
+                })
+            ).json();
+            if (updated) {
+                const newCol = {
+                    code: start.code,
+                    name: start.name,
+                    issues: files
+                };
+                const newColumns = [...columns];
+                newColumns[columns.indexOf(start)] = newCol;
+                setColumns(newColumns);
+            }
         } else {
-            // If start is different from end, we need to update multiple columns
-            // Filter the start list like before
-            const newStartList = start.list.filter((_: any, idx: number) => idx !== source.index);
-
-            // Create a new start column
-            const newStartCol = {
-                id: start.id,
-                title: start.title,
-                list: newStartList
-            };
-
-            // Make a new end list array
-            const newEndList = end.list;
-
-            // Insert the item into the end list
-            newEndList.splice(destination.index, 0, start.list[source.index]);
-
-            // Create a new end column
-            const newEndCol = {
-                id: end.id,
-                title: end.title,
-                list: newEndList
-            };
-
-            // Update the state
-            setColumns((state) => ({
-                ...state,
-                [newStartCol.id]: newStartCol,
-                [newEndCol.id]: newEndCol
-            }));
-            return null;
+            const [moved] = start.issues.splice(source.index, 1);
+            if (end.issues.length > 0) {
+                end.issues.splice(destination.index, 0, moved);
+            } else {
+                end.issues.push(moved);
+            }
+            start.issues.forEach((item, index) => {
+                item.order = index;
+            });
+            end.issues.forEach((item, index) => {
+                item.order = index;
+            });
+            const updated = await (
+                await fetch(`${process.env.API_URL}/issues/list`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${getToken()}`
+                    },
+                    body: JSON.stringify({
+                        lists: [
+                            {
+                                code: start.code,
+                                name: start.name,
+                                issues: start.issues
+                            },
+                            {
+                                code: end.code,
+                                name: end.name,
+                                issues: end.issues
+                            }
+                        ]
+                    })
+                })
+            ).json();
         }
     };
 
@@ -131,7 +135,7 @@ const Board = ({ projectCode }: IBoard): JSX.Element => {
                 <DragDropContext onDragEnd={onDragEnd}>
                     <div className="flex">
                         {Object.values(columns).map((col) => (
-                            <Column col={col} key={col.id} />
+                            <Column col={col} key={col.code} />
                         ))}
                     </div>
                 </DragDropContext>

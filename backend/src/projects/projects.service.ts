@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 
@@ -7,6 +7,7 @@ import { UpdateProjectDto } from './dto/update-project.dto';
 import { Project, ProjectDocument } from './entities/project.entity';
 import { UsersService } from '../users/users.service';
 import { ProjectTypesService } from '../project-types/project-types.service';
+import { ListsService } from '../lists/lists.service';
 
 @Injectable()
 export class ProjectsService {
@@ -15,6 +16,8 @@ export class ProjectsService {
         private projectModel: mongoose.Model<ProjectDocument>,
         private userService: UsersService,
         private projectType: ProjectTypesService,
+        @Inject(forwardRef(() => ListsService))
+        private listService: ListsService,
     ) {}
 
     async findAll(): Promise<Project[]> {
@@ -50,7 +53,9 @@ export class ProjectsService {
             users: users,
             responsible: user,
         });
-        return await project.save();
+        const result = await project.save();
+        await this.listService.createDefault(result._id, result.code);
+        return result;
     }
 
     async addUser(id: string, user: string): Promise<Project> {

@@ -133,12 +133,8 @@ export const Backlog: React.FC<IBacklog> = ({ projectCode }: IBacklog) => {
                                                             <span className="font-thin mr-1">{item.code} </span>
                                                             {item.title}
                                                             <div className="flex items-center ml-auto cursor-pointer">
-                                                                <span
-                                                                    className={`inline-flex items-center justify-center px-2 py-1 mr-1 text-xs font-bold leading-none rounded${
-                                                                        !item.list ? ' bg-gray-300 text-gray-600' : 'bg-indigo-700'
-                                                                    }`}
-                                                                >
-                                                                    {!item.list ? 'OPEN' : item.list}
+                                                                <span className="inline-flex items-center justify-center px-2 py-1 mr-1 text-xs font-bold leading-none rounded bg-gray-300 text-gray-600">
+                                                                    {item.list.name}
                                                                 </span>
                                                                 <div
                                                                     onClick={() => {
@@ -177,80 +173,6 @@ export const Backlog: React.FC<IBacklog> = ({ projectCode }: IBacklog) => {
                             )}
                         </Droppable>
                     </DragDropContext>
-                    {/* <DragDropContext onDragEnd={handleDragEnd}>
-                        <Droppable droppableId="droppable" direction="vertical">
-                            {(droppableProvided: DroppableProvided) => (
-                                <div
-                                    ref={droppableProvided.innerRef}
-                                    {...droppableProvided.droppableProps}
-                                    style={{ maxHeight: '80vh', overflow: 'auto' }}
-                                >
-                                    {localItems.length ? (
-                                        localItems.map((item: any, index: number) => (
-                                            <Draggable key={item.title} draggableId={item.title} index={index}>
-                                                {(draggableProvided: DraggableProvided, snapshot: DraggableStateSnapshot) => {
-                                                    return (
-                                                        <div
-                                                            ref={draggableProvided.innerRef}
-                                                            {...draggableProvided.draggableProps}
-                                                            style={{
-                                                                ...draggableProvided.draggableProps.style
-                                                                // background: snapshot.isDragging ? 'rgba(245,245,245, 0.75)' : 'none'
-                                                            }}
-                                                            // onClick={() => console.log('click on', item.code)}
-                                                        >
-                                                            {/* <div className="border p-2 rounded hover:bg-gray-50">
-                                                            <div className="flex flex-col p-4 mt-3 bg-white rounded-lg cursor-pointer bg-opacity-90 group hover:bg-gray-100 border">
-                                                                <div {...draggableProvided.dragHandleProps} className="flex items-center">
-                                                                    <span className="font-thin mr-1">{item.code} </span>
-                                                                    {item.title}
-                                                                    <div className="flex items-center ml-auto cursor-pointer">
-                                                                        <span
-                                                                            className={`inline-flex items-center justify-center px-2 py-1 mr-1 text-xs font-bold leading-none rounded${
-                                                                                !item.list ? ' bg-gray-300 text-gray-600' : 'bg-indigo-700'
-                                                                            }`}
-                                                                        >
-                                                                            {!item.list ? 'OPEN' : item.list}
-                                                                        </span>
-                                                                        <div
-                                                                            onClick={() => {
-                                                                                setSelectedIssue(item);
-                                                                                setShowModal(true);
-                                                                            }}
-                                                                        >
-                                                                            {item.users[0] ? (
-                                                                                item.users[0].icon ? (
-                                                                                    <img
-                                                                                        className="m-1 w-6 h-6 relative flex justify-center items-center rounded-full"
-                                                                                        src={item.users[0].icon}
-                                                                                    />
-                                                                                ) : (
-                                                                                    <div className="m-1 w-6 h-6 relative flex justify-center items-center rounded-full bg-indigo-700 text-xs text-white uppercase">
-                                                                                        {nameToInitials(item.users[0].name)}
-                                                                                    </div>
-                                                                                )
-                                                                            ) : (
-                                                                                <div className="m-1 w-6 h-6 relative flex justify-center text-gray-600 items-center rounded-full bg-gray-300 text-xs text-white uppercase">
-                                                                                    <AiOutlineUser />
-                                                                                </div>
-                                                                            )}
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                }}
-                                            </Draggable>
-                                        ))
-                                    ) : (
-                                        <span className="h-full flex items-center">No hay tareas</span>
-                                    )}
-                                    {droppableProvided.placeholder}
-                                </div>
-                            )}
-                        </Droppable>
-                    </DragDropContext> */}
                 </div>
                 <div className="flex items-center cursor-pointer pt-2" onClick={() => setCreateNew(true)}>
                     {createNew ? (

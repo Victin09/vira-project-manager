@@ -102,6 +102,28 @@ export class IssuesController {
         return this.issueService.updateOrder(data);
     }
 
+    @Patch('column')
+    @ApiOperation({ summary: 'Update issues column' })
+    @ApiResponse({
+        status: 200,
+        description: 'Issue',
+        type: Issue,
+    })
+    updateColumn(@Body() data: UpdateIssueDto[]): Promise<boolean> {
+        return this.issueService.updateOrder(data);
+    }
+
+    @Patch('list')
+    @ApiOperation({ summary: 'Update issues list' })
+    @ApiResponse({
+        status: 200,
+        description: 'Issue',
+        type: Issue,
+    })
+    updateList(@Body() data: UpdateIssueDto): Promise<boolean> {
+        return this.issueService.updateList(data);
+    }
+
     @Patch('add-user/:code/:user')
     @ApiOperation({ summary: 'Add user to project' })
     @ApiResponse({

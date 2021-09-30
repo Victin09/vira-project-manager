@@ -1,15 +1,30 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 
 import { CreateIssueDto } from './create-issue.dto';
 
+interface IIssue {
+    code: string;
+    list: string;
+    order: number;
+    project: string;
+    title: string;
+    users: any[];
+}
+interface IColumn {
+    code: string;
+    issues: IIssue[];
+    name: string;
+}
+
 export class UpdateIssueDto extends PartialType(CreateIssueDto) {
     @IsString()
+    @IsOptional()
     @ApiProperty({ example: 'Iss1' })
     code: string;
 
-    @IsString()
+    @IsArray()
     @IsOptional()
     @ApiProperty({ example: 'Backlog' })
-    list: string;
+    lists: IColumn[];
 }

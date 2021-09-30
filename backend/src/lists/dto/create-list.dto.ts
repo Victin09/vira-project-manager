@@ -9,6 +9,10 @@ export class CreateListDto {
     @ApiProperty({ example: 'List 1' })
     readonly name: string;
 
+    @IsString()
+    @ApiProperty({ example: 'List 1' })
+    readonly code: string;
+
     @IsNumber()
     @ApiProperty({ example: 2 })
     readonly order: number;
@@ -17,7 +21,7 @@ export class CreateListDto {
     @ApiProperty({ example: 'cyan' })
     readonly color: string;
 
-    @Type(() => Project)
+    @IsString()
     @ApiProperty({ example: 'Project _id' })
-    readonly board: Project;
+    readonly board: string;
 }

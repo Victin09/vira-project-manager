@@ -31,7 +31,6 @@ const CreateProject = (): JSX.Element => {
             return;
         }
 
-        console.log('users', users);
         const result = await (
             await fetch(`${process.env.API_URL}/projects/${email}`, {
                 method: 'POST',

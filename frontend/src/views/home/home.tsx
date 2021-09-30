@@ -32,7 +32,6 @@ const Home = (): JSX.Element => {
     const [projects, setProjects] = useState<IProject[]>([]);
 
     useEffect(() => {
-        console.log('test', process.env.API_URL);
         const fetchData = async () => {
             const result = await (
                 await fetch(`${process.env.API_URL}/projects/find-user/${email}`, {
@@ -43,7 +42,6 @@ const Home = (): JSX.Element => {
                     }
                 })
             ).json();
-            console.log('result', result);
             if (result.length > 0) setProjects(result);
         };
 
