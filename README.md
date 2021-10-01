@@ -189,6 +189,6 @@ Project Link: [https://github.com/victin09/vira-project-manager](https://github.
 [issues-url]: https://github.com/victin09/vira-project-manager/issues
 [license-shield]: https://img.shields.io/github/license/victin09/vira-project-manager.svg
 [license-url]: https://github.com/victin09/vira-project-manager/blob/master/LICENSE.txt
-[ci-shield]: https://github.com/Victin09/vira-project-manager/actions/workflows/node.js.yml/badge.svg
-[ci-url]: https://github.com/Victin09/vira-project-manager/actions/workflows/node.js.yml
+[ci-shield]: https://img.shields.io/github/workflow/status/Victin09/vira-project-manager/Main?label=Build&logo=github&logoColor=white
+[ci-url]: https://github.com/Victin09/vira-project-manager/actions/workflows/main.yml
 [product-screenshot]: images/screenshot.png
