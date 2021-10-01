@@ -179,15 +179,15 @@ Project Link: [https://github.com/victin09/vira-project-manager](https://github.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/victin09/vira-project-manager?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/victin09/vira-project-manager
 [contributors-url]: https://github.com/victin09/vira-project-manager/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/victin09/vira-project-manager.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/victin09/vira-project-manager.svg
 [forks-url]: https://github.com/victin09/vira-project-manager/network/members
-[stars-shield]: https://img.shields.io/github/stars/victin09/vira-project-manager.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/victin09/vira-project-manager.svg
 [stars-url]: https://github.com/victin09/vira-project-manager/stargazers
-[issues-shield]: https://img.shields.io/github/issues/victin09/vira-project-manager.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/victin09/vira-project-manager.svg
 [issues-url]: https://github.com/victin09/vira-project-manager/issues
-[license-shield]: https://img.shields.io/github/license/victin09/vira-project-manager.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/victin09/vira-project-manager.svg
 [license-url]: https://github.com/victin09/vira-project-manager/blob/master/LICENSE.txt
 [ci-shield]: https://github.com/Victin09/vira-project-manager/actions/workflows/node.js.yml/badge.svg
 [ci-url]: https://github.com/Victin09/vira-project-manager/actions/workflows/node.js.yml
