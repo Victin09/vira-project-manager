@@ -179,15 +179,15 @@ Project Link: [https://github.com/victin09/vira-project-manager](https://github.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/victin09/vira-project-manager&logo=github&logoColor=white
+[contributors-shield]: https://img.shields.io/github/contributors/victin09/vira-project-manager?logo=github&logoColor=white
 [contributors-url]: https://github.com/victin09/vira-project-manager/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/victin09/vira-project-manager.svg&logo=github&logoColor=white
+[forks-shield]: https://img.shields.io/github/forks/victin09/vira-project-manager.svg?logo=github&logoColor=white
 [forks-url]: https://github.com/victin09/vira-project-manager/network/members
-[stars-shield]: https://img.shields.io/github/stars/victin09/vira-project-manager.svg&logo=github&logoColor=white
+[stars-shield]: https://img.shields.io/github/stars/victin09/vira-project-manager.svg?logo=github&logoColor=white
 [stars-url]: https://github.com/victin09/vira-project-manager/stargazers
-[issues-shield]: https://img.shields.io/github/issues/victin09/vira-project-manager.svg&logo=tinder&logoColor=white
+[issues-shield]: https://img.shields.io/github/issues/victin09/vira-project-manager.svg?logo=tinder&logoColor=white
 [issues-url]: https://github.com/victin09/vira-project-manager/issues
-[license-shield]: https://img.shields.io/github/license/victin09/vira-project-manager.svg&logo=github&logoColor=white
+[license-shield]: https://img.shields.io/github/license/victin09/vira-project-manager.svg?logo=github&logoColor=white
 [license-url]: https://github.com/victin09/vira-project-manager/blob/master/LICENSE.txt
 [ci-shield]: https://img.shields.io/github/workflow/status/Victin09/vira-project-manager/Main?label=Build&logo=skyliner&logoColor=white
 [ci-url]: https://github.com/Victin09/vira-project-manager/actions/workflows/main.yml
