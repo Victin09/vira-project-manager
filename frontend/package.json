@@ -6,7 +6,7 @@
     "scripts": {
         "start": "npm run build:css && webpack-dev-server --mode development --config ./webpack.config.js",
         "build:css": "npx postcss src/styles/tailwind.css -o src/styles/index.css",
-        "build": "webpack --mode production --config ./webpack.config.js",
+        "build": "npm run build:css && webpack --mode production --config ./webpack.config.js",
         "lint": "npm run lint:code && npm run lint:style",
         "lint:code": "eslint src/**/*.{js,ts,tsx} --fix --quiet",
         "lint:style": "stylelint src/**/*.scss --fix",
