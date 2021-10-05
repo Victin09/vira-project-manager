@@ -20,7 +20,7 @@ interface IComponent {
 const Navbar = (): JSX.Element => {
     const { icon, name } = useUser();
     const localtion = useLocation();
-    const { setMode } = useTheme();
+    const { setMode, theme } = useTheme();
 
     const [autenticated, setAutenticated] = useState(false);
     const [displayMenu, setDisplayMenu] = useState(false);
@@ -31,17 +31,10 @@ const Navbar = (): JSX.Element => {
         if (isAuthenticated()) setAutenticated(true);
     }, [localtion.pathname]);
 
-    const menuItems: IMenuItem[] = [
-        {
-            name: 'Proyectos',
-            path: '/project'
-        }
-    ];
-
     const Header = styled.header`
         backdrop-filter: blur(16px) saturate(180%);
         -webkit-backdrop-filter: blur(16px) saturate(180%);
-        background-color: ${({ theme }) => theme.colors.body};
+        background-color: ${theme.colors.body};
         border: 1px solid rgba(209, 213, 219, 0.3);
     `;
 
@@ -49,7 +42,7 @@ const Navbar = (): JSX.Element => {
         display: flex;
         align-items: center;
         padding: 1rem 1.5rem;
-        color: rgb(87, 87, 87);
+        color: ${theme.colors.text};
     `;
 
     const NavLogo = styled.span`
@@ -194,6 +187,13 @@ const Navbar = (): JSX.Element => {
         }
     `;
 
+    const ColorPicker = styled.span`
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        font-size: 0.25em;
+    `;
+
     const handleUserClick = () => {
         setDisplayUserOptions(!displayUserOptions);
     };
@@ -253,9 +253,10 @@ const Navbar = (): JSX.Element => {
                             </NavItem>
                             <NavItem>
                                 <NavLink>
-                                    <span>
-                                        <RiPaletteLine onClick={handleThemesClick} />
-                                    </span>
+                                    <ColorPicker onClick={handleThemesClick}>
+                                        <RiPaletteLine />
+                                        {theme.name}
+                                    </ColorPicker>
                                 </NavLink>
                             </NavItem>
                             {displayThemes && (
@@ -263,10 +264,11 @@ const Navbar = (): JSX.Element => {
                                     <ul>
                                         <li onClick={() => handleTheme('light')}>Light</li>
                                         <li onClick={() => handleTheme('dark')}>Dark</li>
-                                        <li>Sharp</li>
-                                        <li>Calm</li>
-                                        <li>Cherry Bon Bon</li>
-                                        <li>Sea Wave</li>
+                                        <li onClick={() => handleTheme('material')}>Material</li>
+                                        <li onClick={() => handleTheme('sharp')}>Sharp</li>
+                                        <li onClick={() => handleTheme('calm')}>Calm</li>
+                                        <li onClick={() => handleTheme('cherryBonBon')}>Cherry Bon Bon</li>
+                                        <li onClick={() => handleTheme('seaWave')}>Sea Wave</li>
                                     </ul>
                                 </DropDownRight>
                             )}
