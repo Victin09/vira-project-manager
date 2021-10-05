@@ -39,7 +39,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: frontend/package-lock.json
-    - name: Run Backend project
+    - name: Run Frontend project
       working-directory: ./frontend
       run: |
         npm ci
