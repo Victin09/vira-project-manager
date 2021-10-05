@@ -1,25 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { BiChevronDown, BiChevronRight } from 'react-icons/bi';
-import { RiFileListLine } from 'react-icons/ri';
+import { RiFileListLine, RiPaletteLine } from 'react-icons/ri';
+import styled, { css } from 'styled-components';
 
 import { isAuthenticated } from '@common/auth/auth.common';
 import { useUser } from '@common/context/user-context.common';
 import { nameToInitials } from '@common/util/initials.common';
+import { useTheme } from '@common/hooks/theme.hook';
 
 interface IMenuItem {
     name: string;
     path: string;
 }
 
+interface IComponent {
+    displayMenu: boolean;
+}
+
 const Navbar = (): JSX.Element => {
     const { icon, name } = useUser();
     const localtion = useLocation();
+    const { setMode } = useTheme();
 
-    const [projects, setProjects] = useState(false);
-    const [profile, setProfile] = useState(false);
-    // const [isOpen, setOpen] = useState(false);
     const [autenticated, setAutenticated] = useState(false);
+    const [displayMenu, setDisplayMenu] = useState(false);
+    const [displayUserOptions, setDisplayUserOptions] = useState(false);
+    const [displayThemes, setDisplayThemes] = useState(false);
 
     useEffect(() => {
         if (isAuthenticated()) setAutenticated(true);
@@ -32,212 +38,248 @@ const Navbar = (): JSX.Element => {
         }
     ];
 
+    const Header = styled.header`
+        backdrop-filter: blur(16px) saturate(180%);
+        -webkit-backdrop-filter: blur(16px) saturate(180%);
+        background-color: ${({ theme }) => theme.colors.body};
+        border: 1px solid rgba(209, 213, 219, 0.3);
+    `;
+
+    const Navbar = styled.nav`
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        color: rgb(87, 87, 87);
+    `;
+
+    const NavLogo = styled.span`
+        font-size: 1.5rem;
+        font-weight: 500;
+        font-weight: bold;
+    `;
+
+    const NavMenu = styled.ul`
+        display: flex;
+        align-items: center;
+        width: 100%;
+
+        @media only screen and (max-width: 768px) {
+            position: fixed;
+            height: 100%;
+            left: -100%;
+            top: 5rem;
+            flex-direction: column;
+            background-color: #fff;
+            width: 100%;
+            border-radius: 10px;
+            text-align: center;
+            transition: 0.3s;
+            box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
+            ${displayMenu && 'left: 0;'}
+        }
+    `;
+
+    const NavItem = styled.li`
+        margin-left: 2rem;
+
+        @media only screen and (max-width: 768px) {
+            margin: 2.5rem 0;
+        }
+    `;
+
+    const NavItemRight = styled.li`
+        margin-left: auto;
+
+        @media only screen and (max-width: 768px) {
+            margin-left: 0;
+        }
+    `;
+
+    const NavLink = styled.div`
+        display: flex;
+        align-items: center;
+        font-weight: 400;
+        color: #475569;
+        cursor: pointer;
+
+        :hover {
+            color: #482ff7;
+        }
+    `;
+
+    const Hamburger = styled.div`
+        display: none;
+
+        @media only screen and (max-width: 768px) {
+            display: block;
+            position: relative;
+            cursor: pointer;
+            margin-left: auto;
+        }
+    `;
+
+    const Bar = styled.span`
+        display: block;
+        width: 25px;
+        height: 3px;
+        margin: 5px auto;
+        -webkit-transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease-in-out;
+        background-color: #101010;
+
+        @media only screen and (max-width: 768px) {
+            display: block;
+            position: relative;
+            cursor: pointer;
+            margin-left: auto;
+
+            ${displayMenu &&
+            css`
+                :nth-child(2) {
+                    opacity: 0;
+                }
+                :nth-child(1) {
+                    transform: translateY(8px) rotate(45deg);
+                }
+                :nth-child(3) {
+                    transform: translateY(-8px) rotate(-45deg);
+                }
+            `}
+        }
+    `;
+
+    const UserProfile = styled.div`
+        display: inline-block;
+        width: 2em;
+        height: 2em;
+        color: white;
+        opacity: 1;
+        content: attr(data-initials);
+        display: inline-block;
+        font-weight: bold;
+        vertical-align: middle;
+        line-height: 2em;
+        text-align: center;
+        background-color: #482ff7;
+        border-radius: 50%;
+        cursor: pointer;
+
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+
+        @media only screen and (max-width: 768px) {
+            margin-bottom: 2em;
+        }
+    `;
+
+    const DropDownRight = styled.div`
+        background-color: white;
+        position: absolute;
+        left: auto;
+        right: 0;
+        padding: 0.5em;
+        margin-right: 0.1em;
+        margin-top: 5em;
+        border-radius: 0.25em;
+        /* border: 1px solid gray; */
+
+        @media only screen and (max-width: 768px) {
+            left: 0;
+            right: 0;
+            border: none;
+            border-radius: 0;
+            background-color: gray;
+            margin-top: 0;
+        }
+    `;
+
+    const handleUserClick = () => {
+        setDisplayUserOptions(!displayUserOptions);
+    };
+
+    const handleThemesClick = () => {
+        setDisplayThemes(!displayThemes);
+    };
+
+    const handleTheme = (theme: string) => {
+        setMode(theme);
+    };
+
     return (
-        <div className="w-full flex items-center justify-between flex-wrap text-gray-600">
-            <div className="w-full py-3 px-5 bg-white rounded shadow" style={{ zIndex: 2 }}>
-                <div className="-mx-1">
-                    <ul className="flex w-full flex-wrap items-center h-10">
-                        <li className="block relative">
-                            <Link to="/" className="flex items-center flex-shrink-0 text-gray-600 mr-6 hover:text-indigo-700">
-                                <span className="font-semibold text-xl tracking-tight">VPM</span>
-                            </Link>
-                        </li>
-                        <li
-                            className={`block relative${localtion.pathname.includes('/project') ? ' border-b-2 border-indigo-700' : ''}`}
-                            onClick={() => setProjects(!projects)}
-                        >
-                            <div className="flex items-center h-10 leading-10 px-4 rounded cursor-pointer no-underline hover:no-underline transition-colors duration-100 mx-1 hover:bg-gray-100">
-                                <span className="mr-3 text-xl">
-                                    <RiFileListLine />
-                                </span>
-                                <span>Proyectos</span>
-                                <span className="ml-2"> {projects ? <BiChevronDown /> : <BiChevronRight />}</span>
-                            </div>
-                            <div
-                                className="bg-white shadow-md rounded border border-gray-300 text-sm absolute top-auto left-0 min-w-full w-56 z-30 mt-1"
-                                style={{ display: projects ? 'block' : 'none' }}
-                            >
-                                {/* <span className="absolute top-0 left-0 w-3 h-3 bg-white border transform rotate-45 -mt-1 ml-6"></span> */}
-                                <div className="bg-white rounded w-full relative z-10 py-1">
-                                    <ul className="list-reset">
-                                        <li className="relative">
-                                            <Link
-                                                to="/project/new"
-                                                className="px-4 py-2 flex w-full items-start hover:bg-gray-100 no-underline hover:no-underline transition-colors duration-100 cursor-pointer"
-                                            >
-                                                <span className="flex-1">Crear</span>
-                                                <span className="ml-2">
-                                                    {' '}
-                                                    <i className="mdi mdi-chevron-right"></i>{' '}
-                                                </span>
-                                            </Link>
-                                            {/* <div
-                                                className="bg-white shadow-md rounded border border-gray-300 text-sm absolute inset-l-full top-0 min-w-full w-56 z-30 mt-1"
-                                                x-show="showChildren"
-                                                style={{ display: 'none' }}
-                                            >
-                                                <span className="absolute top-0 left-0 w-3 h-3 bg-white border transform rotate-45 -ml-1 mt-2"></span>
-                                                <div className="bg-white rounded w-full relative z-10 py-1">
-                                                    <ul className="list-reset">
-                                                        <li>
-                                                            <a
-                                                                href="#"
-                                                                className="px-4 py-2 flex w-full items-start hover:bg-gray-100 no-underline hover:no-underline transition-colors duration-100 cursor-pointer"
-                                                            >
-                                                                {' '}
-                                                                <span className="flex-1">Accordion</span>{' '}
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a
-                                                                href="#"
-                                                                className="px-4 py-2 flex w-full items-start hover:bg-gray-100 no-underline hover:no-underline transition-colors duration-100 cursor-pointer"
-                                                            >
-                                                                {' '}
-                                                                <span className="flex-1">Buttons</span>{' '}
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a
-                                                                href="#"
-                                                                className="px-4 py-2 flex w-full items-start hover:bg-gray-100 no-underline hover:no-underline transition-colors duration-100 cursor-pointer"
-                                                            >
-                                                                {' '}
-                                                                <span className="flex-1">Badges</span>{' '}
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a
-                                                                href="#"
-                                                                className="px-4 py-2 flex w-full items-start hover:bg-gray-100 no-underline hover:no-underline transition-colors duration-100 cursor-pointer"
-                                                            >
-                                                                {' '}
-                                                                <span className="flex-1">Breadcrumbs</span>{' '}
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a
-                                                                href="#"
-                                                                className="px-4 py-2 flex w-full items-start hover:bg-gray-100 no-underline hover:no-underline transition-colors duration-100 cursor-pointer"
-                                                            >
-                                                                {' '}
-                                                                <span className="flex-1">Dropdown</span>{' '}
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a
-                                                                href="#"
-                                                                className="px-4 py-2 flex w-full items-start hover:bg-gray-100 no-underline hover:no-underline transition-colors duration-100 cursor-pointer"
-                                                            >
-                                                                {' '}
-                                                                <span className="flex-1">Modals</span>{' '}
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div> */}
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="block relative ml-auto">
-                            <div className="flex items-center h-10 leading-10 px-4 rounded cursor-pointer no-underline hover:no-underline transition-colors duration-100 mx-1 hover:bg-gray-100">
-                                {!autenticated ? (
-                                    <>
-                                        <Link to="/login" className="block mt-4 lg:inline-block lg:mt-0 hover:text-indigo-700 mr-4">
-                                            Iniciar sesión
-                                        </Link>
-                                        <Link to="/register" className="block mt-4 lg:inline-block lg:mt-0 hover:text-indigo-700 mr-4">
-                                            Registrate
-                                        </Link>
-                                    </>
-                                ) : (
-                                    <div
-                                        className="m-1 w-8 h-8 relative flex justify-center items-center rounded-full bg-indigo-700 text-xl text-white uppercase"
-                                        onClick={() => setProfile(!profile)}
-                                    >
-                                        {icon ? icon : nameToInitials(name)}
-                                    </div>
+        <Header>
+            <Navbar>
+                <NavLogo>VPM</NavLogo>
+                <NavMenu>
+                    {autenticated ? (
+                        <>
+                            <NavItem>
+                                <NavLink>
+                                    <span>
+                                        <RiFileListLine />
+                                    </span>
+                                    <span>Proyectos</span>
+                                </NavLink>
+                            </NavItem>
+                            <NavItemRight>
+                                <UserProfile onClick={handleUserClick}>{icon ? icon : nameToInitials(name)}</UserProfile>
+                                {displayUserOptions && (
+                                    <DropDownRight>
+                                        <ul className="list-reset">
+                                            <li className="relative">
+                                                <a
+                                                    href="#"
+                                                    className="px-4 py-2 flex w-full items-start hover:bg-gray-100 no-underline hover:no-underline transition-colors duration-100 cursor-pointer"
+                                                >
+                                                    <span className="flex-1">Crear</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </DropDownRight>
                                 )}
-                            </div>
-                            <div
-                                className="bg-white shadow-md rounded border border-gray-300 text-sm absolute top-auto left-0 min-w-full w-56 z-30 mt-1"
-                                style={{ display: profile ? 'block' : 'none', left: '-185%' }}
-                            >
-                                {/* <span
-                                    className="absolute top-0 w-3 h-3 bg-white border transform rotate-45 -mt-1 ml-6"
-                                    style={{ left: '12em' }}
-                                ></span> */}
-                                <div className="bg-white rounded w-full relative z-10 py-1">
-                                    <ul className="list-reset">
-                                        <li className="relative">
-                                            <a
-                                                href="#"
-                                                className="px-4 py-2 flex w-full items-start hover:bg-gray-100 no-underline hover:no-underline transition-colors duration-100 cursor-pointer"
-                                            >
-                                                <span className="flex-1">Crear</span>
-                                            </a>
-                                        </li>
+                            </NavItemRight>
+                        </>
+                    ) : (
+                        <>
+                            <NavItemRight>
+                                <NavLink>
+                                    <Link to="/login">Iniciar sesión</Link>
+                                </NavLink>
+                            </NavItemRight>
+                            <NavItem>
+                                <NavLink>
+                                    <Link to="/register">Registrate</Link>
+                                </NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink>
+                                    <span>
+                                        <RiPaletteLine onClick={handleThemesClick} />
+                                    </span>
+                                </NavLink>
+                            </NavItem>
+                            {displayThemes && (
+                                <DropDownRight>
+                                    <ul>
+                                        <li onClick={() => handleTheme('light')}>Light</li>
+                                        <li onClick={() => handleTheme('dark')}>Dark</li>
+                                        <li>Sharp</li>
+                                        <li>Calm</li>
+                                        <li>Cherry Bon Bon</li>
+                                        <li>Sea Wave</li>
                                     </ul>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        // <nav className="flex items-center justify-between flex-wrap bg-gray-0 text-gray-600 p-3 border-b-2">
-        //     <Link to="/" className="flex items-center flex-shrink-0 text-gray-600 mr-6 hover:text-indigo-700">
-        //         <span className="font-semibold text-xl tracking-tight">VPM</span>
-        //         {/* <span className="ml-1">
-        //             Vira Project Manager
-        //         </span> */}
-        //     </Link>
-        //     <div className="block lg:hidden">
-        //         <button
-        //             onClick={() => {
-        //                 setOpen(!isOpen);
-        //             }}
-        //             className="flex items-center px-3 py-2 border rounded border-teal-400 hover:text-indigo-700 hover:border-white"
-        //         >
-        //             <svg className="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-        //                 <title>Menu</title>
-        //                 <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-        //             </svg>
-        //         </button>
-        //     </div>
-        //     <div className={`w-full flex-grow lg:flex lg:items-center lg:w-auto ${isOpen ? 'block' : 'hidden'}`}>
-        //         {menuItems.map((menu, index) => (
-        //             <div className="text-sm lg:flex-grow" key={index}>
-        //                 <Link
-        //                     to={menu.path}
-        //                     className={`block mt-4 lg:inline-block lg:mt-0 hover:text-indigo-700 mr-4${
-        //                         localtion.pathname.includes(menu.path) ? ' border-b-2 border-indigo-700' : ''
-        //                     }`}
-        //                 >
-        //                     {menu.name}
-        //                 </Link>
-        //             </div>
-        //         ))}
-        //         <div>
-        //             {!autenticated ? (
-        //                 <>
-        //                     <Link to="/login" className="block mt-4 lg:inline-block lg:mt-0 hover:text-indigo-700 mr-4">
-        //                         Iniciar sesión
-        //                     </Link>
-        //                     <Link to="/register" className="block mt-4 lg:inline-block lg:mt-0 hover:text-indigo-700 mr-4">
-        //                         Registrate
-        //                     </Link>
-        //                 </>
-        //             ) : (
-        //                 <div className="m-1 w-8 h-8 relative flex justify-center items-center rounded-full bg-indigo-700 text-xl text-white uppercase">
-        //                     {icon ? icon : nameToInitials(name)}
-        //                 </div>
-        //             )}
-        //         </div>
-        //     </div>
-        // </nav>
+                                </DropDownRight>
+                            )}
+                        </>
+                    )}
+                </NavMenu>
+                <Hamburger onClick={() => setDisplayMenu(!displayMenu)}>
+                    <Bar />
+                    <Bar />
+                    <Bar />
+                </Hamburger>
+            </Navbar>
+        </Header>
     );
 };
 

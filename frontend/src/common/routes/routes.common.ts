@@ -13,7 +13,7 @@ export interface IRoute {
 
 export const routes: IRoute[] = [
     {
-        component: Home,
+        component: Login,
         exact: true,
         path: '/project',
         private: true
