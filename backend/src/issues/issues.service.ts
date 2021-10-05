@@ -73,8 +73,20 @@ export class IssuesService {
         return issue;
     }
 
-    async update(id: string, data: UpdateIssueDto): Promise<Issue> {
-        return await this.issueModel.findByIdAndUpdate(id, null).exec();
+    async update(code: string, data: UpdateIssueDto): Promise<Issue> {
+        const list = data.list ? await this.listService.findOne(data.list) : null;
+        let issueData;
+        if (list) {
+            issueData = {
+                description: data.description,
+                list: list['_id'],
+            };
+        } else {
+            issueData = {
+                description: data.description,
+            };
+        }
+        return await this.issueModel.findOneAndUpdate({ code: code }, issueData, { useFindAndModify: false, new: true }).populate('list').exec();
     }
 
     async updateOrder(data: UpdateIssueDto[]): Promise<boolean> {
@@ -87,6 +99,16 @@ export class IssuesService {
     }
 
     async updateList(data: UpdateIssueDto): Promise<boolean> {
+        return new Promise(async (resolve, _reject) => {
+            const issue = await this.findOne(data.code);
+            await this.update(data.code, data);
+            await this.listService.addIssue(data.list, issue['_id']);
+            await this.listService.removeIssue(data.lastList, issue['_id']);
+            resolve(true);
+        });
+    }
+
+    async updateListAndOrder(data: UpdateIssueDto): Promise<boolean> {
         return new Promise((resolve, _reject) => {
             data.lists.forEach(async (item) => {
                 const issues = [];
@@ -110,27 +132,20 @@ export class IssuesService {
         });
     }
 
-    async addUser(code: string, user: string): Promise<Issue> {
-        const userId = (await this.userService.findByEmail(user))['_id'];
-        const issue = await this.issueModel.findOneAndUpdate(
-            { code: code },
-            {
-                $push: { users: userId },
-            },
-            { useFindAndModify: false },
-        );
-        return await this.findOne(code);
-    }
-
-    async removeUser(code: string, user: string): Promise<Issue> {
-        const userId = (await this.userService.findByEmail(user))['_id'];
-        return await this.issueModel.findOneAndUpdate(
-            { code: code },
-            {
-                $pull: { users: userId },
-            },
-            { useFindAndModify: false },
-        );
+    async changeUser(code: string, users: string[]): Promise<Issue> {
+        const usersArray = [];
+        for await (const u of users) {
+            usersArray.push(await (await this.userService.findByEmail(u))['_id']);
+        }
+        return await this.issueModel
+            .findOneAndUpdate(
+                { code: code },
+                {
+                    users: usersArray,
+                },
+                { useFindAndModify: false, new: true },
+            )
+            .populate('users');
     }
 
     async remove(id: string): Promise<void> {

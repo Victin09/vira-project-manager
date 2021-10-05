@@ -8,9 +8,11 @@ import { nameToInitials } from '@common/util/initials.common';
 
 interface IBacklog {
     projectCode: string;
+    displayOptions: (issueCode: any) => void;
+    setDisplayOptions: (display: boolean) => void;
 }
 
-export const Backlog: React.FC<IBacklog> = ({ projectCode }: IBacklog) => {
+export const Backlog: React.FC<IBacklog> = ({ projectCode, displayOptions, setDisplayOptions }: IBacklog) => {
     const [localItems, setLocalItems] = useState([]);
     const [createNew, setCreateNew] = useState(false);
     const [newIssue, setNewIssue] = useState('');
@@ -124,7 +126,10 @@ export const Backlog: React.FC<IBacklog> = ({ projectCode }: IBacklog) => {
                                                         ref={provided.innerRef}
                                                         {...provided.draggableProps}
                                                         {...provided.dragHandleProps}
-                                                        onClick={() => console.log('item', item)}
+                                                        onClick={() => {
+                                                            displayOptions(item);
+                                                            setDisplayOptions(true);
+                                                        }}
                                                     >
                                                         <div
                                                             className="flex items-start p-2 mt-2 bg-white rounded-lg cursor-pointer group hover:bg-gray-100 border"

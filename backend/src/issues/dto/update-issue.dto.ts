@@ -27,4 +27,9 @@ export class UpdateIssueDto extends PartialType(CreateIssueDto) {
     @IsOptional()
     @ApiProperty({ example: 'Backlog' })
     lists: IColumn[];
+
+    @IsString()
+    @IsOptional()
+    @ApiProperty({ example: 'Iss1' })
+    lastList: string;
 }

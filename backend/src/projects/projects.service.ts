@@ -25,7 +25,7 @@ export class ProjectsService {
     }
 
     async findOne(projectCode: string) {
-        return await this.projectModel.findOne({ code: projectCode });
+        return await (await this.projectModel.findOne({ code: projectCode }).populate('type')).populate('users');
     }
 
     async findByUser(userMail: string): Promise<Project[]> {

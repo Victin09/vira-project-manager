@@ -31,7 +31,7 @@ export class ListsService {
         const project = await this.projectService.findOne(id);
         return await this.listModel
             .find({ board: project })
-            .populate({ path: 'issues', options: { sort: { order: 'asc' } } })
+            .populate({ path: 'issues', options: { sort: { order: 'asc' } }, populate: { path: 'users' } })
             .sort({ order: 'asc' })
             .exec();
     }

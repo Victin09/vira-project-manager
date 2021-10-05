@@ -14,7 +14,7 @@ const Item: React.FC<ItemProps> = ({ issue, index }) => {
         <Draggable draggableId={issue.code} index={index}>
             {(provided) => (
                 <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                    <div className="flex flex-col overflow-auto">
+                    <div className="flex flex-col overflow-hidden">
                         <div
                             className="relative flex flex-col items-start p-3 mt-3 bg-white rounded-lg cursor-pointer group hover:bg-gray-100 border"
                             draggable="true"
@@ -28,7 +28,10 @@ const Item: React.FC<ItemProps> = ({ issue, index }) => {
                                 {issue.tag}
                             </span> */}
                             <span className="flex items-center h-6 text-xs font-semibold text-gray-500">{issue.code}</span>
-                            <h4 className="mt-3 text-sm font-medium">{issue.title}</h4>
+                            <div className="w-full flex flex-col truncate">
+                                <h4 className="mt-3 text-sm font-medium">{issue.title}</h4>
+                                <span className="font-thin text-sm truncate">{issue.description}</span>
+                            </div>
                             <div className="flex items-center w-full mt-3 text-xs font-medium text-gray-400">
                                 {/* <div className="flex items-center">
                                     <svg

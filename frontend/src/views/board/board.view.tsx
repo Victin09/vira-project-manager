@@ -35,6 +35,7 @@ const Board = ({ projectCode }: IBoard): JSX.Element => {
                 })
             ).json();
             if (result.length) {
+                console.log('board', result);
                 setColumns(result);
             }
         };
@@ -104,7 +105,7 @@ const Board = ({ projectCode }: IBoard): JSX.Element => {
                 item.order = index;
             });
             const updated = await (
-                await fetch(`${process.env.API_URL}/issues/list`, {
+                await fetch(`${process.env.API_URL}/issues/list-order`, {
                     method: 'PATCH',
                     headers: {
                         'Content-Type': 'application/json',

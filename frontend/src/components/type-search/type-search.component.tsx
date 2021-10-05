@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import CreatableSelect from 'react-select/creatable';
-import { OptionsType } from 'react-select';
 
 import { getToken } from '@common/auth/auth.common';
-import { nameToInitials } from '@common/util/initials.common';
 interface ISearch {
     value: string;
     label: JSX.Element;

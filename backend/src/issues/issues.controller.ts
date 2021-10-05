@@ -80,15 +80,16 @@ export class IssuesController {
         return this.issueService.create(data);
     }
 
-    @Patch('update/:id')
+    @Patch('update/:code')
     @ApiOperation({ summary: 'Update issue' })
     @ApiResponse({
         status: 200,
         description: 'Issue',
         type: Issue,
     })
-    update(@Param('id') id: string, @Body() data: UpdateIssueDto): Promise<Issue> {
-        return this.issueService.update(id, data);
+    update(@Param('code') code: string, @Body() data: UpdateIssueDto): Promise<Issue> {
+        console.log('body', data);
+        return this.issueService.update(code, data);
     }
 
     @Patch('order')
@@ -124,26 +125,26 @@ export class IssuesController {
         return this.issueService.updateList(data);
     }
 
-    @Patch('add-user/:code/:user')
-    @ApiOperation({ summary: 'Add user to project' })
+    @Patch('list-order')
+    @ApiOperation({ summary: 'Update issues list' })
     @ApiResponse({
         status: 200,
-        description: 'Project',
+        description: 'Issue',
         type: Issue,
     })
-    addUser(@Param('code') id: string, @Param('user') user: string): Promise<Issue> {
-        return this.issueService.addUser(id, user);
+    updateListAndOrder(@Body() data: UpdateIssueDto): Promise<boolean> {
+        return this.issueService.updateListAndOrder(data);
     }
 
-    @Patch('remove-user/:code/:user')
-    @ApiOperation({ summary: 'Remove user from project' })
+    @Patch('users/:code')
+    @ApiOperation({ summary: 'Change issues users' })
     @ApiResponse({
         status: 200,
-        description: 'Project',
+        description: 'Issue',
         type: Issue,
     })
-    removeUser(@Param('code') id: string, @Param('user') user: string): Promise<Issue> {
-        return this.issueService.removeUser(id, user);
+    changeUser(@Param('code') id: string, @Body() user: string[]): Promise<Issue> {
+        return this.issueService.changeUser(id, user);
     }
 
     @Delete(':id')

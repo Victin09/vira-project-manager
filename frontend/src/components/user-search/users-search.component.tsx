@@ -12,10 +12,15 @@ interface IUserSearch {
     fnc?: (data: string[]) => void;
     fncSingle?: (data: string) => void;
     isMultiple: boolean;
+    fromProject?: boolean;
+    fromIssue?: boolean;
+    issueCode?: string;
 }
 
-const UserSearch = ({ fnc, fncSingle, isMultiple }: IUserSearch): JSX.Element => {
+const UserSearch = ({ fnc, fncSingle, isMultiple, fromProject, fromIssue, issueCode }: IUserSearch): JSX.Element => {
+    const [reload, setReload] = useState(false);
     const [users, setUsers] = useState([]);
+    const [selectedUsers, setSelectedUsers] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -44,7 +49,7 @@ const UserSearch = ({ fnc, fncSingle, isMultiple }: IUserSearch): JSX.Element =>
                                     </div>
                                 )}{' '}
                                 <div className="flex flex-col ml-2">
-                                    <span className="font-bold">{element.name}</span>
+                                    {/* <span className="font-bold">{element.name}</span> */}
                                     <span className="font-thin">{element.username}</span>
                                 </div>
                             </div>
@@ -53,11 +58,46 @@ const UserSearch = ({ fnc, fncSingle, isMultiple }: IUserSearch): JSX.Element =>
                     data.push(user);
                 });
                 setUsers(data);
+
+                if (fromIssue) {
+                    const result = await (
+                        await fetch(`${process.env.API_URL}/issues/${issueCode}`, {
+                            method: 'GET',
+                            headers: {
+                                Authorization: `Bearer ${getToken()}`,
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                    ).json();
+                    const data: ISearch[] = [];
+                    result.users.forEach((element: any) => {
+                        const user: ISearch = {
+                            value: element.email,
+                            label: (
+                                <div className="flex items-center">
+                                    {element.icon ? (
+                                        <img className="m-1 w-6 h-6 relative flex justify-center items-center rounded-full" src={element.icon} />
+                                    ) : (
+                                        <div className="m-1 w-6 h-6 relative flex justify-center items-center rounded-full bg-indigo-700 text-xs text-white uppercase">
+                                            {nameToInitials(element.name)}
+                                        </div>
+                                    )}{' '}
+                                    <div className="flex flex-col ml-2">
+                                        {/* <span className="font-bold">{element.name}</span> */}
+                                        <span className="font-thin">{element.username}</span>
+                                    </div>
+                                </div>
+                            )
+                        };
+                        data.push(user);
+                    });
+                    setSelectedUsers(data);
+                }
             }
         };
 
         fetchData();
-    }, []);
+    }, [reload]);
 
     const onChange = (e: OptionsType<ISearch>) => {
         const data: string[] = [];
@@ -65,6 +105,7 @@ const UserSearch = ({ fnc, fncSingle, isMultiple }: IUserSearch): JSX.Element =>
             data.push(item.value);
         });
         fnc(data);
+        setReload(!reload);
     };
 
     const onChangeSingle = (e: ISearch) => {
@@ -86,17 +127,15 @@ const UserSearch = ({ fnc, fncSingle, isMultiple }: IUserSearch): JSX.Element =>
         <>
             {isMultiple ? (
                 <Select
+                    value={selectedUsers}
                     isMulti
                     styles={customStyles}
-                    name="users"
                     options={users}
-                    className="basic-multi-select"
-                    classNamePrefix="select"
                     placeholder="Selecciona..."
                     onChange={(e) => onChange(e)}
                 />
             ) : (
-                <Select className="basic-single" classNamePrefix="select" name="color" options={users} onChange={(e) => onChangeSingle(e)} />
+                <Select defaultValue={selectedUsers} options={users} onChange={(e) => onChangeSingle(e)} />
             )}
         </>
     );

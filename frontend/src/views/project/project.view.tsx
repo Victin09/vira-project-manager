@@ -4,9 +4,12 @@ import { BsKanban } from 'react-icons/bs';
 import { IoMdList } from 'react-icons/io';
 
 import { getToken } from '@common/auth/auth.common';
-import Sidebar from '@components/sidebar/sidebar.component';
+import ProjectSidebar from '@components/sidebar/project-sidebar.component';
 import Backlog from '@views/backlog/backlog.view';
 import Board from '@views/board/board.view';
+import IssueSidebar from '@components/sidebar/issue-sidebar.component';
+import ProjectDetails from '@views/project-settings/project-details.view';
+import ProjectAccess from '@views/project-settings/project-access.view';
 
 interface IParams {
     projectCode: string;
@@ -23,6 +26,9 @@ const Project = (): JSX.Element => {
 
     const [project, setProject] = useState<IProject>();
     const [option, setOption] = useState('');
+    const [showOptions, setShowOptions] = useState(false);
+    const [showSettings, setShowSettings] = useState(false);
+    const [issue, setIssue] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -44,6 +50,11 @@ const Project = (): JSX.Element => {
         fetchData();
     }, []);
 
+    const displayOptions = (item: any) => {
+        console.log('item', item);
+        setIssue(item);
+    };
+
     const selectedOption = (selected: string) => {
         setOption(selected);
     };
@@ -59,15 +70,39 @@ const Project = (): JSX.Element => {
         }
     ];
 
+    const settings = [
+        {
+            title: 'Detalles'
+        },
+        {
+            title: 'Acceso'
+        }
+    ];
+
     /* eslint-disable indent */
     const renderOption = (): JSX.Element => {
-        let render: JSX.Element = <Backlog projectCode={projectCode} />;
+        let render: JSX.Element = <Backlog projectCode={projectCode} displayOptions={displayOptions} setDisplayOptions={setShowOptions} />;
         switch (option) {
             case 'Backlog':
-                render = <Backlog projectCode={projectCode} />;
+                render = <Backlog projectCode={projectCode} displayOptions={displayOptions} setDisplayOptions={setShowOptions} />;
                 break;
             case 'Tablero':
                 render = <Board projectCode={projectCode} />;
+                break;
+            default:
+                break;
+        }
+        return render;
+    };
+
+    const renderSettings = () => {
+        let render: JSX.Element = <Backlog projectCode={projectCode} displayOptions={displayOptions} setDisplayOptions={setShowOptions} />;
+        switch (option) {
+            case 'Detalles':
+                render = <ProjectDetails projectCode={projectCode} />;
+                break;
+            case 'Accesso':
+                render = <ProjectAccess projectCode={projectCode} />;
                 break;
             default:
                 break;
@@ -80,8 +115,17 @@ const Project = (): JSX.Element => {
             {project && (
                 <>
                     <div className="h-full flex">
-                        <Sidebar projectData={project} options={options} selected={option} selectedOption={selectedOption} />
-                        {renderOption()}
+                        <ProjectSidebar
+                            projectData={project}
+                            options={options}
+                            selected={option}
+                            selectedOption={selectedOption}
+                            settings={settings}
+                            showSettings={showSettings}
+                            setShowSettings={setShowSettings}
+                        />
+                        {!showSettings ? renderOption() : renderSettings()}
+                        <IssueSidebar display={showOptions} setDisplay={setShowOptions} item={issue} projectCode={projectCode} />
                     </div>
                 </>
             )}
