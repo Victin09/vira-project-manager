@@ -42,7 +42,7 @@ export const useTheme = (): IUseTheme => {
     useEffect(() => {
         if (!themes) setThemes(themesJSON);
         const localTheme = getFromLocalStorage('theme');
-        localTheme ? setTheme(localTheme) : setTheme(themes.light);
+        localTheme ? setTheme(JSON.parse(localTheme)) : setTheme(themesJSON.light);
         setThemeLoaded(true);
     }, []);
 
