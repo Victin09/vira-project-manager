@@ -1,0 +1,14 @@
+{
+    "welcome": "Welcome",
+    "spanish": "Spanish",
+    "english": "English",
+    "sign_in": "Sign in",
+    "sign_up": "Sign up",
+    "forgot_password": "Forgot password?",
+    "email": "Email",
+    "password": "Password",
+    "login_with": "Or login with",
+    "username": "Username",
+    "fullName": "Name and surname",
+    "haveAccount": "Already have an account?"
+}

@@ -4,9 +4,8 @@
     "description": "Boilerplate for React app with Typescript and Jest",
     "main": "index.js",
     "scripts": {
-        "start": "npm run build:css && webpack-dev-server --mode development --config ./webpack.config.js",
-        "build:css": "npx postcss src/styles/tailwind.css -o src/styles/index.css",
-        "build": "npm run build:css && webpack --mode production --config ./webpack.config.js",
+        "start": "webpack-dev-server --mode development --config ./webpack.config.js",
+        "build": "webpack --mode production --config ./webpack.config.js",
         "lint": "npm run lint:code && npm run lint:style",
         "lint:code": "eslint src/**/*.{js,ts,tsx} --fix --quiet",
         "lint:style": "stylelint src/**/*.scss --fix",
@@ -60,15 +59,8 @@
         "husky": "^4.3.0",
         "identity-obj-proxy": "^3.0.0",
         "jest": "^26.6.3",
-        "mini-css-extract-plugin": "^0.9.0",
-        "postcss": "^8.3.6",
-        "postcss-cli": "^8.3.1",
-        "postcss-loader": "^6.1.1",
-        "postcss-preset-env": "^6.7.0",
         "prettier": "^2.2.1",
         "react-test-renderer": "^16.14.0",
-        "source-map-loader": "^0.2.4",
-        "style-loader": "^1.3.0",
         "stylelint": "^13.8.0",
         "stylelint-config-sass-guidelines": "^7.1.0",
         "tailwindcss": "^2.2.7",
@@ -88,6 +80,7 @@
         "react-icons": "^4.2.0",
         "react-router-dom": "^5.2.0",
         "react-select": "^4.3.1",
-        "styled-components": "^5.3.1"
+        "styled-components": "^5.3.1",
+        "vira-i18n-react": "^1.0.4"
     }
 }

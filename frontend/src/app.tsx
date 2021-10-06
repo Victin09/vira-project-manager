@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
+import { I18nProvider } from 'vira-i18n-react';
+import { I18nProviderProps } from 'vira-i18n-react/lib/types/i18n.types';
 import { CookiesProvider } from 'react-cookie';
 import { ThemeProvider } from 'styled-components';
+import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
+
+import es from '@common/i18n/es.json';
+import en from '@common/i18n/en.json';
 
 import Navbar from '@components/navbar/navbar.component';
 import { IRoute, routes } from '@common/routes/routes.common';
@@ -12,33 +17,49 @@ import { useTheme } from '@common/hooks/theme.hook';
 const App = (): JSX.Element => {
     const { theme, themeLoaded } = useTheme();
     const [selectedTheme, setSelectedTheme] = useState(theme);
+    const [selectedLanguage, setSelectedLanguage] = useState('');
 
     useEffect(() => {
         setSelectedTheme(theme);
+        const language = localStorage.getItem('language');
+        if (!language) {
+            setSelectedLanguage('en');
+            localStorage.setItem('language', 'en');
+        } else {
+            setSelectedLanguage(language);
+        }
     }, [themeLoaded]);
 
+    const locales = [
+        {
+            language: 'en',
+            resources: en
+        },
+        {
+            language: 'es',
+            resources: es
+        }
+    ];
+
     return (
-        <CookiesProvider>
-            <UserProvider>
-                <ThemeProvider theme={selectedTheme}>
-                    <div className="flex flex-col h-screen">
+        <I18nProvider language={selectedLanguage} locales={locales}>
+            <CookiesProvider>
+                <UserProvider>
+                    <ThemeProvider theme={selectedTheme}>
                         <Router>
                             <Navbar />
-
-                            <div className="flex-grow">
-                                <Route path="/" exact>
-                                    <Redirect to="/project" />
-                                </Route>
-                                {routes.map((route: IRoute, index) => {
-                                    if (route.private) return <PrivateRoute key={index} {...route} />;
-                                    else return <Route key={index} {...route} />;
-                                })}
-                            </div>
+                            <Route path="/" exact>
+                                <Redirect to="/project" />
+                            </Route>
+                            {routes.map((route: IRoute, index) => {
+                                if (route.private) return <PrivateRoute key={index} {...route} />;
+                                else return <Route key={index} {...route} />;
+                            })}
                         </Router>
-                    </div>
-                </ThemeProvider>
-            </UserProvider>
-        </CookiesProvider>
+                    </ThemeProvider>
+                </UserProvider>
+            </CookiesProvider>
+        </I18nProvider>
     );
 };
 

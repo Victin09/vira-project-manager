@@ -1,3 +1,4 @@
+import { ITheme } from '@common/hooks/theme.hook';
 import 'styled-components';
 
 interface IPalette {
@@ -6,23 +7,8 @@ interface IPalette {
 }
 
 declare module 'styled-components' {
-    export interface DefaultTheme {
-        id: string;
-        name: string;
-        colors: {
-            body: string;
-            text: string;
-            button: {
-                text: string;
-                background: string;
-            };
-            link: {
-                text: string;
-                opacity: number;
-            };
-        };
-        font: string;
-    }
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    export interface DefaultTheme extends ITheme {}
 }
 
 declare module '*.json' {

@@ -1,0 +1,186 @@
+    // "dark": {
+    //     "id": "T_002",
+    //     "name": "Dark",
+    //     "schema": {
+    //         "colors": {
+    //             "primary": "#000000",
+    //             "secondary": "#e8e8e8"
+    //         },
+    //         "shadow": {
+    //             "default": "20 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+    //         },
+    //         "text": {
+    //             "color": "#FFFFFF",
+    //             "hover": "#FFFFFF"
+    //         },
+    //         "input": {
+    //             "background": "#000000",
+    //             "shadow": "0 4px 16px 0 #FFFFFF",
+    //             "border": "rgba(72, 47, 247, 0.25)"
+    //         },
+    //         "button": {
+    //             "text": "#000000",
+    //             "background": "#FFFFFF"
+    //         },
+    //         "link": {
+    //             "text": "teal",
+    //             "opacity": 1
+    //         }
+    //     },
+    //     "font": "Roboto"
+    // },
+    // "material": {
+    //     "id": "T_003",
+    //     "name": "Material",
+    //     "schema": {
+    //         "colors": {
+    //             "primary": "#6a1b9a",
+    //             "secondary": "#e8e8e8"
+    //         },
+    //         "shadow": {
+    //             "default": "20 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+    //         },
+    //         "text": {
+    //             "color": "#ebdbf5",
+    //             "hover": "#ebdbf5"
+    //         },
+    //         "input": {
+    //             "background": "#000000",
+    //             "shadow": "0 4px 16px 0 #FFFFFF",
+    //             "border": "rgba(72, 47, 247, 0.25)"
+    //         },
+    //         "button": {
+    //             "text": "#6a1b9a",
+    //             "background": "#ebdbf5"
+    //         },
+    //         "link": {
+    //             "text": "#ebdbf5",
+    //             "opacity": 0.8
+    //         }
+    //     },
+    //     "font": "Roboto"
+    // },
+    // "sharp": {
+    //     "id": "T_004",
+    //     "name": "Sharp",
+    //     "schema": {
+    //         "colors": {
+    //             "primary": "#ffeb3b",
+    //             "secondary": "#e8e8e8"
+    //         },
+    //         "shadow": {
+    //             "default": "20 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+    //         },
+    //         "text": {
+    //             "color": "#292500",
+    //             "hover": "#292500"
+    //         },
+    //         "input": {
+    //             "background": "#000000",
+    //             "shadow": "0 4px 16px 0 #FFFFFF",
+    //             "border": "rgba(72, 47, 247, 0.25)"
+    //         },
+    //         "button": {
+    //             "text": "#FFFFFF",
+    //             "background": "#292500"
+    //         },
+    //         "link": {
+    //             "text": "#292500",
+    //             "opacity": 0.8
+    //         }
+    //     },
+    //     "font": "Roboto"
+    // },
+    // "calm": {
+    //     "id": "T_005",
+    //     "name": "Calm",
+    //     "schema": {
+    //         "colors": {
+    //             "primary": "#80cbc4",
+    //             "secondary": "#e8e8e8"
+    //         },
+    //         "shadow": {
+    //             "default": "20 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+    //         },
+    //         "text": {
+    //             "color": "#002b24",
+    //             "hover": "#002b24"
+    //         },
+    //         "input": {
+    //             "background": "#000000",
+    //             "shadow": "0 4px 16px 0 #FFFFFF",
+    //             "border": "rgba(72, 47, 247, 0.25)"
+    //         },
+    //         "button": {
+    //             "text": "#FFFFFF",
+    //             "background": "#002b24"
+    //         },
+    //         "link": {
+    //             "text": "#002b24",
+    //             "opacity": 0.8
+    //         }
+    //     },
+    //     "font": "Roboto"
+    // },
+    // "cherryBonBon": {
+    //     "id": "T_006",
+    //     "name": "Cherry Bon Bon",
+    //     "schema": {
+    //         "colors": {
+    //             "primary": "#c62828",
+    //             "secondary": "#e8e8e8"
+    //         },
+    //         "shadow": {
+    //             "default": "20 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+    //         },
+    //         "text": {
+    //             "color": "#ffeeed",
+    //             "hover": "#ffeeed"
+    //         },
+    //         "input": {
+    //             "background": "#000000",
+    //             "shadow": "0 4px 16px 0 #FFFFFF",
+    //             "border": "rgba(72, 47, 247, 0.25)"
+    //         },
+    //         "button": {
+    //             "text": "#c62828",
+    //             "background": "#ffeeed"
+    //         },
+    //         "link": {
+    //             "text": "#ffeeed",
+    //             "opacity": 0.8
+    //         }
+    //     },
+    //     "font": "Roboto"
+    // },
+    // "seaWave": {
+    //     "id": "T_007",
+    //     "name": "Sea Wave",
+    //     "schema": {
+    //         "colors": {
+    //             "primary": "#9be7ff",
+    //             "secondary": "#e8e8e8"
+    //         },
+    //         "shadow": {
+    //             "default": "20 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)"
+    //         },
+    //         "text": {
+    //             "color": "#0d47a1",
+    //             "hover": "#0d47a1"
+    //         },
+    //         "input": {
+    //             "background": "#000000",
+    //             "shadow": "0 4px 16px 0 #FFFFFF",
+    //             "border": "1px solid rgba(72, 47, 247, 0.25)"
+    //         },
+    //         "button": {
+    //             "text": "#ffffff",
+    //             "background": "#0d47a1"
+    //         },
+    //         "link": {
+    //             "text": "#0d47a1",
+    //             "opacity": 0.8
+    //         }
+    //     },
+    //     "font": "Roboto"
+    // }

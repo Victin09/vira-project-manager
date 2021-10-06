@@ -3,9 +3,7 @@ export const isAuthenticated = (): boolean => {
     return !!token;
 };
 
-export const getToken = ():
-    | string
-    | undefined => {
+export const getToken = (): string | undefined => {
     const token = sessionStorage.getItem('token');
     if (token) return token;
     return undefined;

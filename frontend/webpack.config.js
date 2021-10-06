@@ -67,6 +67,9 @@ module.exports = {
         historyApiFallback: true,
         hot: false
     },
+    watchOptions: {
+        ignored: /node_modules/
+    },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin({

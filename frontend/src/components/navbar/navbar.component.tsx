@@ -1,26 +1,127 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { RiFileListLine, RiPaletteLine } from 'react-icons/ri';
 import styled, { css } from 'styled-components';
 
 import { isAuthenticated } from '@common/auth/auth.common';
 import { useUser } from '@common/context/user-context.common';
 import { nameToInitials } from '@common/util/initials.common';
-import { useTheme } from '@common/hooks/theme.hook';
+import { ITheme, useTheme } from '@common/hooks/theme.hook';
+import Dropdown from '@components/dropdown/dropdown.component';
+import { useI18n } from 'vira-i18n-react';
 
-interface IMenuItem {
-    name: string;
-    path: string;
-}
+const Hamburger = styled.div<{ theme: ITheme; open: boolean }>`
+    width: 2rem;
+    height: 2rem;
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    z-index: 20;
+    display: none;
+    cursor: pointer;
 
-interface IComponent {
-    displayMenu: boolean;
-}
+    @media (max-width: 768px) {
+        display: flex;
+        justify-content: space-around;
+        flex-flow: column nowrap;
+    }
+`;
+
+const Bar = styled.div<{ open: boolean }>`
+    width: 2rem;
+    height: 0.25rem;
+    background-color: #000;
+    border-radius: 10px;
+    transform-origin: 1px;
+    transition: all 0.3s linear;
+    cursor: pointer;
+
+    &:nth-child(1) {
+        transform: ${(props) => (props.open ? 'rotate(45deg)' : 'rotate(0)')};
+    }
+    &:nth-child(2) {
+        transform: ${(props) => (props.open ? 'translateX(100%)' : 'translateX(0)')};
+        opacity: ${(props) => (props.open ? 0 : 1)};
+    }
+    &:nth-child(3) {
+        transform: ${(props) => (props.open ? 'rotate(-45deg)' : 'rotate(0)')};
+    }
+`;
+
+const Nav = styled.nav<{ theme: ITheme }>`
+    height: 100%;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    /* justify-content: space-between; */
+    background-color: ${(props) => props.theme.schema.colors.primary};
+    align-items: center;
+    position: relative;
+    box-shadow: ${(props) => props.theme.schema.general.shadow};
+
+    @media (max-width: 678px) {
+        width: 100vw;
+    }
+`;
+
+const NavMenu = styled.ul<{ open: boolean; theme: ITheme }>`
+    list-style: none;
+    display: flex;
+    flex-flow: row nowrap;
+    position: relative;
+    width: 90%;
+    align-items: center;
+
+    @media (max-width: 768px) {
+        flex-flow: column nowrap;
+        background-color: ${(props) => props.theme.schema.colors.primary};
+        position: fixed;
+        transform: ${(props) => (props.open ? 'translateX(0)' : 'translateX(100%)')};
+        top: -16px;
+        right: 0;
+        height: 100%;
+        width: 90%;
+        padding-top: 3.5rem;
+        transition: transform 0.3s ease-in-out;
+        z-index: 9;
+        justify-content: normal;
+    }
+`;
+
+const NavItem = styled.li<{ theme: ITheme }>`
+    padding: 0.5em;
+    cursor: pointer;
+
+    :hover {
+        color: ${(props) => props.theme.schema.text.hover};
+    }
+
+    @media (max-width: 768px) {
+        color: #000;
+        margin-right: 34px;
+        &:hover {
+            color: #0dadea;
+        }
+    }
+`;
+
+const NavLogo = styled.span`
+    margin: 1em;
+    /* width: 160px; */
+    font-size: 1.5em;
+    font-weight: bold;
+    object-fit: contain;
+
+    @media (max-width: 1250px) {
+        margin: 20px 50px 20px 5%;
+    }
+`;
 
 const Navbar = (): JSX.Element => {
     const { icon, name } = useUser();
     const localtion = useLocation();
-    const { setMode } = useTheme();
+    const { theme, setMode } = useTheme();
+    const { i18n, setLanguage } = useI18n();
 
     const [autenticated, setAutenticated] = useState(false);
     const [displayMenu, setDisplayMenu] = useState(false);
@@ -30,169 +131,6 @@ const Navbar = (): JSX.Element => {
     useEffect(() => {
         if (isAuthenticated()) setAutenticated(true);
     }, [localtion.pathname]);
-
-    const menuItems: IMenuItem[] = [
-        {
-            name: 'Proyectos',
-            path: '/project'
-        }
-    ];
-
-    const Header = styled.header`
-        backdrop-filter: blur(16px) saturate(180%);
-        -webkit-backdrop-filter: blur(16px) saturate(180%);
-        background-color: ${({ theme }) => theme.colors.body};
-        border: 1px solid rgba(209, 213, 219, 0.3);
-    `;
-
-    const Navbar = styled.nav`
-        display: flex;
-        align-items: center;
-        padding: 1rem 1.5rem;
-        color: rgb(87, 87, 87);
-    `;
-
-    const NavLogo = styled.span`
-        font-size: 1.5rem;
-        font-weight: 500;
-        font-weight: bold;
-    `;
-
-    const NavMenu = styled.ul`
-        display: flex;
-        align-items: center;
-        width: 100%;
-
-        @media only screen and (max-width: 768px) {
-            position: fixed;
-            height: 100%;
-            left: -100%;
-            top: 5rem;
-            flex-direction: column;
-            background-color: #fff;
-            width: 100%;
-            border-radius: 10px;
-            text-align: center;
-            transition: 0.3s;
-            box-shadow: 0 10px 27px rgba(0, 0, 0, 0.05);
-            ${displayMenu && 'left: 0;'}
-        }
-    `;
-
-    const NavItem = styled.li`
-        margin-left: 2rem;
-
-        @media only screen and (max-width: 768px) {
-            margin: 2.5rem 0;
-        }
-    `;
-
-    const NavItemRight = styled.li`
-        margin-left: auto;
-
-        @media only screen and (max-width: 768px) {
-            margin-left: 0;
-        }
-    `;
-
-    const NavLink = styled.div`
-        display: flex;
-        align-items: center;
-        font-weight: 400;
-        color: #475569;
-        cursor: pointer;
-
-        :hover {
-            color: #482ff7;
-        }
-    `;
-
-    const Hamburger = styled.div`
-        display: none;
-
-        @media only screen and (max-width: 768px) {
-            display: block;
-            position: relative;
-            cursor: pointer;
-            margin-left: auto;
-        }
-    `;
-
-    const Bar = styled.span`
-        display: block;
-        width: 25px;
-        height: 3px;
-        margin: 5px auto;
-        -webkit-transition: all 0.3s ease-in-out;
-        transition: all 0.3s ease-in-out;
-        background-color: #101010;
-
-        @media only screen and (max-width: 768px) {
-            display: block;
-            position: relative;
-            cursor: pointer;
-            margin-left: auto;
-
-            ${displayMenu &&
-            css`
-                :nth-child(2) {
-                    opacity: 0;
-                }
-                :nth-child(1) {
-                    transform: translateY(8px) rotate(45deg);
-                }
-                :nth-child(3) {
-                    transform: translateY(-8px) rotate(-45deg);
-                }
-            `}
-        }
-    `;
-
-    const UserProfile = styled.div`
-        display: inline-block;
-        width: 2em;
-        height: 2em;
-        color: white;
-        opacity: 1;
-        content: attr(data-initials);
-        display: inline-block;
-        font-weight: bold;
-        vertical-align: middle;
-        line-height: 2em;
-        text-align: center;
-        background-color: #482ff7;
-        border-radius: 50%;
-        cursor: pointer;
-
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: cover;
-
-        @media only screen and (max-width: 768px) {
-            margin-bottom: 2em;
-        }
-    `;
-
-    const DropDownRight = styled.div`
-        background-color: white;
-        position: absolute;
-        left: auto;
-        right: 0;
-        padding: 0.5em;
-        margin-right: 0.1em;
-        margin-top: 5em;
-        border-radius: 0.25em;
-        /* border: 1px solid gray; */
-
-        @media only screen and (max-width: 768px) {
-            left: 0;
-            right: 0;
-            border: none;
-            border-radius: 0;
-            background-color: gray;
-            margin-top: 0;
-        }
-    `;
 
     const handleUserClick = () => {
         setDisplayUserOptions(!displayUserOptions);
@@ -206,80 +144,119 @@ const Navbar = (): JSX.Element => {
         setMode(theme);
     };
 
+    const handleLanguage = (language: string) => {
+        setLanguage(language);
+        localStorage.setItem('language', language);
+    };
+
     return (
-        <Header>
-            <Navbar>
+        <>
+            <Nav>
                 <NavLogo>VPM</NavLogo>
-                <NavMenu>
-                    {autenticated ? (
-                        <>
-                            <NavItem>
-                                <NavLink>
-                                    <span>
-                                        <RiFileListLine />
-                                    </span>
-                                    <span>Proyectos</span>
-                                </NavLink>
-                            </NavItem>
-                            <NavItemRight>
-                                <UserProfile onClick={handleUserClick}>{icon ? icon : nameToInitials(name)}</UserProfile>
-                                {displayUserOptions && (
-                                    <DropDownRight>
-                                        <ul className="list-reset">
-                                            <li className="relative">
-                                                <a
-                                                    href="#"
-                                                    className="px-4 py-2 flex w-full items-start hover:bg-gray-100 no-underline hover:no-underline transition-colors duration-100 cursor-pointer"
-                                                >
-                                                    <span className="flex-1">Crear</span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </DropDownRight>
-                                )}
-                            </NavItemRight>
-                        </>
-                    ) : (
-                        <>
-                            <NavItemRight>
-                                <NavLink>
-                                    <Link to="/login">Iniciar sesión</Link>
-                                </NavLink>
-                            </NavItemRight>
-                            <NavItem>
-                                <NavLink>
-                                    <Link to="/register">Registrate</Link>
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink>
-                                    <span>
-                                        <RiPaletteLine onClick={handleThemesClick} />
-                                    </span>
-                                </NavLink>
-                            </NavItem>
-                            {displayThemes && (
-                                <DropDownRight>
-                                    <ul>
-                                        <li onClick={() => handleTheme('light')}>Light</li>
-                                        <li onClick={() => handleTheme('dark')}>Dark</li>
-                                        <li>Sharp</li>
-                                        <li>Calm</li>
-                                        <li>Cherry Bon Bon</li>
-                                        <li>Sea Wave</li>
-                                    </ul>
-                                </DropDownRight>
-                            )}
-                        </>
-                    )}
-                </NavMenu>
-                <Hamburger onClick={() => setDisplayMenu(!displayMenu)}>
-                    <Bar />
-                    <Bar />
-                    <Bar />
+                <Hamburger open={displayMenu} onClick={() => setDisplayMenu(!displayMenu)}>
+                    <Bar open={displayMenu} />
+                    <Bar open={displayMenu} />
+                    <Bar open={displayMenu} />
                 </Hamburger>
-            </Navbar>
-        </Header>
+                <NavMenu open={displayMenu}>
+                    <NavItem theme={theme}>Menu 1</NavItem>
+                    <NavItem theme={theme}>Menu 2</NavItem>
+                    <NavItem theme={theme}>Menu 3</NavItem>
+                    <NavItem theme={theme}>Menu 4</NavItem>
+                    <Dropdown
+                        data={[
+                            { value: 'en', label: 'EN' },
+                            { value: 'es', label: 'ES' }
+                        ]}
+                        selected={localStorage.getItem('language')}
+                        fnc={handleLanguage}
+                    />
+                </NavMenu>
+            </Nav>
+        </>
+        // <Header>
+        //     <Navbar>
+        //         <NavLogo>VPM</NavLogo>
+        //         <NavMenu>
+        //             {autenticated ? (
+        //                 <>
+        //                     <NavItem>
+        //                         <NavLink>
+        //                             <span>
+        //                                 <RiFileListLine />
+        //                             </span>
+        //                             <span>Proyectos</span>
+        //                         </NavLink>
+        //                     </NavItem>
+        //                     <NavItemRight>
+        //                         <UserProfile onClick={handleUserClick}>{icon ? icon : nameToInitials(name)}</UserProfile>
+        //                         {displayUserOptions && (
+        //                             <DropDownRight>
+        //                                 <ul className="list-reset">
+        //                                     <li className="relative">
+        //                                         <a
+        //                                             href="#"
+        //                                             className="px-4 py-2 flex w-full items-start hover:bg-gray-100 no-underline hover:no-underline transition-colors duration-100 cursor-pointer"
+        //                                         >
+        //                                             <span className="flex-1">Crear</span>
+        //                                         </a>
+        //                                     </li>
+        //                                 </ul>
+        //                             </DropDownRight>
+        //                         )}
+        //                     </NavItemRight>
+        //                 </>
+        //             ) : (
+        //                 <>
+        //                     <NavItemRight>
+        //                         <NavLink>
+        //                             <Link to="/login">{i18n('sign_in')}</Link>
+        //                         </NavLink>
+        //                     </NavItemRight>
+        //                     <NavItem>
+        //                         <NavLink>
+        //                             <Link to="/register">{i18n('sign_up')}</Link>
+        //                         </NavLink>
+        //                     </NavItem>
+        //                     {/* <NavItem>
+        //                         <NavLink>
+        //                             <Dropdown
+        //                                 data={[
+        //                                     { value: 'light', label: 'Light' },
+        //                                     { value: 'dark', label: 'Dark' },
+        //                                     { value: 'material', label: 'Material' },
+        //                                     { value: 'sharp', label: 'Sharp' },
+        //                                     { value: 'calm', label: 'Calm' },
+        //                                     { value: 'cherryBonBon', label: 'Cherry Bon Bon' },
+        //                                     { value: 'seaWave', label: 'Sea Wave' }
+        //                                 ]}
+        //                                 icon={<RiPaletteLine />}
+        //                                 fnc={handleTheme}
+        //                             />
+        //                         </NavLink>
+        //                     </NavItem> */}
+        //                     <NavItem>
+        //                         <NavLink>
+        //                             <Dropdown
+        //                                 data={[
+        //                                     { value: 'en', label: 'EN' },
+        //                                     { value: 'es', label: 'ES' }
+        //                                 ]}
+        //                                 selected={localStorage.getItem('language')}
+        //                                 fnc={handleLanguage}
+        //                             />
+        //                         </NavLink>
+        //                     </NavItem>
+        //                 </>
+        //             )}
+        //         </NavMenu>
+        //         <StyledBurger onClick={() => setDisplayMenu(!displayMenu)}>
+        //             <Menus />
+        //             <Menus />
+        //             <Menus />
+        //         </StyledBurger>
+        //     </Navbar>
+        // </Header>
     );
 };
 

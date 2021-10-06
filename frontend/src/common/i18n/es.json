@@ -1,0 +1,14 @@
+{
+    "welcome": "Bienvenido",
+    "spanish": "Español",
+    "english": "Inglés",
+    "sign_in": "Iniciar sesión",
+    "sign_up": "Registrate",
+    "forgot_password": "¿No te acuerdas de la contraseña?",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "login_with": "O inicia sesión con",
+    "username": "Nombre de usuario",
+    "fullName": "Nombre y apellidos",
+    "haveAccount": "¿Ya tienes cuenta?"
+}

@@ -1,22 +1,28 @@
 import { useEffect, useState } from 'react';
 
-import themes from '../themes/schema.json';
+import themesJSON from '../themes/schema.json';
 import { setToLocalStorage, getFromLocalStorage } from '../util/local-storage.common';
 
 interface IUseTheme {
-    theme: any;
+    theme: ITheme;
     themeLoaded: boolean;
-    setMode: (mode: any) => void;
+    setMode: (mode: string) => void;
 }
 
-interface IColors {
-    [key: string]: string;
+interface ISchema {
+    colors: { primary: string; secondary: string };
+    general: { shadow: string; border: string; borderRadius: string; marginTop: string };
+    sizes: { navbarHeight: string; containerHeightFull: string };
+    text: { color: string; hover: string };
+    input: { background: string; shadow: string; border: string; focus: string; height: string };
+    button: { text: string; background: string };
+    link: { text: string; opacity: number };
 }
 
-interface ITheme {
+export interface ITheme {
     id: string;
     name: string;
-    colors: IColors;
+    schema: ISchema;
 }
 
 interface IThemes {
@@ -24,20 +30,17 @@ interface IThemes {
 }
 
 export const useTheme = (): IUseTheme => {
-    const [theme, setTheme] = useState<any>(themes.light);
+    const [themes, setThemes] = useState<IThemes>(themesJSON);
+    const [theme, setTheme] = useState<ITheme>(themesJSON.light);
     const [themeLoaded, setThemeLoaded] = useState(false);
 
     const setMode = (mode: string) => {
-        console.log('mode', mode);
-        // setToLocalStorage(
-        //     'theme',
-        //     Object.keys(themes).find((key) => key === mode)
-        // );
         console.log('theme', themes[mode]);
-        setTheme(mode);
+        setTheme(themes[mode]);
     };
 
     useEffect(() => {
+        if (!themes) setThemes(themesJSON);
         const localTheme = getFromLocalStorage('theme');
         localTheme ? setTheme(localTheme) : setTheme(themes.light);
         setThemeLoaded(true);
