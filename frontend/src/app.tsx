@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { I18nProvider } from 'vira-i18n-react';
-import { I18nProviderProps } from 'vira-i18n-react/lib/types/i18n.types';
 import { CookiesProvider } from 'react-cookie';
 import { ThemeProvider } from 'styled-components';
 import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';

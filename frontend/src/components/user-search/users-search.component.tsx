@@ -1,7 +1,8 @@
-import { getToken } from '@common/auth/auth.common';
-import { nameToInitials } from '@common/util/initials.common';
 import React, { useEffect, useState } from 'react';
-import Select, { OptionsType } from 'react-select';
+import Select, { MultiValue } from 'react-select';
+
+import { nameToInitials } from '@common/util/initials.common';
+import { getToken } from '@common/auth/auth.common';
 
 interface ISearch {
     value: string;
@@ -99,7 +100,7 @@ const UserSearch = ({ fnc, fncSingle, isMultiple, fromProject, fromIssue, issueC
         fetchData();
     }, [reload]);
 
-    const onChange = (e: OptionsType<ISearch>) => {
+    const onChange = (e: MultiValue<ISearch>) => {
         const data: string[] = [];
         e.forEach((item) => {
             data.push(item.value);
