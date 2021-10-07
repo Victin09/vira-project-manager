@@ -193,7 +193,7 @@ const Navbar = (): JSX.Element => {
     const [displayLanguage, setDisplayLanguage] = useState(false);
 
     useEffect(() => {
-        setLang(localStorage.getItem('language').toUpperCase());
+        localStorage.getItem('language') && setLang(localStorage.getItem('language').toUpperCase());
         if (isAuthenticated()) setAutenticated(true);
     }, [localtion.pathname]);
 
@@ -224,6 +224,7 @@ const Navbar = (): JSX.Element => {
 
     return (
         <>
+        {autenticated && (
             <Nav ct={theme}>
                 <NavLogo ct={theme}>VPM</NavLogo>
                 <Hamburger open={displayMenu} ct={theme} onClick={() => setDisplayMenu(!displayMenu)}>
@@ -231,73 +232,42 @@ const Navbar = (): JSX.Element => {
                     <Bar open={displayMenu} />
                     <Bar open={displayMenu} />
                 </Hamburger>
-                {autenticated ? (
-                    <>
-                        <NavItem ct={theme}>
-                            <NavItem ct={theme}>
-                                <span>
-                                    <RiFileListLine />
-                                </span>
-                                <span>Proyectos</span>
-                            </NavItem>
-                        </NavItem>
-                        <NavMenuRight open={displayMenu} ct={theme}>
-                            <UserProfile onClick={handleUserClick}>{icon ? icon : nameToInitials(name)}</UserProfile>
-                            <NavItem ct={theme}>
-                                <Dropdown ct={theme} onClick={() => setDisplayLanguage(!displayLanguage)}>
-                                    {lang}
-                                    {displayLanguage && (
-                                        <DropdownContent ref={languageRef} ct={theme}>
-                                            <DropdownItem ct={theme} onClick={() => handleLanguage('en')}>EN</DropdownItem>
-                                            <DropdownItem ct={theme} onClick={() => handleLanguage('es')}>ES</DropdownItem>
-                                        </DropdownContent>
-                                    )}
-                                </Dropdown>
-                            </NavItem>
-                            <NavItem ct={theme}>
-                                <Dropdown ct={theme} onClick={() => setDisplayThemes(!displayThemes)}>
-                                    <BsPalette2 />
-                                    {displayThemes && (
-                                        <DropdownContent ref={themeRef} ct={theme}>
-                                            <DropdownItem ct={theme} onClick={() => handleTheme('light')}>Light</DropdownItem>
-                                            <DropdownItem ct={theme} onClick={() => handleTheme('dark')}>Dark</DropdownItem>
-                                            <DropdownItem ct={theme} onClick={() => handleTheme('material')}>Material</DropdownItem>
-                                        </DropdownContent>
-                                    )}
-                                </Dropdown>
-                            </NavItem>
-                        </NavMenuRight>
-                    </>
-                ) : (
-                    <NavMenuRight open={displayMenu} ct={theme}>
-                        <NavItem ct={theme}><Link to="/login">{i18n('sign_in')}</Link></NavItem>
-                        <NavItem ct={theme}><Link to="/register">{i18n('sign_up')}</Link></NavItem>
-                        <NavItem ct={theme}>
-                            <Dropdown ct={theme} onClick={() => setDisplayLanguage(!displayLanguage)}>
-                                {lang}
-                                {displayLanguage && (
-                                    <DropdownContent ref={languageRef} ct={theme}>
-                                        <DropdownItem ct={theme} onClick={() => handleLanguage('en')}>EN</DropdownItem>
-                                        <DropdownItem ct={theme} onClick={() => handleLanguage('es')}>ES</DropdownItem>
-                                    </DropdownContent>
-                                )}
-                            </Dropdown>
-                        </NavItem>
-                        <NavItem ct={theme}>
-                            <Dropdown ct={theme} onClick={() => setDisplayThemes(!displayThemes)}>
-                                <BsPalette2 />
-                                {displayThemes && (
-                                    <DropdownContent ref={themeRef} ct={theme}>
-                                        <DropdownItem ct={theme} onClick={() => handleTheme('light')}>Light</DropdownItem>
-                                        <DropdownItem ct={theme} onClick={() => handleTheme('dark')}>Dark</DropdownItem>
-                                        <DropdownItem ct={theme} onClick={() => handleTheme('material')}>Material</DropdownItem>
-                                    </DropdownContent>
-                                )}
-                            </Dropdown>
-                        </NavItem>
-                    </NavMenuRight>
-                )}
+                <NavItem ct={theme}>
+                    <NavItem ct={theme}>
+                        <span>
+                            <RiFileListLine />
+                        </span>
+                        <span>Proyectos</span>
+                    </NavItem>
+                </NavItem>
+                <NavMenuRight open={displayMenu} ct={theme}>
+                    <UserProfile onClick={handleUserClick}>{icon ? icon : nameToInitials(name)}</UserProfile>
+                    <NavItem ct={theme}>
+                        <Dropdown ct={theme} onClick={() => setDisplayLanguage(!displayLanguage)}>
+                            {lang}
+                            {displayLanguage && (
+                                <DropdownContent ref={languageRef} ct={theme}>
+                                    <DropdownItem ct={theme} onClick={() => handleLanguage('en')}>EN</DropdownItem>
+                                    <DropdownItem ct={theme} onClick={() => handleLanguage('es')}>ES</DropdownItem>
+                                </DropdownContent>
+                            )}
+                        </Dropdown>
+                    </NavItem>
+                    <NavItem ct={theme}>
+                        <Dropdown ct={theme} onClick={() => setDisplayThemes(!displayThemes)}>
+                            <BsPalette2 />
+                            {displayThemes && (
+                                <DropdownContent ref={themeRef} ct={theme}>
+                                    <DropdownItem ct={theme} onClick={() => handleTheme('light')}>Light</DropdownItem>
+                                    <DropdownItem ct={theme} onClick={() => handleTheme('dark')}>Dark</DropdownItem>
+                                    <DropdownItem ct={theme} onClick={() => handleTheme('material')}>Material</DropdownItem>
+                                </DropdownContent>
+                            )}
+                        </Dropdown>
+                    </NavItem>
+                </NavMenuRight>
             </Nav>
+        )}
         </>
     );
 };

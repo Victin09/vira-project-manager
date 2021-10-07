@@ -2,12 +2,6 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import themesJSON from '../themes/schema.json';
 
-interface IUseTheme {
-    theme: ITheme;
-    themeLoaded: boolean;
-    setMode: (mode: string) => void;
-}
-
 interface ISchema {
     colors: { primary: string; secondary: string };
     general: { shadow: string; border: string; borderRadius: string; marginTop: string };
@@ -34,7 +28,7 @@ interface IThemeContext {
 }
 
 const initialState: IThemeContext = {
-    theme: localStorage.getItem('theme') ? JSON.parse(localStorage.getItem('theme')) : themesJSON['dark'],
+    theme: localStorage.getItem('theme') ? JSON.parse(localStorage.getItem('theme')) : themesJSON['light'],
     changeTheme: () => {},
 };
 

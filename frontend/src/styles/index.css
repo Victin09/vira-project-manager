@@ -5,12 +5,16 @@ html {
     -webkit-text-size-adjust: 100%; /* 2 */
     -moz-tab-size: 4;
     -o-tab-size: 4;
-       tab-size: 4;
+    tab-size: 4;
 }
 
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
+}
+
+html, body, #root {
+    height: 100%;
 }
 
 a, a:visited, a:hover, a:active {

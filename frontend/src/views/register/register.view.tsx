@@ -35,6 +35,7 @@ const RegisterContainer = styled.div<{ ct: ITheme }>`
     @media only screen and (min-width: 768px) {
         box-shadow: ${(props) => props.ct.schema.general.shadow};
         height: 75%;
+        overflow: auto;
     }
 `;
 
