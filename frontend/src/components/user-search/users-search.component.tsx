@@ -102,7 +102,7 @@ const UserSearch = ({ fnc, fncSingle, isMultiple, fromProject, fromIssue, issueC
 
     const onChange = (e: MultiValue<ISearch>) => {
         const data: string[] = [];
-        e.forEach((item) => {
+        e.forEach((item: any) => {
             data.push(item.value);
         });
         fnc(data);

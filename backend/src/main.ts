@@ -10,7 +10,7 @@ async function bootstrap() {
     app.use(json({ limit: '50mb' }));
     app.use(urlencoded({ extended: true, limit: '50mb' }));
     app.useGlobalPipes(new ValidationPipe());
-    const whitelist = ['http://localhost:8080', 'http://localhost:8080/'];
+    const whitelist = ['http://localhost:8080', 'http://localhost:8081'];
     app.enableCors({
         origin: function (origin, callback) {
             if (!origin || whitelist.indexOf(origin) !== -1) {

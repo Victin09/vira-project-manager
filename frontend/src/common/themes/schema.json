@@ -5,32 +5,113 @@
         "schema": {
             "colors": {
                 "primary": "#FFFFFF",
-                "secondary": "#fafafa"
+                "secondary": "#DEE1E6"
             },
             "general": {
                 "shadow": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
                 "border": "1px solid rgba(72, 47, 247, 0.25)",
                 "borderRadius": "0.25rem",
-                "marginTop": "calc(100vh - 4.5em)"
+                "marginTop": "4.5em"
             },
             "sizes": {
-                "navbarHeight": "4em",
+                "navbarHeight": "4.5em",
                 "containerHeightFull": "calc(100vh - 4.5em)"
             },
             "text": {
                 "color": "#000000",
-                "hover": "#482ff7"
+                "hover": "#4082D4"
             },
             "input": {
                 "background": "#FFFFFF",
                 "shadow": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
                 "border": "1px solid rgba(0, 0, 0, 0.15)",
                 "focus": "1px solid rgba(72, 47, 247)",
-                "height": "1em"
+                "height": "1em",
+                "color": "#000000"
             },
             "button": {
                 "text": "#FFFFFF",
-                "background": "#482ff7"
+                "background": "#58CE3D"
+            },
+            "link": {
+                "text": "teal",
+                "opacity": 1
+            }
+        }
+    },
+    "dark": {
+        "id": "T_002",
+        "name": "Dark",
+        "schema": {
+            "colors": {
+                "primary": "#202124",
+                "secondary": "#535353"
+            },
+            "general": {
+                "shadow": "0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+                "border": "1px solid rgba(95, 99, 104, 0.25)",
+                "borderRadius": "0.25rem",
+                "marginTop": "4.5em"
+            },
+            "sizes": {
+                "navbarHeight": "4.5em",
+                "containerHeightFull": "calc(100vh - 4.5em)"
+            },
+            "text": {
+                "color": "#F1F3F4",
+                "hover": "#DEE1E6"
+            },
+            "input": {
+                "background": "#DEE1E6",
+                "shadow": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+                "border": "1px solid rgba(0, 0, 0, 0.15)",
+                "focus": "1px solid rgba(95, 99, 104)",
+                "height": "1em",
+                "color" : "#535353"
+            },
+            "button": {
+                "text": "#F1F3F4",
+                "background": "#5F6368"
+            },
+            "link": {
+                "text": "teal",
+                "opacity": 1
+            }
+        }
+    },
+    "material": {
+        "id": "T_003",
+        "name": "Material",
+        "schema": {
+            "colors": {
+                "primary": "#6a1b9a",
+                "secondary": "#e8e8e8"
+            },
+            "general": {
+                "shadow": "0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+                "border": "1px solid rgba(95, 99, 104, 0.25)",
+                "borderRadius": "0.25rem",
+                "marginTop": "4.5em"
+            },
+            "sizes": {
+                "navbarHeight": "4.5em",
+                "containerHeightFull": "calc(100vh - 4.5em)"
+            },
+            "text": {
+                "color": "#ebdbf5",
+                "hover": "#ebdbf5"
+            },
+            "input": {
+                "background": "#DEE1E6",
+                "shadow": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+                "border": "1px solid rgba(0, 0, 0, 0.15)",
+                "focus": "1px solid rgba(95, 99, 104)",
+                "height": "1em",
+                "color" : "#535353"
+            },
+            "button": {
+                "text": "#6a1b9a",
+                "background": "#ebdbf5"
             },
             "link": {
                 "text": "teal",
@@ -38,5 +119,4 @@
             }
         }
     }
-
 }

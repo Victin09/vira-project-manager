@@ -1,7 +1,7 @@
-import { pipelineTopicExpression } from '@babel/types';
-import { ITheme, useTheme } from '@common/hooks/theme.hook';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
+import { ITheme, useTheme } from '@common/context/theme-context.common';
 
 interface IDropdownData {
     label: string;
@@ -16,9 +16,9 @@ interface IDropdown {
     selected?: string;
 }
 
-const DropdownElement = styled.div<{ theme: ITheme }>`
-    border-radius: ${(props) => props.theme.schema.general.borderRadius};
-    background-color: ${(props) => props.theme.schema.colors.primary};
+const DropdownElement = styled.div<{ ct: ITheme }>`
+    border-radius: ${(props) => props.ct.schema.general.borderRadius};
+    background-color: ${(props) => props.ct.schema.colors.primary};
 `;
 
 const DropdownHeader = styled.div`
@@ -29,32 +29,32 @@ const DropdownHeader = styled.div`
     align-items: center;
 `;
 
-const DropdownBody = styled.div<{ theme: ITheme; open: boolean }>`
+const DropdownBody = styled.div<{ ct: ITheme; open: boolean }>`
     padding: 5px;
-    border: ${(props) => props.theme.schema.general.border};
+    border: ${(props) => props.ct.schema.general.border};
     display: ${(props) => (props.open ? 'block' : 'none')};
-    box-shadow: ${(props) => props.theme.schema.general.shadow};
+    box-shadow: ${(props) => props.ct.schema.general.shadow};
     position: absolute;
-    background-color: ${(props) => props.theme.schema.colors.primary};
-    border-radius: ${(props) => props.theme.schema.general.borderRadius};
+    background-color: ${(props) => props.ct.schema.colors.primary};
+    border-radius: ${(props) => props.ct.schema.general.borderRadius};
     margin-left: auto;
     right: 0;
     margin-top: 0.9em;
 `;
 
-const DropdownItem = styled.div`
+const DropdownItem = styled.div<{ ct: ITheme}>`
     padding: 10px;
     display: flex;
 
     :hover {
         cursor: pointer;
-        color: ${(props) => props.theme.schema.text.hover};
+        color: ${(props) => props.ct.schema.text.hover};
     }
 `;
 
-const DropdownItemDot = styled.div<{ selected: boolean }>`
+const DropdownItemDot = styled.div<{ selected: boolean, ct: ITheme }>`
     opacity: ${(props) => (props.selected ? 1 : 0)};
-    color: ${(props) => props.theme.schema.text.color};
+    color: ${(props) => props.ct.schema.text.color};
     transition: all 0.2s ease-in-out;
     margin-right: 0.25em;
 `;
@@ -93,15 +93,15 @@ const Dropdown = ({ data, title, icon, fnc, selected }: IDropdown): JSX.Element 
     };
 
     return (
-        <DropdownElement>
+        <DropdownElement ct={theme}>
             <DropdownHeader onClick={toggleDropdown}>
                 {renderLabel()}
                 {/* <i className={`fa fa-chevron-right icon ${isOpen && 'open'}`}></i> */}
             </DropdownHeader>
-            <DropdownBody open={isOpen} theme={theme}>
+            <DropdownBody open={isOpen} ct={theme}>
                 {data.map((item: IDropdownData, index: number) => (
-                    <DropdownItem onClick={() => handleItemClick(item.value)} id={item.value} key={index}>
-                        <DropdownItemDot selected={item.value == selectedItem}>•</DropdownItemDot>
+                    <DropdownItem ct={theme} onClick={() => handleItemClick(item.value)} id={item.value} key={index}>
+                        <DropdownItemDot ct={theme} selected={item.value == selectedItem}>•</DropdownItemDot>
                         {item.label}
                     </DropdownItem>
                 ))}

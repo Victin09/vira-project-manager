@@ -60,6 +60,7 @@
         "jest": "^27.2.4",
         "mini-css-extract-plugin": "^2.4.1",
         "prettier": "^2.4.1",
+        "style-loader": "^3.3.0",
         "stylelint": "^13.13.1",
         "stylelint-config-sass-guidelines": "^8.0.0",
         "tailwindcss": "^2.2.16",

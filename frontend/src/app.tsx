@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { I18nProvider } from 'vira-i18n-react';
 import { CookiesProvider } from 'react-cookie';
-import { ThemeProvider } from 'styled-components';
 import { BrowserRouter as Router, Redirect, Route } from 'react-router-dom';
 
+import './styles/index.css';
 import es from '@common/i18n/es.json';
 import en from '@common/i18n/en.json';
 
@@ -11,15 +11,12 @@ import Navbar from '@components/navbar/navbar.component';
 import { IRoute, routes } from '@common/routes/routes.common';
 import PrivateRoute from '@common/auth/private-router.common';
 import { UserProvider } from '@common/context/user-context.common';
-import { useTheme } from '@common/hooks/theme.hook';
+import { ThemeProvider } from '@common/context/theme-context.common';
 
 const App = (): JSX.Element => {
-    const { theme, themeLoaded } = useTheme();
-    const [selectedTheme, setSelectedTheme] = useState(theme);
     const [selectedLanguage, setSelectedLanguage] = useState('');
 
     useEffect(() => {
-        setSelectedTheme(theme);
         const language = localStorage.getItem('language');
         if (!language) {
             setSelectedLanguage('en');
@@ -27,7 +24,7 @@ const App = (): JSX.Element => {
         } else {
             setSelectedLanguage(language);
         }
-    }, [themeLoaded]);
+    }, []);
 
     const locales = [
         {
@@ -41,24 +38,24 @@ const App = (): JSX.Element => {
     ];
 
     return (
-        <I18nProvider language={selectedLanguage} locales={locales}>
-            <CookiesProvider>
-                <UserProvider>
-                    <ThemeProvider theme={selectedTheme}>
-                        <Router>
-                            <Navbar />
-                            <Route path="/" exact>
-                                <Redirect to="/project" />
-                            </Route>
-                            {routes.map((route: IRoute, index) => {
-                                if (route.private) return <PrivateRoute key={index} {...route} />;
-                                else return <Route key={index} {...route} />;
-                            })}
-                        </Router>
-                    </ThemeProvider>
-                </UserProvider>
-            </CookiesProvider>
-        </I18nProvider>
+        <ThemeProvider>
+            <I18nProvider language={selectedLanguage} locales={locales}>
+                <CookiesProvider>
+                    <UserProvider>
+                            <Router>
+                                <Navbar />
+                                <Route path="/" exact>
+                                    <Redirect to="/project" />
+                                </Route>
+                                {routes.map((route: IRoute, index) => {
+                                    if (route.private) return <PrivateRoute key={index} {...route} />;
+                                    else return <Route key={index} {...route} />;
+                                })}
+                            </Router>
+                    </UserProvider>
+                </CookiesProvider>
+            </I18nProvider>
+        </ThemeProvider>
     );
 };
 
