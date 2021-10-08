@@ -3,13 +3,16 @@ import { useParams } from 'react-router';
 import { BsKanban } from 'react-icons/bs';
 import { IoMdList } from 'react-icons/io';
 
-import { getToken } from '@common/auth/auth.common';
+import { getToken, isAuthenticated } from '@common/auth/auth.common';
 import ProjectSidebar from '@components/sidebar/project-sidebar.component';
 import Backlog from '@views/backlog/backlog.view';
 import Board from '@views/board/board.view';
 import IssueSidebar from '@components/sidebar/issue-sidebar.component';
 import ProjectDetails from '@views/project-settings/project-details.view';
 import ProjectAccess from '@views/project-settings/project-access.view';
+import { Row } from '@components/ui/column.component';
+import { Container } from '@components/ui/container.component';
+import { useTheme } from '@common/context/theme-context.common';
 
 interface IParams {
     projectCode: string;
@@ -23,6 +26,7 @@ interface IProject {
 
 const Project = (): JSX.Element => {
     const { projectCode } = useParams<IParams>();
+    const { theme } = useTheme();
 
     const [project, setProject] = useState<IProject>();
     const [option, setOption] = useState('');
@@ -113,8 +117,8 @@ const Project = (): JSX.Element => {
     return (
         <>
             {project && (
-                <>
-                    <div className="h-full flex">
+                <Container ct={theme} auth={isAuthenticated()}>
+                    <Row fullHeight center>
                         <ProjectSidebar
                             projectData={project}
                             options={options}
@@ -126,8 +130,8 @@ const Project = (): JSX.Element => {
                         />
                         {!showSettings ? renderOption() : renderSettings()}
                         <IssueSidebar display={showOptions} setDisplay={setShowOptions} item={issue} projectCode={projectCode} />
-                    </div>
-                </>
+                    </Row>
+                </Container>
             )}
         </>
     );

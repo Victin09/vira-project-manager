@@ -10,5 +10,8 @@
     "login_with": "Or login with",
     "username": "Username",
     "fullName": "Name and surname",
-    "haveAccount": "Already have an account?"
+    "haveAccount": "Already have an account?",
+    "sign_in_text": "Sign in to continue",
+    "sign_up_text": "Register to continue",
+    "no_account": "Don't have an account? Create one here"
 }

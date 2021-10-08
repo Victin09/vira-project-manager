@@ -1,29 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { FaMagento, FaTimes } from 'react-icons/fa';
 
-import svg1 from '@common/images/svg-1.png';
-import svg2 from '@common/images/svg-2.png';
-import svg3 from '@common/images/svg-3.png';
+import Header1SVG from '@common/images/landing-1';
+import Header2SVG from '@common/images/landing-2';
+import Header3SVG from '@common/images/landing-3';
+import WavesSvg from '@common/images/waves';
+import WavesUpSvg from '@common/images/waves-up';
 
 const Container = styled.div`
     z-index: 1;
     width: 100%;
-    max-width: 1300px;
-    margin-right: auto;
-    margin-left: auto;
-    padding-right: 50px;
-    padding-left: 50px;
-    @media screen and (max-width: 991px) {
-    padding-right: 30px;
-    padding-left: 30px;
-    }
+    height: 80%;
+    max-width: 100%;
 `;
 
 const Nav = styled.nav`
     background: #101522;
-    height: 80px;
+    height: 4.5em;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,28 +26,29 @@ const Nav = styled.nav`
     position: sticky;
     top: 0;
     z-index: 999;
-`
+`;
 
 const NavbarContainer = styled(Container)`
     display: flex;
-    justify-content: space-between;
-    height: 80px;
+    padding-left: 2em;
+    /* justify-content: center; */
+    height: 100%;
     ${Container}
-`
+`;
 
 const NavLogo = styled(Link)`
-    color: #fff;
+    color: #fff !important;
     justify-self: flex-start;
     cursor: pointer;
     text-decoration: none;
     font-size: 2rem;
     display: flex;
     align-items: center;
-`
+`;
 
 const NavIcon = styled(FaMagento)`
     margin-right: 0.5rem;
-`
+`;
 
 const HamburgerIcon = styled.div`
     display: none;
@@ -65,15 +61,16 @@ const HamburgerIcon = styled.div`
         font-size: 1.8rem;
         cursor: pointer;   
     }
-`
+`;
 
 const NavMenu = styled.ul<{ click: any }>`
     display: flex;
     align-items: center;
     list-style: none;
     text-align: center;
-    
-  
+    margin-left: auto;
+    padding-right: 2em;
+      
     @media screen and (max-width: 960px) {
         display: flex;
         flex-direction: column;
@@ -86,7 +83,8 @@ const NavMenu = styled.ul<{ click: any }>`
         background-color: #101522;
         left: ${({ click }) => (click ? 0 : '-100%')};
     }
-`
+`;
+
 const NavItem = styled.li`
     height: 80px;
     border-bottom: 2px solid transparent;
@@ -123,36 +121,43 @@ const NavLinks = styled(Link)`
 `
 
 const NavItemBtn = styled.li`
-  @media screen and (max-width: 960px) {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 120px;
-  }
+
+    @media screen and (max-width: 960px) {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
 `;
 
 const InfoSec = styled.div<{ lightBg: any }>`
     color: #fff;
-    padding: 160px 0;
+    height: 100%;
+    display: flex;
+    align-items: end;
     background: ${({ lightBg }) => (lightBg ? '#fff' : '#101522')};
 `
 
 const InfoRow = styled.div<{ imgStart: any }>`
   display: flex;
-  margin: 0 -15px -15px -15px;
+  /* margin: 0 -15px -15px -15px; */
   flex-wrap: wrap;
   align-items: center;
   flex-direction: ${({ imgStart }) => (imgStart ? 'row-reverse' : 'row')};
 `;
 
-const InfoColumn = styled.div`
-    margin-bottom: 15px;
-    padding-right: 15px;
-    padding-left: 15px;
+const InfoColumn = styled.div<{ end: boolean }>`
+    display: flex;
+    justify-content: space-between;
     flex: 1;
-    max-width: 50%;
-    flex-basis: 50%;
+    width: 80%;
+    height: 100%;
+    text-align: ${(props) => props.end ? 'end' : 'start'};
+    padding-left: 3em;
+    padding-right: 3em;
+
     @media (min-width: 480px) and (max-width: 1200px) {
         max-width: 100%;
         flex-basis: 100%;
@@ -172,6 +177,7 @@ const TextWrapper = styled.div`
   max-width: 540px;
   padding-top: 0;
   padding-bottom: 60px;
+  
   @media (min-width: 480px) and (max-width: 1200px) {
     padding-bottom: 65px;
   }
@@ -213,7 +219,6 @@ const Heading = styled.h1<{ lightText: any }>`
 `;
 
 const Subtitle = styled.p<{ lightTextDesc: any }>`
-  max-width: 440px;
   margin-bottom: 35px;
   font-size: 18px;
   line-height: 24px;
@@ -263,10 +268,10 @@ const homeObjOne = {
     description:
         'We help business owners increase their revenue. Our team of unique specialist can help you achieve your business goals.',
     buttonLabel: 'Get Started',
-    imgStart: '',
-    img: require('../../common/images/svg-1.png'),
-    alt: 'Credit Card',
-    start: ''
+    svg: <Header1SVG />,
+    start: false,
+    textEnd: true,
+    wavesBottom: true
 };
 
 const homeObjTwo = {
@@ -280,10 +285,11 @@ const homeObjTwo = {
     description:
         "Once you've joined, our team of specialist will reach out to you and get you set up in minutes.",
     buttonLabel: 'Learn More',
-    imgStart: '',
-    img: svg2,
+    svg: <Header2SVG />,
     alt: 'Vault',
-    start: ''
+    start: true,
+    textEnd: false,
+    wavesTop: true
 };
 
 const homeObjThree = {
@@ -299,8 +305,9 @@ const homeObjThree = {
         "Their team is wonderful! I can't believe I didn't start working with them earlier.",
     buttonLabel: 'View Case Study',
     imgStart: 'start',
-    alt: 'Vault',
-    start: 'true'
+    svg: <Header3SVG />,
+    textEnd: true,
+    start: false
 };
 
 const homeObjFour = {
@@ -315,9 +322,8 @@ const homeObjFour = {
         'You will never have to worry about your information getting leaked. Our team of security experts will ensure your records are kept safe.',
     buttonLabel: 'Sign Up Now',
     imgStart: 'start',
-    img: svg3,
     alt: 'Vault',
-    start: 'true'
+    start: true
 };
 
 const Landing = () => {
@@ -358,33 +364,52 @@ const Landing = () => {
         headline,
         description,
         buttonLabel,
-        img,
-        alt,
         imgStart,
-        start
+        textEnd,
+        svg,
+        start,
     }: any) => {
         return (
             <InfoSec lightBg={lightBg}>
-                {console.log('svg', svg1)}
+                {/* {wavesTop && <WavesUpSvg />} */}
                 <Container>
                     <InfoRow imgStart={imgStart}>
-                        <InfoColumn>
-                            <TextWrapper>
-                                <TopLine lightTopLine={lightTopLine}>{topLine}</TopLine>
-                                <Heading lightText={lightText}>{headline}</Heading>
-                                <Subtitle lightTextDesc={lightTextDesc}>{description}</Subtitle>
-                                <Link to='/register'>
-                                    <Button big fontBig primary={primary}>
-                                        {buttonLabel}
-                                    </Button>
-                                </Link>
-                            </TextWrapper>
+                        <InfoColumn end={textEnd}>
+                            {start ? (
+                                <>
+                                    <ImgWrapper start={start}>
+                                        {svg}
+                                    </ImgWrapper>
+                                    <TextWrapper>
+                                        <TopLine lightTopLine={lightTopLine}>{topLine}</TopLine>
+                                        <Heading lightText={lightText}>{headline}</Heading>
+                                        <Subtitle lightTextDesc={lightTextDesc}>{description}</Subtitle>
+                                        <Link to='/register'>
+                                            <Button big fontBig primary={primary}>
+                                                {buttonLabel}
+                                            </Button>
+                                        </Link>
+                                    </TextWrapper>
+                                </>
+                            ) : (
+                                <>
+                                    <TextWrapper>
+                                        <TopLine lightTopLine={lightTopLine}>{topLine}</TopLine>
+                                        <Heading lightText={lightText}>{headline}</Heading>
+                                        <Subtitle lightTextDesc={lightTextDesc}>{description}</Subtitle>
+                                        <Link to='/register'>
+                                            <Button big fontBig primary={primary}>
+                                                {buttonLabel}
+                                            </Button>
+                                        </Link>
+                                    </TextWrapper>
+                                    <ImgWrapper start={start}>
+                                        {svg}
+                                    </ImgWrapper>
+                                </>
+                            )}
                         </InfoColumn>
-                        <InfoColumn>
-                            <ImgWrapper start={start}>
-                                <Img src={img} alt={alt} />
-                            </ImgWrapper>
-                        </InfoColumn>
+                    {/* {wavesBottom && <WavesSvg />} */}
                     </InfoRow>
                 </Container>
             </InfoSec>
@@ -406,10 +431,10 @@ const Landing = () => {
                         <NavItemBtn >
                             {button ? (
                                 <>
-                                    <NavBtnLink to='/sign-up'>
-                                        <Button primary>SIGN UP</Button>
+                                    <NavBtnLink to='/login'>
+                                        <Button primary>SIGN IN</Button>
                                     </NavBtnLink>
-                                    <NavBtnLink to='/sign-up'>
+                                    <NavBtnLink to='/register'>
                                         <Button primary>SIGN UP</Button>
                                     </NavBtnLink>
                                 </>
@@ -424,10 +449,11 @@ const Landing = () => {
                 </NavbarContainer>
             </Nav>
             <Section {...homeObjOne} />
+            
             <Section {...homeObjThree} />
             <Section {...homeObjTwo} />
             {/* <Pricing /> */}
-            <Section {...homeObjFour} />
+            {/* <Section {...homeObjFour} /> */}
         </>
     );
 }

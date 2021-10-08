@@ -5,11 +5,11 @@
         "schema": {
             "colors": {
                 "primary": "#FFFFFF",
-                "secondary": "#DEE1E6"
+                "secondary": "#F0F0F0"
             },
             "general": {
                 "shadow": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-                "border": "1px solid rgba(72, 47, 247, 0.25)",
+                "border": "1px solid rgba(0, 0, 0, 0.10)",
                 "borderRadius": "0.25rem",
                 "marginTop": "clamp(4.5em, 4.5em, 4.5em);"
             },
@@ -19,11 +19,11 @@
             },
             "text": {
                 "color": "#000000",
-                "hover": "#4082D4"
+                "hover": "#4B59F7"
             },
             "input": {
                 "background": "#FFFFFF",
-                "shadow": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+                "shadow": "0 1px 2px 0 rgba(0, 0, 0, 0.10)",
                 "border": "1px solid rgba(0, 0, 0, 0.15)",
                 "focus": "1px solid rgba(72, 47, 247)",
                 "height": "1em",
@@ -31,7 +31,7 @@
             },
             "button": {
                 "text": "#FFFFFF",
-                "background": "#58CE3D"
+                "background": "#4B59F7"
             },
             "link": {
                 "text": "teal",

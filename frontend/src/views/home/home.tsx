@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { useUser } from '@common/context/user-context.common';
-import { getToken } from '@common/auth/auth.common';
+import { getToken, isAuthenticated } from '@common/auth/auth.common';
 import { nameToInitials } from '@common/util/initials.common';
+import { ITheme, useTheme } from '@common/context/theme-context.common';
+import { Column, Row } from '@components/ui/column.component';
+import { Container } from '@components/ui/container.component';
 
 interface IProject {
     name: string;
@@ -26,8 +30,48 @@ interface IUser {
     icon?: string;
 }
 
+const ProjectsContainer = styled.div<{ ct: ITheme }>`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+`;
+
+const Grid = styled.div<{ ct: ITheme }>`
+    display: grid;
+    grid-template-columns: 
+        minmax(4em, 4fr)
+        minmax(4em, 4fr)
+        minmax(8em, 8fr)
+        minmax(4px, 4fr)
+    ;
+    /* border: ${(props) => props.ct.schema.general.border}; */
+    border-radius: ${(props) => props.ct.schema.general.borderRadius};
+    margin-top: 2em;
+`;
+
+const GridRowTitle = styled.div<{ ct: ITheme }>`
+    border-bottom: ${(props) => props.ct.schema.general.border};
+`;
+
+const GridColumnTitle = styled.div<{ ct: ITheme }>`
+    border-radius: ${(props) => props.ct.schema.general.borderRadius};
+    text-align: left;
+`;
+
+const GridRow = styled.div<{ ct: ITheme }>`
+    display: contents;
+`;
+
+const GridColumnData = styled.div<{ ct: ITheme }>`
+    /* border: ${(props) => props.ct.schema.general.border}; */
+    border-radius: ${(props) => props.ct.schema.general.borderRadius};
+    text-align: left;
+    margin-top: 1em;
+`;
+
 const Home = (): JSX.Element => {
     const { email } = useUser();
+    const { theme } = useTheme();
 
     const [projects, setProjects] = useState<IProject[]>([]);
 
@@ -51,61 +95,72 @@ const Home = (): JSX.Element => {
     return (
         <>
             {!projects.length && !email ? (
-                <div className="container mx-auto px-4 sm:px-8">
-                    <span>
-                        No tienes ningún proyecto asociado{' '}
-                        <Link to="/project/new" className="ml-1 text-indigo-700">
-                            Crea un proyecto
-                        </Link>
-                    </span>
-                </div>
+                <Container ct={theme} auth={isAuthenticated()}>
+                    <Row fullHeight center>
+                        <Column xs="12" sm="12" md="12" lg="12">
+                            No tienes ningún proyecto asociado{' '}
+                            <Link to="/project/new">
+                                Crea un proyecto
+                            </Link>
+                        </Column>
+                    </Row>
+                </Container>
             ) : (
-                <div className="container mx-auto px-4 sm:px-8">
-                    <div className="py-8">
-                        <div>
-                            <h2 className="text-2xl font-semibold leading-tight">Proyectos</h2>
-                        </div>
-                        <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
-                            <div className="inline-block min-w-full shadow-md rounded-lg overflow-hidden">
-                                <table className="min-w-full leading-normal bg-white">
-                                    <thead>
-                                        <tr>
-                                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                                Nombre
-                                            </th>
-                                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                                Tipo
-                                            </th>
-                                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                                Descripcion
-                                            </th>
-                                            <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                                                Responsable
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {projects.map((project, index) => (
-                                            <tr key={index} className="border-b border-gray-200">
-                                                <td className="px-5 py-5 bg-white text-sm">
+                <Container ct={theme} auth={isAuthenticated()}>
+                    <Row fullHeight center>
+                        <Column xs="12" sm="12" md="10" lg="8">
+                            <ProjectsContainer ct={theme}>
+                                <div>
+                                    <h2 className="text-2xl font-semibold leading-tight">Proyectos</h2>
+                                </div>
+                                <Grid ct={theme}>
+                                    <GridRowTitle ct={theme}>
+                                        <GridColumnTitle ct={theme}>
+                                            Nombre
+                                        </GridColumnTitle>
+                                        <GridColumnTitle ct={theme}>
+                                            Tipo
+                                        </GridColumnTitle>
+                                        <GridColumnTitle ct={theme}>
+                                            Descripcion
+                                        </GridColumnTitle>
+                                        <GridColumnTitle ct={theme}>
+                                            Responsable
+                                        </GridColumnTitle>
+                                    </GridRowTitle>
+                                    {projects.map((project, index) => (
+                                        <GridRow ct={theme}>
+                                            <GridColumnData ct={theme}>
+                                                {project.name}
+                                            </GridColumnData>
+                                            <GridColumnData ct={theme}>
+                                                {project.type.name}
+                                            </GridColumnData>
+                                            <GridColumnData ct={theme}>
+                                                {project.description}
+                                            </GridColumnData>
+                                            <GridColumnData ct={theme}>
+                                                {project.responsible.name}
+                                            </GridColumnData>
+                                                {/* <td className="px-5 py-5 bg-white text-sm">
                                                     <div className="flex items-center">
                                                         {project.image ? (
                                                             <img
-                                                                className="m-1 w-10 h-10 relative flex justify-center items-center rounded"
-                                                                src={project.image}
+                                                            className="m-1 w-10 h-10 relative flex justify-center items-center rounded"
+                                                            src={project.image}
                                                             />
-                                                        ) : (
-                                                            <div
+                                                            ) : (
+                                                                <div
                                                                 className="m-1 w-10 h-10 relative flex justify-center items-center rounded bg-indigo-700 text-xl text-white uppercase"
                                                                 key={index}
-                                                            >
+                                                                >
                                                                 {nameToInitials(project.name)}
                                                             </div>
                                                         )}
                                                         <Link
                                                             to={`/project/view/${project.code}`}
                                                             className="ml-1 font-bold text-indigo-700 whitespace-no-wrap cursor-pointer hover:underline hover:text-indigo-700 hover:italic"
-                                                        >
+                                                            >
                                                             {project.name}
                                                         </Link>
                                                     </div>
@@ -120,7 +175,7 @@ const Home = (): JSX.Element => {
                                                     <div
                                                         className="m-1 w-8 h-8 relative flex justify-center items-center rounded-full bg-indigo-700 text-xl text-white uppercase"
                                                         key={index}
-                                                    >
+                                                        >
                                                         {project.responsible.icon
                                                             ? project.responsible.icon
                                                             : nameToInitials(project.responsible.name)}
@@ -128,15 +183,14 @@ const Home = (): JSX.Element => {
                                                     <span className="ml-1 text-indigo-700 whitespace-no-wrap cursor-pointer hover:underline hover:text-indigo-700">
                                                         {project.responsible.name}
                                                     </span>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                                </td> */}
+                                        </GridRow>
+                                    ))}
+                                </Grid>
+                            </ProjectsContainer>
+                        </Column>
+                    </Row>
+                </Container>
             )}
         </>
     );

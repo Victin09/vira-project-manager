@@ -13,7 +13,7 @@ interface IPrivateRoute {
 const PrivateRoute = ({ path, exact, component }: IPrivateRoute): JSX.Element => {
     const user = useUser();
 
-    return user.email && isAuthenticated() ? <Route path={path} exact={exact} component={component} /> : <Redirect to="/landing" />;
+    return user.email && isAuthenticated() ? <Route path={path} exact={exact} component={component} /> : <Redirect to="/login" />;
 };
 
 PrivateRoute.defaultProps = {
