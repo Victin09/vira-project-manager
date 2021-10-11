@@ -112,11 +112,11 @@ const Dropdown = styled.div<{ ct: ITheme }>`
     color: ${(props) => props.ct.schema.text.color};
 `;
 
-const DropdownContent = styled.div<{ ct: ITheme }>`
+const DropdownContent = styled.div<{ ct: ITheme, right: boolean }>`
     display: flex;
     flex-direction: column;
     position: absolute;
-    right: 0;
+    right: ${(props) => props.right ? 0 : 'auto'};
     background-color: ${(props) => props.ct.schema.colors.primary};
     border-radius: ${(props) => props.ct.schema.general.borderRadius};
     min-width: 160px;
@@ -135,8 +135,26 @@ const DropdownItem = styled.span<{ ct: ITheme }>`
     }
 `;
 
-const UserProfile = styled.div`
+const UserProfile = styled.div<{ ct: ITheme }>`
+    width: 2em;
+    height: 2em;
+    border-radius: 25%;
+    font-size: 1em;
+    color: ${(props) => props.ct.schema.button.text};
+    font-weight: bold;
+    line-height: 2em;
+    text-align: center;
+    background: ${(props) => props.ct.schema.button.background};  
+    margin-right: .5em;
 
+    @media screen and (max-width: 600px) {
+        display: none;
+    }
+`;
+
+const MenuItemWithIcon = styled.span`
+    display: flex;
+    align-items: center;
 `;
 
 const Hamburger = styled.div<{ ct: ITheme; open: boolean }>`
@@ -181,7 +199,8 @@ const Navbar = (): JSX.Element => {
     const { icon, name } = useUser();
     const localtion = useLocation();
     const { theme, changeTheme } = useTheme();
-    const { i18n, setLanguage } = useI18n();
+    const { setLanguage } = useI18n();
+    const projectsRef = useRef();
     const languageRef = useRef();
     const themeRef = useRef();
 
@@ -189,6 +208,7 @@ const Navbar = (): JSX.Element => {
     const [autenticated, setAutenticated] = useState(false);
     const [displayMenu, setDisplayMenu] = useState(false);
     const [displayUserOptions, setDisplayUserOptions] = useState(false);
+    const [displayProjects, setDisplayProjects] = useState(false);
     const [displayThemes, setDisplayThemes] = useState(false);
     const [displayLanguage, setDisplayLanguage] = useState(false);
 
@@ -211,6 +231,10 @@ const Navbar = (): JSX.Element => {
         localStorage.setItem('language', language);
     };
 
+    const handleClickOutsideProjects = () => {
+        setDisplayProjects(false);
+    };
+
     const handleClickOutsideLanguage = () => {
         setDisplayLanguage(false);
     };
@@ -219,6 +243,7 @@ const Navbar = (): JSX.Element => {
         setDisplayThemes(false);
     };
 
+    useOnClickOutside(projectsRef, handleClickOutsideProjects);
     useOnClickOutside(languageRef, handleClickOutsideLanguage);
     useOnClickOutside(themeRef, handleClickOutsideTheme);
 
@@ -234,19 +259,26 @@ const Navbar = (): JSX.Element => {
                 </Hamburger>
                 <NavItem ct={theme}>
                     <NavItem ct={theme}>
-                        <span>
-                            <RiFileListLine />
-                        </span>
-                        <span>Proyectos</span>
+                        <Dropdown ct={theme} onClick={() => setDisplayProjects(!displayProjects)}>
+                            <MenuItemWithIcon>
+                                <RiFileListLine /> Proyectos
+                            </MenuItemWithIcon>
+                            {displayProjects && (
+                                <DropdownContent ref={projectsRef} ct={theme} right={false}>
+                                    <DropdownItem ct={theme}><Link to="/project">Ver</Link></DropdownItem>
+                                    <DropdownItem ct={theme}><Link to="/project/new">Crear</Link></DropdownItem>
+                                </DropdownContent>
+                            )}
+                        </Dropdown>
                     </NavItem>
                 </NavItem>
                 <NavMenuRight open={displayMenu} ct={theme}>
-                    <UserProfile onClick={handleUserClick}>{icon ? icon : nameToInitials(name)}</UserProfile>
+                    <UserProfile ct={theme} onClick={handleUserClick}>{icon ? icon : nameToInitials(name)}</UserProfile>
                     <NavItem ct={theme}>
                         <Dropdown ct={theme} onClick={() => setDisplayLanguage(!displayLanguage)}>
                             {lang}
                             {displayLanguage && (
-                                <DropdownContent ref={languageRef} ct={theme}>
+                                <DropdownContent ref={languageRef} ct={theme} right>
                                     <DropdownItem ct={theme} onClick={() => handleLanguage('en')}>EN</DropdownItem>
                                     <DropdownItem ct={theme} onClick={() => handleLanguage('es')}>ES</DropdownItem>
                                 </DropdownContent>
@@ -257,7 +289,7 @@ const Navbar = (): JSX.Element => {
                         <Dropdown ct={theme} onClick={() => setDisplayThemes(!displayThemes)}>
                             <BsPalette2 />
                             {displayThemes && (
-                                <DropdownContent ref={themeRef} ct={theme}>
+                                <DropdownContent ref={themeRef} ct={theme} right>
                                     <DropdownItem ct={theme} onClick={() => handleTheme('light')}>Light</DropdownItem>
                                     <DropdownItem ct={theme} onClick={() => handleTheme('dark')}>Dark</DropdownItem>
                                     <DropdownItem ct={theme} onClick={() => handleTheme('material')}>Material</DropdownItem>
