@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import Select, { MultiValue } from 'react-select';
 
 import { nameToInitials } from '@common/util/initials.common';
 import { getToken } from '@common/auth/auth.common';
+import { ITheme, useTheme } from '@common/context/theme-context.common';
 
 interface ISearch {
     value: string;
@@ -18,7 +20,35 @@ interface IUserSearch {
     issueCode?: string;
 }
 
+const UserImage = styled.div<{ ct: ITheme }>`
+    width: 2em;
+    height: 2em;
+    border-radius: 25%;
+    font-size: 0.75em;
+    color: ${(props) => props.ct.schema.button.text};
+    font-weight: bold;
+    line-height: 2em;
+    text-align: center;
+    background: ${(props) => props.ct.schema.button.background};  
+    margin-right: .5em;
+
+    @media screen and (max-width: 600px) {
+        display: none;
+    }
+`;
+
+const NameLabel = styled.span<{ ct: ITheme }>`
+    font-weight: bold;
+`;
+
+const UsernameLabel = styled.span<{ ct: ITheme }>`
+    font-weight: 100;
+    opacity: 0.5;
+`;
+
 const UserSearch = ({ fnc, fncSingle, isMultiple, fromProject, fromIssue, issueCode }: IUserSearch): JSX.Element => {
+    const { theme } = useTheme();
+
     const [reload, setReload] = useState(false);
     const [users, setUsers] = useState([]);
     const [selectedUsers, setSelectedUsers] = useState([]);
@@ -41,17 +71,17 @@ const UserSearch = ({ fnc, fncSingle, isMultiple, fromProject, fromIssue, issueC
                     const user: ISearch = {
                         value: element.email,
                         label: (
-                            <div className="flex items-center">
+                            <div style={{ display: 'flex', alignItems: 'center'}}>
                                 {element.icon ? (
                                     <img className="m-1 w-6 h-6 relative flex justify-center items-center rounded-full" src={element.icon} />
                                 ) : (
-                                    <div className="m-1 w-6 h-6 relative flex justify-center items-center rounded-full bg-indigo-700 text-xs text-white uppercase">
+                                    <UserImage ct={theme}>
                                         {nameToInitials(element.name)}
-                                    </div>
+                                    </UserImage>
                                 )}{' '}
-                                <div className="flex flex-col ml-2">
-                                    {/* <span className="font-bold">{element.name}</span> */}
-                                    <span className="font-thin">{element.username}</span>
+                                <div style={{ display: 'flex', flexDirection: 'column'}}>
+                                    <NameLabel ct={theme}>{element.name}</NameLabel>
+                                    <UsernameLabel ct={theme}>{element.username}</UsernameLabel>
                                 </div>
                             </div>
                         )
@@ -75,17 +105,17 @@ const UserSearch = ({ fnc, fncSingle, isMultiple, fromProject, fromIssue, issueC
                         const user: ISearch = {
                             value: element.email,
                             label: (
-                                <div className="flex items-center">
+                                <div style={{ display: 'flex', alignItems: 'center'}}>
                                     {element.icon ? (
                                         <img className="m-1 w-6 h-6 relative flex justify-center items-center rounded-full" src={element.icon} />
                                     ) : (
-                                        <div className="m-1 w-6 h-6 relative flex justify-center items-center rounded-full bg-indigo-700 text-xs text-white uppercase">
+                                        <UserImage ct={theme}>
                                             {nameToInitials(element.name)}
-                                        </div>
+                                        </UserImage>
                                     )}{' '}
-                                    <div className="flex flex-col ml-2">
-                                        {/* <span className="font-bold">{element.name}</span> */}
-                                        <span className="font-thin">{element.username}</span>
+                                    <div style={{ display: 'flex', flexDirection: 'column'}}>
+                                        <NameLabel ct={theme}>{element.name}</NameLabel>
+                                        <UsernameLabel ct={theme}>{element.username}</UsernameLabel>
                                     </div>
                                 </div>
                             )
@@ -102,9 +132,14 @@ const UserSearch = ({ fnc, fncSingle, isMultiple, fromProject, fromIssue, issueC
 
     const onChange = (e: MultiValue<ISearch>) => {
         const data: string[] = [];
-        e.forEach((item: any) => {
-            data.push(item.value);
-        });
+        if (!e.length) {
+            setSelectedUsers([])
+        } else {
+            e.forEach((item: any) => {
+                data.push(item.value);
+                setSelectedUsers(old => [...old, item])
+            });
+        }
         fnc(data);
         setReload(!reload);
     };
@@ -116,11 +151,44 @@ const UserSearch = ({ fnc, fncSingle, isMultiple, fromProject, fromIssue, issueC
     const customStyles = {
         option: (styles: any, state: any) => ({
             ...styles,
-            cursor: 'pointer'
+            cursor: 'pointer',
+            background: theme.schema.input.background,
+            color: theme.schema.input.color,
+
+            "&:hover": {
+                background: theme.schema.colors.secondary,
+                color: theme.schema.text.hover,
+            }
+        }),
+        menuList: (styles: any, _state: any) => ({
+            background: theme.schema.input.background,
+            borderRadius: theme.schema.general.borderRadius
         }),
         control: (styles: any) => ({
             ...styles,
-            cursor: 'pointer'
+            background: theme.schema.input.background,
+            color: theme.schema.input.color,
+            cursor: 'pointer',
+            boxShadow: 'none'
+        }),
+        multiValue: (styles: any) => ({
+            ...styles,
+            backgroundColor: theme.schema.colors.secondary
+        }),
+        multiValueLabel: (styles: any) => ({
+            ...styles,
+            color: theme.schema.text.color,
+        }),
+        multiValueRemove: (styles: any) => ({
+            ...styles,
+            color: theme.schema.text.color,
+            ':hover': {
+                color: theme.schema.text.hover,
+            }
+        }),
+        container: (styles: any) => ({
+            ...styles,
+            width: '100%'
         })
     };
 

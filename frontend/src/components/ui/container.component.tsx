@@ -8,4 +8,5 @@ export const Container = styled.div<{ ct: ITheme, auth: boolean }>`
     height: ${(props) => props.auth ? props.ct.schema.sizes.containerHeightFull : '100%'};
     margin-top: ${(props) => props.auth ? props.ct.schema.general.marginTop : 0};
     background-color: ${(props) => props.ct.schema.colors.primary};
+    overflow: auto;
 `;

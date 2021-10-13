@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import CreatableSelect from 'react-select/creatable';
 
 import { getToken } from '@common/auth/auth.common';
+import { useTheme } from '@common/context/theme-context.common';
 interface ISearch {
     value: string;
     label: JSX.Element;
@@ -12,6 +13,8 @@ interface IProjectTypeSearch {
 }
 
 const ProjectTypeSearch = ({ fnc }: IProjectTypeSearch): JSX.Element => {
+    const { theme } = useTheme();
+
     const [projectTypes, setProjectTypes] = useState([]);
 
     useEffect(() => {
@@ -48,13 +51,30 @@ const ProjectTypeSearch = ({ fnc }: IProjectTypeSearch): JSX.Element => {
     }, []);
 
     const customStyles = {
-        option: (styles: any, state: any) => ({
+        option: (styles: any, _state: any) => ({
             ...styles,
-            cursor: 'pointer'
+            cursor: 'pointer',
+            background: theme.schema.input.background,
+            color: theme.schema.input.color,
+            "&:hover": {
+                background: theme.schema.colors.secondary,
+                color: theme.schema.text.hover,
+            }
+        }),
+        menuList: (styles: any, _state: any) => ({
+            background: theme.schema.input.background,
+            borderRadius: theme.schema.general.borderRadius
         }),
         control: (styles: any) => ({
             ...styles,
-            cursor: 'pointer'
+            background: theme.schema.input.background,
+            color: theme.schema.input.color,
+            cursor: 'pointer',
+            boxShadow: 'none'
+        }),
+        container: (styles: any) => ({
+            ...styles,
+            width: '100%'
         })
     };
 

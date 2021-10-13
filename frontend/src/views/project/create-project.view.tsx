@@ -24,7 +24,7 @@ const ProjectFormContainer = styled.div<{ ct: ITheme }>`
     -webkit-backdrop-filter: blur(8.5px);
     border-radius: 10px;
     color: ${(props) => props.ct.schema.text.color};
-    letter-spacing: 0.4rem;
+    /* letter-spacing: 0.4rem; */
 
     @media only screen and (min-width: 320px) {
         box-shadow: none;
@@ -50,24 +50,40 @@ const Label = styled.span<{ ct: ITheme }>`
     letter-spacing: 0rem;
 `;
 
+const LabelFile = styled.span<{ ct: ITheme }>`
+    color: ${(props) => props.ct.schema.button.text};
+    background: ${(props) => props.ct.schema.button.background};
+    border-radius: ${(props) => props.ct.schema.general.borderRadius};
+    letter-spacing: 0rem;
+    position: relative;
+    z-index: 0;
+    display: inline-block;
+    width: 100%;
+    cursor: pointer;
+    padding: 10px 0;
+    /* text-transform:uppercase; */
+    /* font-size:12px; */
+`;
+
 const InputContainer = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 80%;
+    width: 100%;
 `;
 
 const Input = styled.input<{ ct: ITheme }>`
     background: ${(props) => props.ct.schema.input.background};
     box-shadow: ${(props) => props.ct.schema.input.shadow};
     border-radius: ${(props) => props.ct.schema.general.borderRadius};
-    width: 80%;
+    width: 100%;
     height: ${(props) => props.ct.schema.input.height};
     padding: 1rem;
     border: ${(props) => props.ct.schema.input.border};
     outline: none;
     color: ${(props) => props.ct.schema.input.color};
+    box-sizing: border-box;
 
     &:focus {
         display: inline-block;
@@ -81,13 +97,32 @@ const Input = styled.input<{ ct: ITheme }>`
     }
 `;
 
+const InputFile = styled.input<{ ct: ITheme }>`
+    display: inline-block;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    height: ${(props) => props.ct.schema.input.height};
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+`;
+
 const FormControl = styled.div`
     margin-top: 1em;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 80%;
+`;
+
+const ButtonWrapper = styled.div`
+    position: relative;
     width: 100%;
+    text-align: center;
+    /* margin: 20% auto; */
 `;
 
 const ButtonContainer = styled.div`
@@ -103,7 +138,7 @@ const ButtonContainer = styled.div`
 const Button = styled.button<{ ct: ITheme }>`
     background: ${(props) => props.ct.schema.button.background};
     letter-spacing: 0.2rem;
-    width: 85%;
+    width: 100%;
     height: 3rem;
     border: none;
     color: ${(props) => props.ct.schema.button.text};
@@ -111,19 +146,6 @@ const Button = styled.button<{ ct: ITheme }>`
     cursor: pointer;
     font-weight: bold;
 `;
-
-const ForgotPassword = styled.span<{ ct: ITheme}>`
-    cursor: pointer;
-    margin-bottom: 6em;
-    font-weight: 25;
-    letter-spacing: 0rem;
-    font-style: italic;
-
-    :hover {
-        color: ${(props) => props.ct.schema.text.hover};
-    }
-`;
-
 
 const CreateProject = (): JSX.Element => {
     const { email } = useUser();
@@ -208,7 +230,10 @@ const CreateProject = (): JSX.Element => {
                             </FormControl>
                             <FormControl>
                                 <Label ct={theme}>Imagen</Label>
-                                <Input ct={theme} type="file" placeholder={fileName ? fileName : 'Selecciona un archivo'} accept="image/png, image/jpeg" className="hidden" onChange={photoUpload} />
+                                <ButtonWrapper>
+                                    <LabelFile ct={theme}>{fileName ? fileName : 'Selecciona una imagen'}</LabelFile>
+                                    <InputFile ct={theme} type="file" accept="image/png, image/jpeg" className="hidden" onChange={photoUpload} />
+                                </ButtonWrapper>
                             </FormControl>
                             <FormControl>
                                 <Label ct={theme}>Tipo de proyecto</Label>
