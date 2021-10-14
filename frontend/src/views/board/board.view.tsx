@@ -26,6 +26,7 @@ interface IBoard {
 
 const DragDropContainer = styled.div`
     margin: 1em;
+    display: flex;
 `;
 
 const Board = ({ projectCode }: IBoard): JSX.Element => {
@@ -143,21 +144,13 @@ const Board = ({ projectCode }: IBoard): JSX.Element => {
     return (
         <>
             {columns && (
-                <Container auth={isAuthenticated()} ct={theme}>
-                    <Row fullHeight center>
-                        <Column xs="12" sm="12" md="12" lg="12">
-                            <DragDropContainer>
-                                <DragDropContext onDragEnd={onDragEnd}>
-                                    <div className="flex">
-                                        {Object.values(columns).map((col) => (
-                                            <BoardColumn col={col} key={col.code} />
-                                        ))}
-                                    </div>
-                                </DragDropContext>
-                            </DragDropContainer>
-                        </Column>
-                    </Row>
-                </Container>
+                <DragDropContainer>
+                    <DragDropContext onDragEnd={onDragEnd}>
+                            {Object.values(columns).map((col) => (
+                                <BoardColumn col={col} key={col.code} />
+                            ))}
+                    </DragDropContext>
+                </DragDropContainer>
             )}
         </>
     );

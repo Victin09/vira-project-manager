@@ -1,38 +1,124 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { AiOutlineUser } from 'react-icons/ai';
+import styled from 'styled-components';
 
 import { nameToInitials } from '@common/util/initials.common';
+import { ITheme, useTheme } from '@common/context/theme-context.common';
 
 interface ItemProps {
     issue: any;
     index: number;
 }
 
+const ItemContainer = styled.div<{ ct: ITheme }>`
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    align-items: start;
+    padding: 1em;
+    /* margin-top: 1em; */
+    background-color: ${(props) => props.ct.schema.colors.primary};
+    color: ${(props) => props.ct.schema.text.color};
+    border-radius: ${(props) => props.ct.schema.general.borderRadius};
+    border: ${(props) => props.ct.schema.general.border};
+    cursor: pointer;
+
+    :hover {
+        background-color: ${(props) => props.ct.schema.colors.secondary};
+    }
+`;
+
+const IssueCode = styled.span<{ ct: ITheme }>`
+    color: ${(props) => props.ct.schema.text.color};
+    font-weight: 800;
+    padding-left: .25em;
+    padding-right: .25em;
+    border-radius: 25%;
+    font-size: 1em;
+    font-weight: bold;
+    line-height: 1.75em;
+    text-align: center;
+    background: ${(props) => props.ct.schema.colors.secondary};  
+`;
+
+const IssueData = styled.div`
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+`;
+
+const IssueTitle = styled.span<{ ct: ITheme }>`
+    color: ${(props) => props.ct.schema.text.color};
+    font-weight: 700;
+    margin-top: 1.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+`;
+
+const IssueDescription = styled.span<{ ct: ITheme }>`
+    color: ${(props) => props.ct.schema.text.color};
+    font-weight: 800;
+    margin-top: .5em;
+    opacity: .5;
+    font-style: italic;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+`;
+
+const IssueSubData = styled.div<{ ct: ITheme }>`
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    width: 100%;
+    margin-top: 1em;
+`;
+
+const UserImage = styled.div<{ ct: ITheme, assigned: boolean }>`
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 25%;
+    font-size: 1em;
+    color: ${(props) => props.assigned ? props.ct.schema.button.text: props.ct.schema.text.color};
+    font-weight: bold;
+    line-height: 1.75em;
+    text-align: center;
+    background: ${(props) => props.assigned ? props.ct.schema.button.background : props.ct.schema.colors.secondary};  
+    margin-left: .5em;
+
+    @media screen and (max-width: 600px) {
+        display: none;
+    }
+`;
+
 const Item: React.FC<ItemProps> = ({ issue, index }) => {
+    const { theme } = useTheme();
+
     return (
         <Draggable draggableId={issue.code} index={index}>
             {(provided) => (
                 <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                    <div className="flex flex-col overflow-hidden">
-                        <div
-                            className="relative flex flex-col items-start p-3 mt-3 bg-white rounded-lg cursor-pointer group hover:bg-gray-100 border"
+                    {/* <ItemContainer ct={theme}> */}
+                        <ItemContainer
+                            ct={theme}
                             draggable="true"
                         >
-                            <button className="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex">
-                                <svg className="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            {/* <button className="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 rounded hover:bg-gray-200 hover:text-gray-700 group-hover:flex"> */}
+                                {/* <svg className="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                     <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-                                </svg>
-                            </button>
+                                </svg> */}
+                            {/* </button> */}
                             {/* <span className="flex items-center h-6 px-3 text-xs font-semibold text-pink-500 bg-pink-100 rounded-full">
                                 {issue.tag}
                             </span> */}
-                            <span className="flex items-center h-6 text-xs font-semibold text-gray-500">{issue.code}</span>
-                            <div className="w-full flex flex-col truncate">
-                                <h4 className="mt-3 text-sm font-medium">{issue.title}</h4>
-                                <span className="font-thin text-sm truncate">{issue.description}</span>
-                            </div>
-                            <div className="flex items-center w-full mt-3 text-xs font-medium text-gray-400">
+                            <IssueCode ct={theme}>{issue.code}</IssueCode>
+                            <IssueData>
+                                <IssueTitle ct={theme}>{issue.title}</IssueTitle>
+                                <IssueDescription ct={theme}>{issue.description}</IssueDescription>
+                            </IssueData>
+                            <IssueSubData ct={theme}>
                                 {/* <div className="flex items-center">
                                     <svg
                                         className="w-4 h-4 text-gray-300 fill-current"
@@ -78,25 +164,21 @@ const Item: React.FC<ItemProps> = ({ issue, index }) => {
                                     </svg>
                                     <span className="ml-1 leading-none">1</span>
                                 </div> */}
-                                {issue.users[0] ? (
+                                {issue.users[0] && (
                                     issue.users[0].icon ? (
                                         <img
                                             className="m-1 w-6 h-6 ml-auto relative flex justify-center items-center rounded-full"
                                             src={issue.users[0].icon}
                                         />
                                     ) : (
-                                        <div className="m-1 w-6 h-6 relative flex justify-center ml-auto items-center rounded-full bg-indigo-700 text-xs text-white uppercase">
+                                        <UserImage ct={theme} assigned>
                                             {nameToInitials(issue.users[0].name)}
-                                        </div>
+                                        </UserImage>
                                     )
-                                ) : (
-                                    <div className="m-1 w-6 h-6 relative ml-auto flex justify-center text-gray-600 items-center rounded-full bg-gray-300 text-xs text-white uppercase">
-                                        <AiOutlineUser />
-                                    </div>
                                 )}
-                            </div>
-                        </div>
-                    </div>
+                            </IssueSubData>
+                        </ItemContainer>
+                    {/* </ItemContainer> */}
                 </div>
             )}
         </Draggable>
