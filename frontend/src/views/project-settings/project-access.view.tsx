@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { getToken } from '@common/auth/auth.common';
-import ProjectTypeSearch from '@components/type-search/type-search.component';
+import ProjectTypeSearch from '@components/search/type-search.component';
 
 interface IProjectDetails {
     projectCode: string;

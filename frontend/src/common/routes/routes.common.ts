@@ -1,4 +1,4 @@
-import Home from '@views/home/home';
+import Projects from '@views/projects/projects.view';
 import Login from '@views/login/login.view';
 import Register from '@views/register/register.view';
 import Project from '@views/project/project.view';
@@ -14,7 +14,7 @@ export interface IRoute {
 
 export const routes: IRoute[] = [
     {
-        component: Home,
+        component: Projects,
         exact: true,
         path: '/project',
         private: true

@@ -61,7 +61,7 @@ const ProjectTypeSearch = ({ fnc }: IProjectTypeSearch): JSX.Element => {
                 color: theme.schema.text.hover,
             }
         }),
-        menuList: (styles: any, _state: any) => ({
+        menuList: (_styles: any, _state: any) => ({
             background: theme.schema.input.background,
             borderRadius: theme.schema.general.borderRadius
         }),

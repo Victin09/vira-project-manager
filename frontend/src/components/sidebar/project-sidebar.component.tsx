@@ -1,13 +1,20 @@
 import React, { useState } from 'react';
 import { AiTwotoneSetting } from 'react-icons/ai';
 import { IoChevronBackCircleSharp } from 'react-icons/io5';
+import styled from 'styled-components';
 
 import { nameToInitials } from '@common/util/initials.common';
+import { ITheme, useTheme } from '@common/context/theme-context.common';
+
+interface IType {
+    name: string;
+}
 
 interface IProject {
     name: string;
     description: string;
     image: string;
+    type: IType;
 }
 
 interface IOption {
@@ -25,77 +32,178 @@ interface ISidebar {
     setShowSettings: (show: boolean) => void;
 }
 
+const SidebarContainer = styled.div<{ ct: ITheme }>`
+    border-right: ${(props) => props.ct.schema.general.border};
+    background-color: ${(props) => props.ct.schema.colors.secondary};
+    min-width: 20em;
+    width: 20em;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+`;
+
+const SidebarHeader = styled.div`
+    display: flex;
+    align-items: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+`;
+
+const Image = styled.div<{ ct: ITheme }>`
+    width: 3.5em;
+    height: 3.5em;
+    border-radius: 25%;
+    font-size: 1em;
+    color: ${(props) => props.ct.schema.button.text};
+    font-weight: bold;
+    line-height: 3.5em;
+    text-align: center;
+    background: ${(props) => props.ct.schema.button.background};  
+    margin-right: 1em;
+
+    @media screen and (max-width: 600px) {
+        display: none;
+    }
+`;
+
+const TextContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+`;
+
+const ProjectName = styled.span<{ ct: ITheme }>`
+    font-weight: bolder;
+    font-size: 2em;
+    color: ${(props) => props.ct.schema.text.color};
+`;
+
+const ProjectDescription = styled.span<{ ct: ITheme }>`
+    font-size: 1em;
+    font-style: italic;
+    color: ${(props) => props.ct.schema.text.color};
+`;
+
+const SidebarSeparator = styled.hr`
+    width: 100%;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    opacity: 0.25;
+`;
+
+const SidebarBody = styled.div<{ ct: ITheme }>`
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+`;
+
+const SidebarOption = styled.span<{ ct: ITheme, selected: boolean }>`
+    color: ${(props) => props.selected ? props.ct.schema.button.text : props.ct.schema.text.color};
+    background-color: ${(props) => props.selected && props.ct.schema.button.background};
+    cursor: pointer;
+    padding: 1em;
+    border-radius: ${(props) => props.ct.schema.general.borderRadius};
+    display: flex;
+    align-items: center;
+
+    :hover {
+        color: ${(props) => !props.selected && props.ct.schema.text.hover};
+    }
+`;
+
+const SidebarFooter = styled.div<{ ct: ITheme }>`
+    display: flex;
+    justify-content: center;
+    color: ${(props) => props.ct.schema.text.color};
+    font-size: 1em;
+`;
+
+const SidebarFooterText = styled.div<{ ct: ITheme }>`
+    color: ${(props) => props.ct.schema.text.color};
+    opacity: 0.5;
+    font-style: italic;
+`;
+
+const TextWithIcon = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const BackOptionText = styled.span`
+    margin-left: 0.5em;
+`;
+
 const Sidebar = ({ projectData, options, selected, selectedOption, settings, showSettings, setShowSettings }: ISidebar): JSX.Element => {
+    const { theme } = useTheme();
+
+    const handleOptions = (option: string) => {
+        if (option === 'Ajustes') setShowSettings(!showSettings);
+        else selectedOption(option);
+    }
+
     return (
-        <div
-            className="h-full border-r-2 bg-gray-50 text-gray-600 md:w-64 w-3/4 space-y-6 pt-6 px-0 absolute inset-y-0 left-0 transform md:relative md:translate-x-0 transition duration-200 ease-in-out md:flex md:flex-col md:justify-between overflow-y-auto"
-            data-dev-hint="sidebar; px-0 for frameless; px-2 for visually inset the navigation"
-        >
-            <div className="flex flex-col space-y-6 h-full min-w-full">
-                <div className="flex items-center space-x-2 px-4">
-                    {projectData.image ? (
-                        <img className="m-1 w-10 h-10 relative flex justify-center items-center rounded" src={projectData.image} />
-                    ) : (
-                        <div className="m-1 p-1 w-10 h-10 relative flex justify-center items-center rounded bg-indigo-700 text-white text-xl uppercase">
-                            {nameToInitials(projectData.name)}
-                        </div>
-                    )}
-                    <div className="flex flex-col">
-                        <span className="text-2xl font-extrabold">{projectData.name}</span>
-                        <span className="text-xl font-thin italic">{projectData.description}</span>
-                    </div>
-                </div>
-                <hr />
-                <div className="space-y-6 cursor-pointer h-full">
-                    {!showSettings ? (
-                        <>
-                            {options.map((element, index) => (
-                                <div
-                                    className={`flex items-center space-x-2 py-2 px-4 hover:bg-indigo-700 hover:text-white ${
-                                        selected === element.title ? ' bg-indigo-700 text-white' : ' text-gray-600'
-                                    }`}
-                                    key={index}
-                                    onClick={() => selectedOption(element.title)}
-                                >
-                                    <span className="flex justify-center items-center">
-                                        {element.icon}
-                                        &nbsp; &nbsp;
-                                        {element.title}
-                                    </span>
-                                </div>
-                            ))}
-                        </>
-                    ) : (
-                        <>
-                            <div
-                                className="flex items-center space-x-2 py-2 px-4 hover:bg-indigo-700 hover:text-white"
-                                onClick={() => setShowSettings(false)}
+        <SidebarContainer ct={theme}>
+            <SidebarHeader>
+                {projectData.image ? (
+                    <img className="m-1 w-10 h-10 relative flex justify-center items-center rounded" src={projectData.image} />
+                ) : (
+                    <Image ct={theme}>
+                        {nameToInitials(projectData.name)}
+                    </Image>
+                )}
+                <TextContainer>
+                    <ProjectName ct={theme}>{projectData.name.toUpperCase()}</ProjectName>
+                    <ProjectDescription ct={theme}>{projectData.description}</ProjectDescription>
+                </TextContainer>
+            </SidebarHeader>
+            <SidebarSeparator />
+            <SidebarBody ct={theme}>
+                {!showSettings ? (
+                    <>
+                        {options.map((element, index) => (
+                            <SidebarOption
+                                ct={theme}
+                                selected={selected === element.title}
+                                key={index}
+                                onClick={() => handleOptions(element.title)}
                             >
-                                <span className="flex justify-center items-center">
-                                    <IoChevronBackCircleSharp />
-                                    <span className="ml-2">Volver al proyecto</span>
-                                </span>
-                            </div>
-                            <hr />
-                            {settings.map((element, index) => (
-                                <div
-                                    className={`flex items-center space-x-2 py-2 px-4 hover:bg-indigo-700 hover:text-white ${
-                                        selected === element.title ? ' bg-indigo-700 text-white' : ' text-gray-600'
-                                    }`}
-                                    key={index}
-                                    onClick={() => selectedOption(element.title)}
-                                >
-                                    <span className="flex justify-center items-center">{element.title}</span>
-                                </div>
-                            ))}
-                        </>
-                    )}
-                </div>
-                <div className="flex justify-end p-2 cursor-pointer text-xl">
-                    <AiTwotoneSetting onClick={() => setShowSettings(!showSettings)} />
-                </div>
-            </div>
-        </div>
+                                <TextWithIcon>
+                                    {element.icon}
+                                    &nbsp; &nbsp;
+                                    {element.title}
+                                </TextWithIcon>
+                            </SidebarOption>
+                        ))}
+                    </>
+                ) : (
+                    <>
+                        <SidebarOption
+                            ct={theme}
+                            selected={false}
+                            onClick={() => setShowSettings(false)}
+                        >
+                            <TextWithIcon>
+                                <IoChevronBackCircleSharp />
+                                <BackOptionText>Volver al proyecto</BackOptionText>
+                            </TextWithIcon>
+                        </SidebarOption>
+                        <SidebarSeparator />
+                        {settings.map((element, index) => (
+                            <SidebarOption
+                                ct={theme}
+                                selected={selected === element.title}
+                                key={index}
+                                onClick={() => selectedOption(element.title)}
+                            >
+                                {element.title}
+                            </SidebarOption>
+                        ))}
+                    </>
+                )}
+            </SidebarBody>
+            <SidebarFooter ct={theme}>
+                <SidebarFooterText ct={theme}>Este proyecto es de tipo {projectData.type.name}</SidebarFooterText>
+            </SidebarFooter>
+        </SidebarContainer>
     );
 };
 

@@ -10,18 +10,24 @@ import Board from '@views/board/board.view';
 import IssueSidebar from '@components/sidebar/issue-sidebar.component';
 import ProjectDetails from '@views/project-settings/project-details.view';
 import ProjectAccess from '@views/project-settings/project-access.view';
-import { Row } from '@components/ui/column.component';
+import { Column, Row } from '@components/ui/column.component';
 import { Container } from '@components/ui/container.component';
 import { useTheme } from '@common/context/theme-context.common';
+import { AiTwotoneSetting } from 'react-icons/ai';
 
 interface IParams {
     projectCode: string;
+}
+
+interface IType {
+    name: string;
 }
 
 interface IProject {
     name: string;
     description: string;
     image: string;
+    type: IType;
 }
 
 const Project = (): JSX.Element => {
@@ -71,6 +77,10 @@ const Project = (): JSX.Element => {
         {
             title: 'Tablero',
             icon: <IoMdList />
+        },
+        {
+            title: 'Ajustes',
+            icon: <AiTwotoneSetting />
         }
     ];
 
@@ -119,17 +129,19 @@ const Project = (): JSX.Element => {
             {project && (
                 <Container ct={theme} auth={isAuthenticated()}>
                     <Row fullHeight center>
-                        <ProjectSidebar
-                            projectData={project}
-                            options={options}
-                            selected={option}
-                            selectedOption={selectedOption}
-                            settings={settings}
-                            showSettings={showSettings}
-                            setShowSettings={setShowSettings}
-                        />
-                        {!showSettings ? renderOption() : renderSettings()}
-                        <IssueSidebar display={showOptions} setDisplay={setShowOptions} item={issue} projectCode={projectCode} />
+                        <Column xs="12" sm="12" md="12" lg="12">
+                            <ProjectSidebar
+                                projectData={project}
+                                options={options}
+                                selected={option}
+                                selectedOption={selectedOption}
+                                settings={settings}
+                                showSettings={showSettings}
+                                setShowSettings={setShowSettings}
+                            />
+                            {!showSettings ? renderOption() : renderSettings()}
+                            <IssueSidebar display={showOptions} setDisplay={setShowOptions} item={issue} projectCode={projectCode} />
+                        </Column>
                     </Row>
                 </Container>
             )}

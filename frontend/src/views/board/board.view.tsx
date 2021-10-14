@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { DragDropContext, DraggableLocation, DropResult } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 
-import { getToken } from '@common/auth/auth.common';
-import Column from '@components/board/column.component';
+import { getToken, isAuthenticated } from '@common/auth/auth.common';
+import BoardColumn from '@components/board/column.component';
+import { Container } from '@components/ui/container.component';
+import { useTheme } from '@common/context/theme-context.common';
+import { Column, Row } from '@components/ui/column.component';
+import styled from 'styled-components';
 
 interface IIssue {
     code: string;
@@ -20,7 +24,13 @@ interface IBoard {
     projectCode: string;
 }
 
+const DragDropContainer = styled.div`
+    margin: 1em;
+`;
+
 const Board = ({ projectCode }: IBoard): JSX.Element => {
+    const { theme } = useTheme();
+
     const [columns, setColumns] = useState<IDocument[]>();
 
     useEffect(() => {
@@ -133,13 +143,21 @@ const Board = ({ projectCode }: IBoard): JSX.Element => {
     return (
         <>
             {columns && (
-                <DragDropContext onDragEnd={onDragEnd}>
-                    <div className="flex">
-                        {Object.values(columns).map((col) => (
-                            <Column col={col} key={col.code} />
-                        ))}
-                    </div>
-                </DragDropContext>
+                <Container auth={isAuthenticated()} ct={theme}>
+                    <Row fullHeight center>
+                        <Column xs="12" sm="12" md="12" lg="12">
+                            <DragDropContainer>
+                                <DragDropContext onDragEnd={onDragEnd}>
+                                    <div className="flex">
+                                        {Object.values(columns).map((col) => (
+                                            <BoardColumn col={col} key={col.code} />
+                                        ))}
+                                    </div>
+                                </DragDropContext>
+                            </DragDropContainer>
+                        </Column>
+                    </Row>
+                </Container>
             )}
         </>
     );
