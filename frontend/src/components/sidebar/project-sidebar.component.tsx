@@ -40,6 +40,7 @@ const SidebarContainer = styled.div<{ ct: ITheme }>`
     padding: 1em;
     display: flex;
     flex-direction: column;
+    left: 0;
 `;
 
 const SidebarHeader = styled.div`

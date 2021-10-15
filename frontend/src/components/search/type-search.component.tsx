@@ -10,12 +10,14 @@ interface ISearch {
 
 interface IProjectTypeSearch {
     fnc: (data: string) => void;
+    project?: string
 }
 
-const ProjectTypeSearch = ({ fnc }: IProjectTypeSearch): JSX.Element => {
+const ProjectTypeSearch = ({ fnc, project }: IProjectTypeSearch): JSX.Element => {
     const { theme } = useTheme();
 
     const [projectTypes, setProjectTypes] = useState([]);
+    const [selectedType, setSelectedType] = useState<ISearch>();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -34,16 +36,31 @@ const ProjectTypeSearch = ({ fnc }: IProjectTypeSearch): JSX.Element => {
                 result.forEach((element: any) => {
                     const type: ISearch = {
                         value: element.name,
-                        label: (
-                            <div className="flex">
-                                <span className="font-bold">{element.name}</span>
-                                <span className="font-thin">{element.description}</span>
-                            </div>
-                        )
+                        label: element.name
                     };
                     data.push(type);
                 });
                 setProjectTypes(data);
+
+                if (project) {
+                    const result = await (
+                        await fetch(`${process.env.API_URL}/projects/find/${project}`, {
+                            method: 'GET',
+                            headers: {
+                                Authorization: `Bearer ${getToken()}`,
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                    ).json();
+                    console.log('porject type', result.type);
+
+                    const type: ISearch = {
+                        value: result.type.name,
+                        label: result.type.name
+                    };
+
+                    setSelectedType(type);
+                }
             }
         };
 
@@ -96,20 +113,21 @@ const ProjectTypeSearch = ({ fnc }: IProjectTypeSearch): JSX.Element => {
             if (result.name) {
                 const type: ISearch = {
                     value: result.name,
-                    label: (
-                        <div className="flex items-center">
-                            <span className="font-bold">{result.name}</span>
-                            <span className="font-thin">{result.description}</span>
-                        </div>
-                    )
+                    label: result.name
                 };
                 setProjectTypes((oldArray) => [...oldArray, type]);
             }
         }
-        fnc(newValue.value);
+        console.log('newValue', newValue)
+        if (newValue) fnc(newValue.value);
+        const type: ISearch = {
+            value: newValue.value,
+            label: newValue.value
+        };
+        setSelectedType(type);
     };
 
-    return <CreatableSelect isClearable styles={customStyles} onChange={handleChange} placeholder="Seleciona..." options={projectTypes} />;
+    return <CreatableSelect styles={customStyles} value={selectedType} onChange={handleChange} placeholder="Seleciona..." options={projectTypes} />;
 };
 
 export default ProjectTypeSearch;
